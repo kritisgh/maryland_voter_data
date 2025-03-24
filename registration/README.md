@@ -1,7 +1,7 @@
 3/12/25
 
-- We will find the total number of registered voters by county and party every four years.
-- Our party categories will be Democrat, Republican, unfailliated and other.
+- We will find the total number of registered voters by county and party every midterm election since 2006,
+  - Our party categories will be Democrat, Republican, unfailliated and other.
 - We can present this data on a state-wide level so people can see county-by-county registration levels, and more detailed county analyses with additional information about change in registration, party breakdown, type and number of removals, and number of inactive voters.
 - We'll need to convert these PDFs into data we can analyze (CSVs). We don't need OCR because the PDFs aren't images/scans.
 - Our data is currently four tables all together in a PDF. We want to change this into tables with counties as the rows and years as the columns with each cell containing the total number of registered voters in the area. We can also create tables broken down by party or specific county tables. 
