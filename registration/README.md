@@ -4,6 +4,7 @@ Tasks:
 - Write code that combines all party columns that are not Democrat, Republican or unaffiliated into one, so that we are left with four columns: Democrat, Republican, unaffiliated and other
 - Compare current voter registration numbers in March to similiar years (other years, like 2021 right after an election and before the midterms) to see if voter registration numbers are on track, and if they're not, which parties are suffering
 - Visualize these differences using Flourish
+- Create a quiz that asks basic location information and shows users where their polling place is or what address to send their mail-in ballot with other resources
 - Look into how inactive voter numbers have changed since 2006
 
 3/12/25
