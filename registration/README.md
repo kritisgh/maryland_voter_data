@@ -1,3 +1,11 @@
+3/26/25
+Tasks: 
+- Clean data. We only want the first page of data that shows the total voter registration numbers by county for each month and year. We also have to clean the column names and ensure it reads the second row as rows
+- Write code that combines all party columns that are not Democrat, Republican or unaffiliated into one, so that we are left with four columns: Democrat, Republican, unaffiliated and other
+- Compare current voter registration numbers in March to similiar years (other years, like 2021 right after an election and before the midterms) to see if voter registration numbers are on track, and if they're not, which parties are suffering
+- Visualize these differences using Flourish
+- Look into how inactive voter numbers have changed since 2006
+
 3/12/25
 
 - We will find the total number of registered voters by county and party every midterm election since 2006,
