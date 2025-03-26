@@ -1,3 +1,12 @@
+3/25/2025 --
+Cleaned data with Pandas. Added Geocode and map to Datasette with following code:
+
+geocode-sqlite nominatim agg.db agg
+--location="{residential_city}, 'MD'"
+--delay=1
+--user-agent="newsapps-geo"
+
+
 3/24/2025 --
 See Github Issues. https://github.com/NewsAppsUMD/maryland_voter_data/issues/3
 
