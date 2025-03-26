@@ -1,3 +1,7 @@
+3/26/2025 --
+Things we need aggregated:
+Of people who voted in the 2024 election, in (blank city), (percentage) were registered Democrats, etc.
+
 3/25/2025 --
 Cleaned data with Pandas. Added Geocode and map to Datasette with following code:
 
