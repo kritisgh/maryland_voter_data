@@ -49,8 +49,7 @@ for folder in os.listdir(base_dir):
 final_df = pd.DataFrame(data)
 print(final_df)
 
-# Optional: Save to CSV if needed
-# final_df.to_csv("voter_registration_summary.csv", index=False)
+final_df.to_csv("voter_registration_summary.csv", index=False)
 
 """pdf_dir = "pdfs"
 output_dir = "csvs"
