@@ -22,7 +22,8 @@ for folder in os.listdir(base_dir):
             df = df[[col for col in required_columns if col in df.columns]]
 
             for _, row in df.iterrows():
-                county = str(row.get("COUNTY", "")).strip()
+                county = row.get("COUNTY", "") or row.get("COUNTY_ACTIVE", "")
+                county = str(county).strip()
 
                 def safe_int(val):
                     val = str(val).replace(",", "").strip()
