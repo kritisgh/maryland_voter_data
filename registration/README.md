@@ -1,3 +1,6 @@
+4/4/25: 
+Tasks assigned via issues 
+
 3/26/25
 Tasks: 
 - Clean data. We only want the first page of data that shows the total voter registration numbers by county for each month and year. We also have to clean the column names and ensure it reads the second row as rows
