@@ -14,3 +14,11 @@ First Steps:
 Other Thoughts: 
 We are leaning towards investigating inactive voters across different counties. Our main first step would just be to use the percent change formula across different counties' inactive voters. 
 
+
+ 2024-04-04
+ Completed:
+ - We have converted all necessary files into csv files in the turnout_data directory
+ - We cleaned the files and added columns for party identification (official turnout dataset) and year (all datasets)
+ - We merged the datasets by view/topic and created the three full dataset files (official_by_party_and_county_compelete, eligible_active, and eligible_inactive)
+ - All three of the complete datasets have been imported as tables into Datasette in the turnout database (turnout.db)
+ - Using the First News App tutorial, we created a starting webpage for turnout data. So far, it displays the full official turnout data as a table.
