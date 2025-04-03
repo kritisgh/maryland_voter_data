@@ -22,3 +22,20 @@ We are leaning towards investigating inactive voters across different counties. 
  - We merged the datasets by view/topic and created the three full dataset files (official_by_party_and_county_compelete, eligible_active, and eligible_inactive)
  - All three of the complete datasets have been imported as tables into Datasette in the turnout database (turnout.db)
  - Using the First News App tutorial, we created a starting webpage for turnout data. So far, it displays the full official turnout data as a table.
+
+To be done:
+- Modify the index (home) page to resemble the IKE Labs home page, where each turnout category is a link to a detailed page for that view:
+        - Official Maryland Voter Turnout
+        - Eligible Active Voter Turnout
+        - Eligible Inactive Voter Turnout
+
+Initial plans for each page (subject to change):
+- Official Maryland Voter Turnout:
+        - present the a paginated version of the full table 
+        - hyperlink each county name to a detailed County page:
+                - present a map that outlines the county boundaries
+                - indicate which party has generally received the most support across the available data (turnout percentage/count)
+                - break down data by year: indicate which party won the election that year and how the turnout was distributed across parties
+        - have a map of Maryland that is partitioned by county:
+                - colorcode by: the color that represents the most supported party or according to turnout percentage using color intensity
+                - have hover data that includes: county name, turnout percentage by year, and a link to the detailed county page
