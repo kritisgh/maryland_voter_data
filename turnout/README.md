@@ -16,6 +16,7 @@ We are leaning towards investigating inactive voters across different counties. 
 
 
  2024-04-04
+
  Completed:
  - We have converted all necessary files into csv files in the turnout_data directory
  - We cleaned the files and added columns for party identification (official turnout dataset) and year (all datasets)
@@ -25,17 +26,17 @@ We are leaning towards investigating inactive voters across different counties. 
 
 To be done:
 - Modify the index (home) page to resemble the IKE Labs home page, where each turnout category is a link to a detailed page for that view:
-        - Official Maryland Voter Turnout
-        - Eligible Active Voter Turnout
-        - Eligible Inactive Voter Turnout
+    - Official Maryland Voter Turnout
+    - Eligible Active Voter Turnout
+    - Eligible Inactive Voter Turnout
 
 Initial plans for each page (subject to change):
 - Official Maryland Voter Turnout:
-        - present the a paginated version of the full table 
-        - hyperlink each county name to a detailed County page:
-                - present a map that outlines the county boundaries
-                - indicate which party has generally received the most support across the available data (turnout percentage/count)
-                - break down data by year: indicate which party won the election that year and how the turnout was distributed across parties
-        - have a map of Maryland that is partitioned by county:
-                - colorcode by: the color that represents the most supported party or according to turnout percentage using color intensity
-                - have hover data that includes: county name, turnout percentage by year, and a link to the detailed county page
+    - present the a paginated version of the full table 
+    - hyperlink each county name to a detailed County page:
+         - present a map that outlines the county boundaries
+         - indicate which party has generally received the most support across the available data (turnout percentage/count)
+         - break down data by year: indicate which party won the election that year and how the turnout was distributed across parties
+    - have a map of Maryland that is partitioned by county:
+         - colorcode by: the color that represents the most supported party or according to turnout percentage using color intensity
+         - have hover data that includes: county name, turnout percentage by year, and a link to the detailed county page
