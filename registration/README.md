@@ -37,7 +37,19 @@ Tasks:
 
 Create Flourish visualizationsby party every mid-term election cycle Democrat Republican Unaffiliated Other By county - line graphs Allegany, Anne Arundel, Baltimore, Calvert, Caroline Carroll, Cecil, Charles, Dorchester, Frederick Garrett, Harford, Howard, Kent, Montgomery Prince George's, Queen Anne's, St. Mary's, Somerset, Talbot Washington, Wicomico, Worcester, Baltimore City.
 
-Dabeluchukwu Task
+Dabeluchukwu Task:
+
+
+Analyze the historical change in the number of inactive voters from 2006 to present. Highlight which counties and parties have seen the largest increases or decreases in inactive voter counts.
+
+Checklist:
+
+ Extract inactive voter data by year/month
+
+ Create line graphs by county and party
+
+
+
 
 
 
