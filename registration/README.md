@@ -23,6 +23,8 @@ Anthony Task:
 Write code that combines all party columns that are not Democrat, Republican or unaffiliated into one, so that we are left with four columns: Democrat, Republican, unaffiliated and other.
 
 Calculate percent changes, last complete month (Feb/March) for midterm election years 2022 vs current 2025 State level County level
+Olivia tasks:
+- create data visualizations in Flourish from the new CSVs 
 
 3/26/25
 Tasks: 
