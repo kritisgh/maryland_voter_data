@@ -1,6 +1,29 @@
 4/4/25: 
 Tasks assigned via issues 
 
+We turns the pdfs data into csvs data. This is so for now we can now manipulate data and start wroking on our project.
+
+The task are the folling:
+
+Voter quiz a la NYT dialect story: https://www.nytimes.com/interactive/2014/upshot/dialect-quiz-map.html
+
+April Tasks:
+
+
+Review qualifications
+
+Generate questions
+
+If qualified: enter address for voter info
+
+If not qualified: end of quiz
+
+Anthony Task:
+
+Write code that combines all party columns that are not Democrat, Republican or unaffiliated into one, so that we are left with four columns: Democrat, Republican, unaffiliated and other.
+
+Calculate percent changes, last complete month (Feb/March) for midterm election years 2022 vs current 2025 State level County level
+
 3/26/25
 Tasks: 
 - Clean data. We only want the first page of data that shows the total voter registration numbers by county for each month and year. We also have to clean the column names and ensure it reads the second row as rows
@@ -9,6 +32,14 @@ Tasks:
 - Visualize these differences using Flourish
 - Create a quiz that asks basic location information and shows users where their polling place is or what address to send their mail-in ballot with other resources
 - Look into how inactive voter numbers have changed since 2006
+
+  Olivia Task:
+
+Create Flourish visualizationsby party every mid-term election cycle Democrat Republican Unaffiliated Other By county - line graphs Allegany, Anne Arundel, Baltimore, Calvert, Caroline Carroll, Cecil, Charles, Dorchester, Frederick Garrett, Harford, Howard, Kent, Montgomery Prince George's, Queen Anne's, St. Mary's, Somerset, Talbot Washington, Wicomico, Worcester, Baltimore City.
+
+Dabeluchukwu Task
+
+
 
 3/12/25
 
