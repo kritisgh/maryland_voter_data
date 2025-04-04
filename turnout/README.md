@@ -57,3 +57,5 @@ Initial plans for each page (subject to change):
     - present similar bar charts and line graphs as eligible active voter section
 
 - if it's a better idea, we could consider having one page for both Eligible Active/Inactive Voter Activity and present the data side by side for comparision or as a separate view within the same page
+
+- no current blockers
