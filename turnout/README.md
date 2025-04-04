@@ -32,11 +32,28 @@ To be done:
 
 Initial plans for each page (subject to change):
 - Official Maryland Voter Turnout:
-    - present the a paginated version of the full table 
+    - present a paginated version of the full table 
     - hyperlink each county name to a detailed County page:
          - present a map that outlines the county boundaries
          - indicate which party has generally received the most support across the available data (turnout percentage/count)
          - break down data by year: indicate which party won the election that year and how the turnout was distributed across parties
+         - present eligible and ineligble voter activity data (tables and links to those pages)
     - have a map of Maryland that is partitioned by county:
          - colorcode by: the color that represents the most supported party or according to turnout percentage using color intensity
          - have hover data that includes: county name, turnout percentage by year, and a link to the detailed county page
+
+- Eligible Active Voter Turnout
+    - present a paginated version of the full table 
+    - have a choropleth map where the intensity represents the percentage of eligible active voter participation/turnout
+        - have hover data that includes the other attributes from the data: county name and the count of eligible active voter turnout by year
+    - display bar charts that also visualize and represent eligible voter turnout by party, and we can add filters by year
+    - we could layer the bar charts with a trend line that shows any patterns
+    - we could try to make line charts for voter activity by county, but we would first see if the data is not too overcrowded/hard to interact with
+    - link any county names to the detailed County page described above
+
+- Eligible Inctive Voter Turnout
+    - present a paginated version of the full table 
+    - if we calculate percent change in voter inactivity, we could use that do create the choropleth map and use it to decide color intensity by county
+    - present similar bar charts and line graphs as eligible active voter section
+
+- if it's a better idea, we could consider having one page for both Eligible Active/Inactive Voter Activity and present the data side by side for comparision or as a separate view within the same page
