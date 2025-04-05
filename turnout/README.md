@@ -26,9 +26,9 @@ We are leaning towards investigating inactive voters across different counties. 
 
 To be done:
 - Modify the index (home) page to resemble the IKE Labs home page, where each turnout category is a link to a detailed page for that view:
-    - Official Maryland Voter Turnout
-    - Eligible Active Voter Turnout
-    - Eligible Inactive Voter Turnout
+    - Official Maryland Voter Turnout (Marco)
+    - Eligible Active Voter Turnout (Reem and Natalie)
+    - Eligible Inactive Voter Turnout (Kriti)
 
 Initial plans for each page (subject to change):
 - Official Maryland Voter Turnout:
