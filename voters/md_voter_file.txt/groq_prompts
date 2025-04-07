@@ -1,17 +1,31 @@
 # code for ai prompts for the data we will use will be here
 
+import os
 from groq import Groq
 
-client = Groq()
-completion = client.chat.completions.create(
-    model="llama-3.3-70b-versatile",
-    messages=[],
+client = Groq(api_key=os.environ.get('GROQ_API_KEY'))
+
+def extract_info(text, example):
+    completion = client.chat.completions.create(
+    model="llama3-8b-8192",
+    messages=[
+        {
+            "role": "system",
+            "content": f"  "
+        },
+        {
+            "role": "user",
+            "content": f"Given the following "
+        }
+    ],
     temperature=1,
-    max_completion_tokens=1024,
+    max_tokens=1024,
     top_p=1,
-    stream=True,
+    stream=False,
+    response_format={"type": "json_object"},
     stop=None,
 )
+    return completion.choices[0].message.content
 
-for chunk in completion:
-    print(chunk.choices[0].delta.content or "", end="")
+
+input_txt_path = ''
