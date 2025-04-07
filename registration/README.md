@@ -73,3 +73,11 @@ Thinking about the total numbers for registration every fours years.
 We have statewide elections in off years, every 2 years. The patterns other states see we may not see here.
 
 The state parties remain the same, but the new parties always come and go.
+
+
+4/7/25
+The inactive_month.py code is basically the same as the code that produces voter_registration_summary csv except this time it focuses on year,month,county,inactive. It produces inactive_voter_summarry.csv
+
+inactive_month.py produces monthly_inactive_total.csv and it produces the total amount of inactive voters each month in a csv format.
+
+Then there is plot_inactive.py which creates inactive_voter_trend.png which reads "monthly_inactive_totals.csv" to create the visuals. This was done with help from Chatgpt.
