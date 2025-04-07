@@ -81,3 +81,5 @@ The inactive_month.py code is basically the same as the code that produces voter
 inactive_month.py produces monthly_inactive_total.csv and it produces the total amount of inactive voters each month in a csv format.
 
 Then there is plot_inactive.py which creates inactive_voter_trend.png which reads "monthly_inactive_totals.csv" to create the visuals. This was done with help from Chatgpt.
+
+Some of the numbers are inaccuate and I will fix tommorow
