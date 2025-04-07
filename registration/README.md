@@ -75,7 +75,7 @@ We have statewide elections in off years, every 2 years. The patterns other stat
 The state parties remain the same, but the new parties always come and go.
 
 
-4/7/25
+4/11/25
 The inactive_month.py code is basically the same as the code that produces voter_registration_summary csv except this time it focuses on year,month,county,inactive. It produces inactive_voter_summarry.csv
 
 inactive_month.py produces monthly_inactive_total.csv and it produces the total amount of inactive voters each month in a csv format.
