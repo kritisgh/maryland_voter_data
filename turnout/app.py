@@ -7,15 +7,15 @@ app = Flask(__name__)
 db = SqliteDatabase('turnout.db')
 
 class OfficialTurnout(Model):
-    county = CharField()
-    election_day = IntegerField()
-    early_voting = IntegerField()
-    vote_by_mail = IntegerField()
-    provisional = IntegerField()
-    eligible_voters = IntegerField()
-    turnout_percent = DoubleField()
-    party = CharField()
-    year = IntegerField()
+    county = CharField(column_name=' County')
+    election_day = IntegerField(column_name='Election Day')
+    early_voting = IntegerField(column_name='Early Voting')
+    vote_by_mail = IntegerField(column_name='Vote By Mail')
+    provisional = IntegerField(column_name='Provisional')
+    eligible_voters = IntegerField(column_name='Eligible Voters')
+    turnout_percent = DoubleField(column_name='Turnout Percentage')
+    party = CharField(column_name='Party')
+    year = IntegerField(column_name='Year')
 
     class Meta:
         table_name = "official_turnout"
@@ -33,6 +33,9 @@ def get_csv():
 def index():
     template = 'index.html'
     object_list = get_csv()
+    allegany_turnout = OfficialTurnout.select().where(OfficialTurnout.county=='Allegany')
+    for turnout in allegany_turnout:
+        print(turnout.provisional)
     return render_template(template, object_list=object_list)
 
 if __name__ == '__main__':
