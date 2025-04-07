@@ -1,11 +1,10 @@
-# code for ai prompts for the data we will use will be here
-
 import os
 from groq import Groq
 
 client = Groq(api_key=os.environ.get('GROQ_API_KEY'))
 
-def extract_info(text, example):
+
+def extract_info(text):
     completion = client.chat.completions.create(
     model="meta-llama/llama-4-scout-17b-16e-instruct",
     messages=[
@@ -15,7 +14,7 @@ def extract_info(text, example):
         },
         {
             "role": "user",
-            "content": "Give me a summary of the voter data from 2020. Make it brief."
+            "content": f"Give me a summary of this voter data: {text}. Make it brief."
         }
     ],
     temperature=0,
@@ -26,4 +25,7 @@ def extract_info(text, example):
 )
     return completion.choices[0].message.content
 
-input_txt_path = 'agg_MD.txt'
+input_txt_path = 'example.txt'
+with open(input_txt_path, 'r') as file:
+    content = file.read()
+print(extract_info(content))
