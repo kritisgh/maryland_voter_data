@@ -52,7 +52,7 @@ print(final_df)
 
 final_df.to_csv("voter_registration_summary.csv", index=False)
 
-"""pdf_dir = "pdfs"
+'''pdf_dir = "pdfs"
 output_dir = "csvs"
 
 for filename in os.listdir(pdf_dir):
@@ -62,20 +62,21 @@ for filename in os.listdir(pdf_dir):
         output_folder = os.path.join(output_dir, pdf_name)
         os.makedirs(output_folder, exist_ok=True)
 
-        valid_table_found = False
+        table_processed = False
 
         for page_num in ["1", "2"]:
-            if valid_table_found:
+            if table_processed:
                 break
 
             tables = camelot.read_pdf(pdf_path, pages=page_num)
 
             for i, table in enumerate(tables):
                 df = table.df
+
+                # Look for 'TOTAL REGISTRATION' or 'TOTAL ACTIVE REGISTRATION'
                 header_row_index = None
                 for row_index, row in df.iterrows():
-                    row_stripped = row.str.replace(" ", "").str.upper()
-
+                    row_stripped = row.astype(str).str.replace(" ", "").str.upper()
                     if "TOTALREGISTRATION" in row_stripped.values or "TOTALACTIVEREGISTRATION" in row_stripped.values:
                         header_row_index = row_index
                         break
@@ -84,31 +85,34 @@ for filename in os.listdir(pdf_dir):
                     new_header_row_index = header_row_index + 1
 
                     if len(df) > new_header_row_index:
+                        # Use the row after "TOTAL REGISTRATION" as header
                         df.columns = df.iloc[new_header_row_index]
                         df = df[new_header_row_index + 1:].reset_index(drop=True)
                     else:
-                        print(f"Not enough rows after 'TOTAL REGISTRATION' in {filename}")
+                        print(f"Not enough rows after header in {filename}")
                         continue
 
+                    # Normalize headers
                     df.columns = df.columns.str.upper().str.strip()
                     df.rename(columns={df.columns[0]: "COUNTY"}, inplace=True)
 
+                    # Rename duplicates with _ACTIVE
                     new_columns = []
-                    seen_cols = set()
+                    seen = set()
                     for col in df.columns:
-                        if col in seen_cols:
+                        if col in seen:
                             new_columns.append(f"{col}_ACTIVE")
                         else:
                             new_columns.append(col)
-                            seen_cols.add(col)
-
+                            seen.add(col)
                     df.columns = new_columns
 
-                    output_csv = os.path.join(output_folder, f"table-page-1-table-1.csv")
+                    # Save final cleaned CSV
+                    output_csv = os.path.join(output_folder, "table-page-1-table-1.csv")
                     df.to_csv(output_csv, index=False)
-                    valid_table_found = True
-                    print(f"Processed page {page_num} of {filename}")
+                    print(f"Processed {filename} (page {page_num})")
+                    table_processed = True
                     break
 
-            if not valid_table_found and page_num == "2":
-                print(f"No valid data found in {filename}")"""
+        if not table_processed:
+            print(f"Could not find 'TOTAL REGISTRATION' in any table in {filename}")'''
