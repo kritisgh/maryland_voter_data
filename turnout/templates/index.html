@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+    <head></head>
+    <body>
+        <h1>Maryland Voter Turnout Data</h1>
+        <table border=1 cellpadding=7>
+            <tr>
+                <th>County</th>
+                <th>Election Day</th>
+                <th>Early Voting</th>
+                <th>Vote by Mail</th>
+                <th>Provisional</th>
+                <th>Eligible Voters</th>
+                <th>Turnout Percentage</th>
+                <th>Party</th>
+                <th>Year</th>
+            </tr>
+            {% for obj in object_list %}
+            <tr>
+                <td>{{ obj.County }}</td>
+                <td>{{ obj['Election Day'] }}</td>
+                <td>{{ obj['Early Voting'] }}</td>
+                <td>{{ obj['Vote By Mail'] }}</td>
+                <td>{{ obj.Provisional }}</td>
+                <td>{{ obj['Eligible Voters'] }}</td>
+                <td>{{ obj['Turnout Percentage'] }}</td>
+                <td>{{ obj.Party }}</td>
+                <td>{{ obj.Year }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

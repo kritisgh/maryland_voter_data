@@ -1,0 +1,5 @@
+,age_bracket,Gender,Legislative,Party,Count,voted_2024,voted_2020,voted_2016
+0,18-24,Female,36,DEM,454,274,151,0
+1,18-24,Female,36,OTH,33,14,5,0
+2,18-24,Female,36,REP,576,360,159,0
+3,18-24,Female,36,UNA,568,227,87,0
