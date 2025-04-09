@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ county }} - Voter Registration</title>
+</head>
+<body>
+    <h1>Voter Registration for {{ county }}</h1>
+
+    <p><strong>Total Records:</strong> {{ records_count }}</p>
+
+    <ul>
+        <li><strong>Total DEM:</strong> {{ total_dem }}</li>
+        <li><strong>Total REP:</strong> {{ total_rep }}</li>
+        <li><strong>Total UNAF:</strong> {{ total_unaf }}</li>
+        <li><strong>Total OTHER:</strong> {{ total_other }}</li>
+    </ul>
+
+    <h2>All Records</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Year</th>
+            <th>Month</th>
+            <th>DEM</th>
+            <th>REP</th>
+            <th>UNAF</th>
+            <th>OTHER</th>
+        </tr>
+        {% for r in records %}
+        <tr>
+            <td>{{ r.year }}</td>
+            <td>{{ r.month }}</td>
+            <td>{{ r.dem }}</td>
+            <td>{{ r.rep }}</td>
+            <td>{{ r.unaf }}</td>
+            <td>{{ r.other }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="{{ url_for('index') }}">← Back to index</a></p>
+</body>
+</html>
