@@ -11,6 +11,12 @@
     <div style='width:100%!;margin-top:4px!important;text-align:right!important;'><a class='flourish-credit' href='https://public.flourish.studio/visualisation/22526918/?utm_source=embed&utm_campaign=visualisation/22526918' target='_top' style='text-decoration:none!important'>
         <img alt='Made with Flourish' src='https://public.flourish.studio/resources/made_with_flourish.svg' style='width:105px!important;height:16px!important;border:none!important;margin:0!important;'> </a>
     </div>
-    <p>Counties</p>
+
+    <h2>Maryland Voter Registration by County</h2>
+    <ul>
+        {% for c in counties %}
+            <li><a href="{{ url_for('county_detail', slug=c.county) }}">{{ c.county }}</a></li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
