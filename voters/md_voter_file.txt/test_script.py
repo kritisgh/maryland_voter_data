@@ -2,6 +2,7 @@ import os
 import pandas as pd 
 from datawrapper import Datawrapper
 
+
 # Retrieve the API token from environment variables
 api_token = os.getenv('DATAWRAPPER_MD_DATA')
 if api_token is None:
