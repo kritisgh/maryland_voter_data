@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+    <head></head>
+    <body>
+        <h1>Maryland Voter Turnout Data - Eligible Inactive Voters</h1>
+        <table border=1 cellpadding=7>
+            <tr>
+                <th>County</th>
+                <th>Democrat</th>
+                <th>Republican</th>
+                <th>Bread and Roses</th>
+                <th>Green</th>
+                <th>Libertarian</th>
+                <th>Working Class Party</th>
+                <th>Other</th>
+                <th>Unaffiliated</th>
+                <th>No Labels Maryland</th>
+                <th>Year</th>
+            </tr>
+            {% for obj in object_list %}
+            <tr>
+                <td>{{ obj.County }}</td>
+                <td>{{ obj['Democrat'] }}</td>
+                <td>{{ obj['Republican'] }}</td>
+                <td>{{ obj['Bread and Roses'] }}</td>
+                <td>{{ obj.Green }}</td>
+                <td>{{ obj.Libertarian }}</td>
+                <td>{{ obj['Working Class Party'] }}</td>
+                <td>{{ obj.Other }}</td>
+                <td>{{ obj.Unaffiliated }}</td>
+                <td>{{ obj['No Labels Maryland'] }}</td>
+                <td>{{ obj.Year }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
