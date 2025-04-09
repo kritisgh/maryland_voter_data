@@ -1,4 +1,5 @@
 import os
+import pandas as pd 
 from datawrapper import Datawrapper
 
 # Retrieve the API token from environment variables
