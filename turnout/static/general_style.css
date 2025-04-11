@@ -2,7 +2,7 @@ body {
     background-color: blanchedalmond;
 }
 
-h1, h3{
+h1, h3 {
     text-align: center;
 }
 
@@ -40,22 +40,6 @@ h1, h3{
     margin-left: 50px;
 }
 
-#main-container {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-
-#main-container img {
-    width: 200px;
-    height: 200px;
-}
-
-#menu-box a {
-    text-decoration: underline;
-    color:black;
-}
 
 @media screen and (max-height: 450px) {
     .sidenav {

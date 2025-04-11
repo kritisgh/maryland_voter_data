@@ -64,5 +64,9 @@ Initial plans for each page (subject to change):
 Completed:
 - we created peewee models for all three files which means we currently have a model for Official Voter Turnout, Eligible Active Voter Turnout, and Eligible Inctive Voter Turnout
 - we created the html files for each page/view of the Maryland voter turnout data
-- created the home page with 
+- created the home page with links to each detailed view and a navigation menu
 - each page 
+
+To be done:
+- clean up our directory (Marco) -  we have too many folders and files to keep track of and not all of them are necessary, so a clean up will help us stay organized
+- 
