@@ -40,6 +40,24 @@ class EligibleInactive(Model):
         database = db
         primary_key = False
 
+class EligibleActive(Model):
+    county = CharField(column_name='County')
+    democrat_active = IntegerField(column_name='Democrat')
+    republican_active = IntegerField(column_name='Republican')
+    bread_and_roses_active = IntegerField(column_name='Bread and Roses')
+    green_active = IntegerField(column_name='Green')
+    libertarian_active = IntegerField(column_name='Libertarian')
+    working_class_active = IntegerField(column_name='Working Class Party')
+    other_active = IntegerField(column_name='Other')
+    unaffiliated_active = IntegerField(column_name='Unaffiliated')
+    no_labels_active = IntegerField(column_name='No Labels Maryland')
+    year_active = IntegerField(column_name='Year')
+
+    class Meta:
+        table_name = "eligible_inactive"
+        database = db
+        primary_key = False
+
 @app.route("/")
 def index():
     template = 'index.html'
@@ -59,12 +77,6 @@ def get_eligible_inactive_csv():
     csv_list = list(csv_obj)
     return csv_list
 
-def get_eligible_inactive_csv():
-    csv_path = './static/eligible_inactive.csv'
-    csv_file = open(csv_path, 'r')
-    csv_obj = csv.DictReader(csv_file)
-    csv_list = list(csv_obj)
-    return csv_list
 
 def get_eligible_active_csv():
     csv_path = './static/eligible_active.csv'
@@ -77,9 +89,6 @@ def get_eligible_active_csv():
 def official_turnout():
     template = 'official_turnout.html'
     object_list = get_official_turnout_csv()
-    allegany_turnout = OfficialTurnout.select().where(OfficialTurnout.county=='Allegany')
-    for turnout in allegany_turnout:
-        print(turnout.provisional)
     return render_template(template, object_list=object_list)
 
 @app.route("/eligible-inactive")

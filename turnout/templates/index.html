@@ -1,8 +1,30 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <h1>Maryland Voter Turnout</h1>
+        <link rel="stylesheet" href="home_style.css">
+        <title>Maryland Voter Data</title>
     </head>
     <body>
+        <h1>Maryland Voter Turnout</h1>
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="#">Home</a>
+            <a href="#">Official Maryland Turnout</a>
+            <a href="#">Eligible Active Voters</a>
+            <a href="#">Eligible Inactive Voters</a>
+        </div>
+
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+        
+        <script>
+            function openNav() {
+              document.getElementById("mySidenav").style.width = "250px";
+            }
+            
+            function closeNav() {
+              document.getElementById("mySidenav").style.width = "0";
+            }
+        </script>
+
     </body>
 </html>
