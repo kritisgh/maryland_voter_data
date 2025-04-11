@@ -59,3 +59,10 @@ Initial plans for each page (subject to change):
 - if it's a better idea, we could consider having one page for both Eligible Active/Inactive Voter Activity and present the data side by side for comparision or as a separate view within the same page
 
 - no current blockers
+
+2024-04-11
+Completed:
+- we created peewee models for all three files which means we currently have a model for Official Voter Turnout, Eligible Active Voter Turnout, and Eligible Inctive Voter Turnout
+- we created the html files for each page/view of the Maryland voter turnout data
+- created the home page with 
+- each page 
