@@ -65,8 +65,19 @@ Completed:
 - we created peewee models for all three files which means we currently have a model for Official Voter Turnout, Eligible Active Voter Turnout, and Eligible Inctive Voter Turnout
 - we created the html files for each page/view of the Maryland voter turnout data
 - created the home page with links to each detailed view and a navigation menu
-- each page 
+- paginated all current tables 
+- added basic table filtering by attribute for eligible inactive voter view
 
 To be done:
+Now that we have our basic layout and all of our data as structured and connected site, we will use this week to incorporate our data processing and visualization ideas.
 - clean up our directory (Marco) -  we have too many folders and files to keep track of and not all of them are necessary, so a clean up will help us stay organized
-- 
+- geocode counties to then add the choropleth maps (Natalie)
+- explore potential uses for Datawrapper or Flourish (Natalie)
+- add line graphs to eligible inactive voters page to show trends for counties by year (Kriti)
+- add filters to the offical turnout page (different from eligible voters) [Marco]
+- calculate and add the percent change column for official voter turnout (Marco)
+- adjust pagination if necessary (Reem)
+- add filters and graphs to eligible active voter page (Reem)
+
+Blockers:
+- some of our updates are still waiting to be pushed so we will have to be careful when trying to push them to avoid damage to other files
