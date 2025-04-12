@@ -61,6 +61,7 @@ Initial plans for each page (subject to change):
 - no current blockers
 
 2024-04-11
+
 Completed:
 - we created peewee models for all three files which means we currently have a model for Official Voter Turnout, Eligible Active Voter Turnout, and Eligible Inctive Voter Turnout
 - we created the html files for each page/view of the Maryland voter turnout data
