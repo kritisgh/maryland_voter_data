@@ -1,3 +1,8 @@
+4/11/25: 
+- All our data is in CSVs and has been cleaned. We have monthly voter registration CSVs, yearly totals by county and inactive voter totals by year
+- We started developing the HTML site and have thought about the design
+- We've made four data visualizations showing 2022 voter registration per 100,000 residents by county, changes in inactive voter registration over time, Democrat voter registration in the last year + 2 months, and Democrat/Republican registration rates over time. We have all the iframe embed codes but haven't put them into the HTML yet because we're still figuring out the design/layout
+
 4/4/25: 
 Tasks assigned via issues 
 

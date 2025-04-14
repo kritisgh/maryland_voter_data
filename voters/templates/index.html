@@ -1,1 +1,28 @@
-testy test
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+        <script src="static/script.js"></script>
+    </head>
+    <body>
+        <div id="map" style="width:60%; height:300px;">
+
+        <p>Select Party:</p>
+
+        <select onchange="switchVis(this.value)">
+        <option value="SWYqY">Democrats</option>
+            <option value="IHN3Q">Republicans</option>
+            <option value="iusCX">Unaffiliated</option>
+
+        </select>
+
+        <iframe title="State Legislative districts with the highest percent of Maryland Democrats surround Washington D.C. and Baltimore" description = "" aria-label="Map" id="datawrapper-chart-SWYqY" src="https://datawrapper.dwcdn.net/SWYqY/2/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; "margin: 0 auto;" border: none;" height="487" data-external="1">
+
+        <script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"])for(var e in a.data["datawrapper-height"]){var t=document.getElementById("datawrapper-chart-"+e)||document.querySelector("iframe[src*='"+e+"']");t&&(t.style.height=a.data["datawrapper-height"][e]+"px")}}))}();
+        </script>
+        </div>
+    </body>
+</html>

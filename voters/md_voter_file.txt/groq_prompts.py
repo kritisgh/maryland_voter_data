@@ -10,7 +10,7 @@ def extract_info(text):
     messages=[
         {
             "role": "system",
-            "content": "Create a two sentence summary of voter data from people that voted in 2020 that includes their gender, age bracket, and legislative property."
+            "content": "Create a two sentence summary of voter data from people that voted in the 2024 election that includes their gender, age bracket, and legislative property."
         },
         {
             "role": "user",
@@ -29,3 +29,5 @@ input_txt_path = 'example.txt'
 with open(input_txt_path, 'r') as file:
     content = file.read()
 print(extract_info(content))
+
+

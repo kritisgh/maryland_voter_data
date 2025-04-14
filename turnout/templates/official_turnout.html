@@ -1,8 +1,21 @@
 <!doctype html>
 <html lang="en">
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="/static/general_style.css">
+    </head>
     <body>
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
+
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="#">Home</a>
+            <a href="official-turnout">Official Maryland Turnout</a>
+            <a href="eligible-active">Eligible Active Voters</a>
+            <a href="eligible-inactive">Eligible Inactive Voters</a>
+        </div>
+
         <h1>Maryland Voter Turnout Data</h1>
+        
         <table border=1 cellpadding=7>
             <tr>
                 <th>County</th>
@@ -29,5 +42,25 @@
             </tr>
             {% endfor %}
         </table>
+
+        <div class="pagination">
+            {% if has_prev %}
+              <a href="?page={{ prev_page }}">Previous</a>
+            {% endif %}
+            Page {{ page }}
+            {% if has_next %}
+              <a href="?page={{ next_page }}">Next</a>
+            {% endif %}
+        </div>
+
+        <script>
+            function openNav() {
+              document.getElementById("mySidenav").style.width = "250px";
+            }
+            
+            function closeNav() {
+              document.getElementById("mySidenav").style.width = "0";
+            }
+        </script>
     </body>
 </html>
