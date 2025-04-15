@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maryland Presidential Election Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <script src="static/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="//static.dwcdn.net/js/events.js"></script>
+    <script type="text/javascript">
+      // Set a default value that matches your default drop down selection.
+      let chartId = 'YcZmw';
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      
+      /* Container to center content vertically */
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .selection-container {
+        margin-bottom: 20px;
+        width: 100%;
+      }
+      
+      select {
+        padding: 8px;
+        font-size: 16px;
+        border-radius: 4px;
+        width: 300px;
+        margin: 0 auto 20px;
+      }
+      
+      /* Center the map container */
+      .map {
+        width: 60%;
+        height: 300px;
+        margin: 0 auto 30px;
+      }
+      
+      h1 {
+        color: #333;
+      }
+      
+      .vote-info {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        width: 100%;
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      th, td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+      }
+      
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Who Voted in the 2024 Election in Maryland?</h1>
+    <div class="container">
+      <div class="map" id="map">
+        <h3>Select Party:</h3>
+        <select onchange="switchVis(this.value)">
+          <option value="YcZmw">Democrats</option>
+          <option value="xElgG">Republicans</option>
+          <option value="iusCX">Unaffiliated</option>
+        </select>
+        <br>
+        <iframe title="Maryland Counties with the highest proportion of votes from registered Democrats in 2024 election surround Washington D.C. and Baltimore" aria-label=“Map” id="datawrapper-chart-YcZmw" src="https://datawrapper.dwcdn.net/YcZmw/1/"" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; margin: 0 auto; border: none;" height="487" data-external="1"></iframe>
+        <script type="text/javascript">
+          !function(){
+            "use strict";
+            window.addEventListener("message", function(a){
+              if (void 0 !== a.data["datawrapper-height"]) {
+                for(var e in a.data["datawrapper-height"]) {
+                  var t = document.getElementById("datawrapper-chart-" + e) || document.querySelector("iframe[src*='" + e + "']");
+                  t && (t.style.height = a.data["datawrapper-height"][e] + "px");
+                }
+              }
+            });
+          }();
+        </script>
+        <div class="tooltip"></div>
+        <script type="text/javascript">
+          const tooltip = document.querySelector('.tooltip');
+        
+          datawrapper.on('region.mouseenter', ({data}) => {
+            console.log("Tooltip event data:", data);
+            function formatCountyName(name) {
+              if (name === "Baltimore City" || name === "Baltimore County") {
+                return name;
+              }
+              return name + " County";
+            }
+            if (chartId === 'YcZmw') {
+              tooltip.innerHTML = `<h3>${formatCountyName(data.id || data.County)}</h3><p>Democratic Turnout: ${((data.value || data.DEM)).toFixed(2)}%</p>`;
+            }
+            else if (chartId === 'xElgG') {
+              tooltip.innerHTML = `<h3>${formatCountyName(data.id || data.County)}</h3><p>Republican Turnout: ${((data.value || data.REP)).toFixed(2)}%</p>`;
+            }
+            else if (chartId === 'iusCX') {
+              tooltip.innerHTML = `<h3>${formatCountyName(data.id || data.County)}</h3><p>Unaffiliated Turnout: ${((data.value || data.UNA)).toFixed(2)}%</p>`;
+            }
+            tooltip.style.display = 'block';
+          });
+        </script>
+      </div>
+    </div>
+  </body>
+</html>
