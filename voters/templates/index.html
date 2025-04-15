@@ -125,13 +125,13 @@
         let headerHTML = "";
         if (chartId === 'YcZmw') {
           headerHTML = `<h3>${formatCountyName(newCounty)}</h3>
-                        <p>Democratic Turnout: ${((data.value || data.DEM) || 0).toFixed(2)}%</p>`;
+                        <p>Percentage of 2024 General Election Votes from Registered Democrats: ${((data.value || data.DEM) || 0).toFixed(2)}%</p>`;
         } else if (chartId === 'xElgG') {
           headerHTML = `<h3>${formatCountyName(newCounty)}</h3>
-                        <p>Republican Turnout: ${((data.value || data.REP) || 0).toFixed(2)}%</p>`;
+                        <p>Percentage of 2024 General Election Votes from Registered Republicans: ${((data.value || data.REP) || 0).toFixed(2)}%</p>`;
         } else if (chartId === 'iusCX') {
           headerHTML = `<h3>${formatCountyName(newCounty)}</h3>
-                        <p>Unaffiliated Turnout: ${((data.value || data.UNA) || 0).toFixed(2)}%</p>`;
+                        <p>Percentage of 2024 General Election Votes from Unaffiliated Voters: ${((data.value || data.UNA) || 0).toFixed(2)}%</p>`;
         }
         // Create the full markup with a placeholder for the integrated chart.
         tooltip.innerHTML = `
@@ -248,7 +248,7 @@
            .attr("text-anchor", "middle")
            .attr("font-size", "16px")
            .attr("fill", "black")
-           .text("Voting Percentages by Age Bracket for " + formatCountyName(county));
+           .text("2024 Vote Percentages by Party Affiliation and Age Brackets for " + formatCountyName(county));
       }
       
       // updateChart fetches data for the county and calls drawChart.
