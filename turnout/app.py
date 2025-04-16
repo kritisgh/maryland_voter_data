@@ -77,6 +77,36 @@ def paginate(data, page=1, per_page=20):
         'next_page': page + 1
     }
 
+def paginate_by_year(data, year=None):
+    # Extract all available years and sort them
+    all_years = sorted(list(set(int(item['Year']) for item in data)))
+    
+    # If no year specified, use the first year
+    if year is None and all_years:
+        year = all_years[0]
+    
+    # Filter data by selected year
+    year_data = [item for item in data if int(item['Year']) == year]
+    
+    # Find previous and next years
+    if year in all_years:
+        current_year_index = all_years.index(year)
+        prev_year = all_years[current_year_index - 1] if current_year_index > 0 else None
+        next_year = all_years[current_year_index + 1] if current_year_index < len(all_years) - 1 else None
+    else:
+        prev_year = None
+        next_year = None
+    
+    return {
+        'data': year_data,
+        'year': year,
+        'all_years': all_years,
+        'has_prev': prev_year is not None,
+        'has_next': next_year is not None,
+        'prev_year': prev_year,
+        'next_year': next_year
+    }
+
 @app.route("/")
 def index():
     template = 'index.html'
@@ -95,7 +125,6 @@ def get_eligible_inactive_csv():
     csv_obj = csv.DictReader(csv_file)
     csv_list = list(csv_obj)
     return csv_list
-
 
 def get_eligible_active_csv():
     csv_path = './static/eligible_active.csv'
@@ -139,20 +168,26 @@ def eligible_inactive():
 @app.route("/eligible-active")
 def eligible_active():
     template = 'eligible_active.html'
-    page = int(request.args.get('page', 1))
+    
+    # Get year parameter instead of page
+    requested_year = request.args.get('year')
+    if requested_year:
+        requested_year = int(requested_year)
+    
     object_list = get_eligible_active_csv()
-    paginated = paginate(object_list, page, per_page=20)
+    paginated = paginate_by_year(object_list, requested_year)
+    
     return render_template(
         template,
         object_list=paginated['data'],
-        page=paginated['page'],
+        year=paginated['year'],
+        all_years=paginated['all_years'],
         has_prev=paginated['has_prev'],
         has_next=paginated['has_next'],
-        prev_page=paginated['prev_page'],
-        next_page=paginated['next_page']
+        prev_year=paginated['prev_year'],
+        next_year=paginated['next_year']
     )
 
 if __name__ == '__main__':
     # Fire up the Flask test server
     app.run(debug=True, use_reloader=True)
-
