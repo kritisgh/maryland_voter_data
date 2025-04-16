@@ -38,7 +38,7 @@ sns.barplot(
     y='Percentage', 
     palette=custom_palette
 )
-plt.title('Distinct Colors for Each Age Group in Male_DEM Participation')
+plt.title('Male_DEM Participation in each Age Group')
 plt.xticks(rotation=45)
 plt.ylabel('Percentage')
 plt.xlabel('Age Group')
