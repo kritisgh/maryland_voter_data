@@ -87,11 +87,12 @@
       <div class="map" id="map">
         <h3>Select Party:</h3>
         <select onchange="switchVis(this.value)">
+          <option value = "4O228">All Parties</option>
           <option value="YcZmw">Democrats</option>
           <option value="xElgG">Republicans</option>
           <option value="nuu3A">Unaffiliated</option>
         </select>
-        <iframe title="Maryland Counties Map" id="datawrapper-chart-YcZmw" src="https://datawrapper.dwcdn.net/YcZmw/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
+        <iframe title="Maryland Counties Map" id="datawrapper-chart-4O228" src="https://datawrapper.dwcdn.net/4O228/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
       </div>
       <!-- Integrated tooltip: this will expand to show county info plus the chart -->
       <div class="tooltip" id="tooltip">
@@ -176,9 +177,9 @@ document.getElementById('county-dropdown')
       const height = 400 - margin.top - margin.bottom;
       
       const colorMap = {
-        "Democrats": "rgba(0, 126, 167)",
+        "Democrats": "rgba(3, 89, 127)",
         "Republicans": "rgba(200, 30, 30)",
-        "Unaffiliated": "rgba(250, 140, 1)",
+        "Unaffiliated": "rgba(255, 185, 64)",
         "Other": "rgba(203, 202, 202)"
       };
       
