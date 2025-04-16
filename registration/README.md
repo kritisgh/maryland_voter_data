@@ -1,3 +1,9 @@
+4/18/25:
+We focused on getting our visualizations and non-data information completed this week. This includes:
+<li>DB: Writing homepage summary of application as well as county summaries</li>
+<li>April and Olivia: Creating chlorpleth maps for state-level and county-level registration numbers</li>
+<li>Anthony: creating HTML/CSS code for the home page (to start)</li>
+
 4/11/25: 
 - All our data is in CSVs and has been cleaned. We have monthly voter registration CSVs, yearly totals by county and inactive voter totals by year
 - We started developing the HTML site and have thought about the design
