@@ -89,15 +89,15 @@
             {% for obj in object_list %}
             <tr>
                 <td>{{ obj.county }}</td>
-                <td>{{ obj.democrat_active }}</td>
-                <td>{{ obj.republican_active }}</td>
-                <td>{{ obj.bread_and_roses_active }}</td>
-                <td>{{ obj.green_active }}</td>
-                <td>{{ obj.libertarian_active }}</td>
-                <td>{{ obj.working_class_active }}</td>
-                <td>{{ obj.other_active }}</td>
-                <td>{{ obj.unaffiliated_active }}</td>
-                <td>{{ obj.no_labels_active }}</td>
+                <td>{{ "{:,}".format(obj.democrat_active) }}</td>
+                <td>{{ "{:,}".format(obj.republican_active) }}</td>
+                <td>{{ "{:,}".format(obj.bread_and_roses_active) }}</td>
+                <td>{{ "{:,}".format(obj.green_active) }}</td>
+                <td>{{ "{:,}".format(obj.libertarian_active) }}</td>
+                <td>{{ "{:,}".format(obj.working_class_active) }}</td>
+                <td>{{ "{:,}".format(obj.other_active) }}</td>
+                <td>{{ "{:,}".format(obj.unaffiliated_active) }}</td>
+                <td>{{ "{:,}".format(obj.no_labels_active) }}</td>
                 <td>{{ obj.year }}</td>
             </tr>
             {% endfor %}

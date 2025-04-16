@@ -1,50 +1,11 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <link rel="stylesheet" href="/static/general_style.css">
-        <style>
-            .year-navigation {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 20px 0;
-                gap: 20px;
-            }
-            
-            .year-dropdown-container {
-                display: flex;
-                justify-content: center;
-                margin: 20px 0;
-            }
-            
-            .year-button {
-                padding: 8px 16px;
-                background-color: #f0f0f0;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                text-decoration: none;
-                color: #333;
-            }
-            
-            .year-button:hover {
-                background-color: #e0e0e0;
-            }
-            
-            .current-year {
-                font-weight: bold;
-                font-size: 1.2em;
-                padding: 8px 16px;
-                background-color: #555;
-                color: white;
-                border-radius: 4px;
-            }
-            
-            .year-dropdown select {
-                padding: 8px;
-                border-radius: 4px;
-                font-size: 1em;
-            }
-        </style>
+        <link rel="stylesheet" href="/static/eligible_inactive.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css"/>
+        <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
     </head>
     <body>
         <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
@@ -58,63 +19,86 @@
         </div>
         
         <h1>Maryland Voter Turnout Data - Eligible Inactive Voters</h1>
-        
-        <!-- dropdown at the top -->
-        <div class="year-dropdown-container">
-            <div class="year-dropdown">
-                <form method="get" action="">
-                    <select name="year" onchange="this.form.submit()">
-                        {% for y in all_years %}
-                            <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
-                        {% endfor %}
-                    </select>
-                </form>
+
+        <div class="controls">
+            <div class="filter-group">
+                <label for="year-filter">Filter by Year:</label>
+                <select id="year-filter">
+                    <option value="all">All Years</option>
+                    <option value="2020">2020</option>
+                    <option value="2024">2024</option>
+                </select>
             </div>
-        </div>
+            
+            <div class="filter-group">
+                <label for="county-filter">Filter by County:</label>
+                <select id="county-filter">
+                    <option value="all">All Counties</option>
+                    <!-- Counties will be populated via JavaScript -->
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="party-filter">Filter by Party:</label>
+                <select id="party-filter">
+                    <option value="none">All Parties</option>
+                    <option value="Democrat">Democrat</option>
+                    <option value="Bread and Roses">Bread and Roses</option>
+                    <option value="Green">Green</option>
+                    <option value="Libertarian">Libertarian</option>
+                    <option value="Working Class Party">Working Class Party</option>
+                    <option value="No Labels Maryland">No Labels Maryland</option>
+                    <option value="Unaffiliated">Unaffiliated</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <button id="reset-filters">Reset Filters</button>
         
-        <table border=1 cellpadding=7>
-            <tr>
-                <th>County</th>
-                <th>Democrat</th>
-                <th>Republican</th>
-                <th>Bread and Roses</th>
-                <th>Green</th>
-                <th>Libertarian</th>
-                <th>Working Class Party</th>
-                <th>Other</th>
-                <th>Unaffiliated</th>
-                <th>No Labels Maryland</th>
-                <th>Year</th>
-            </tr>
-            {% for obj in object_list %}
-            <tr>
-                <td>{{ obj.county }}</td>
-                <td>{{ obj.democrat_inactive }}</td>
-                <td>{{ obj.republican_inactive }}</td>
-                <td>{{ obj.bread_and_roses_inactive }}</td>
-                <td>{{ obj.green_inactive }}</td>
-                <td>{{ obj.libertarian_inactive }}</td>
-                <td>{{ obj.working_class_inactive }}</td>
-                <td>{{ obj.other_inactive }}</td>
-                <td>{{ obj.unaffiliated_inactive }}</td>
-                <td>{{ obj.no_labels_inactive }}</td>
-                <td>{{ obj.year }}</td>
-            </tr>
-            {% endfor %}
+        <table id="voter-data" border=1 cellpadding=7>
+            <thead>
+                <tr>
+                    <th class="no-sort">County</th>
+                    <th>Democrat</th>
+                    <th>Republican</th>
+                    <th>Bread and Roses</th>
+                    <th>Green</th>
+                    <th>Libertarian</th>
+                    <th>Working Class Party</th>
+                    <th>No Labels Maryland</th>
+                    <th>Unaffiliated</th>
+                    <th>Other</th>
+                    <th class="no-sort">Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in object_list %}
+                <tr>
+                    <td>{{ obj.county }}</td>
+                    <td>{{ "{:,}".format(obj.democrat_inactive) }}</td>
+                    <td>{{ "{:,}".format(obj.republican_inactive) }}</td>
+                    <td>{{ "{:,}".format(obj.bread_and_roses_inactive) }}</td>
+                    <td>{{ "{:,}".format(obj.green_inactive) }}</td>
+                    <td>{{ "{:,}".format(obj.libertarian_inactive) }}</td>
+                    <td>{{ "{:,}".format(obj.working_class_inactive) }}</td>
+                    <td>{{ "{:,}".format(obj.no_labels_inactive) }}</td>
+                    <td>{{ "{:,}".format(obj.unaffiliated_inactive) }}</td>
+                    <td>{{ "{:,}".format(obj.other_inactive) }}</td>
+                    <td>{{ obj.year }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
-        
-        <!-- navigation buttons at the bottom -->
-        <div class="year-navigation">
-            {% if has_prev %}
-                <a href="?year={{ prev_year }}" class="year-button">&laquo; {{ prev_year }}</a>
-            {% endif %}
-            
-            <span class="current-year">{{ year }}</span>
-            
-            {% if has_next %}
-                <a href="?year={{ next_year }}" class="year-button">{{ next_year }} &raquo;</a>
-            {% endif %}
-        </div>
+
+        <script type="text/javascript">
+            $('#voter-data').DataTable({
+                paging: false,
+                scrollY: '400px',
+                searching: false,
+                columnDefs: [
+                    { targets: 'no-sort', orderable: false }
+                ]
+            });
+        </script>
         
         <script>
             function openNav() {
@@ -124,6 +108,98 @@
             function closeNav() {
               document.getElementById("mySidenav").style.width = "0";
             }
+
+            // document.addEventListener('DOMContentLoaded', function() {
+            //     // Get all the filter/sort elements
+            //     const yearFilter = document.getElementById('year-filter');
+            //     const countyFilter = document.getElementById('county-filter');
+            //     const partySort = document.getElementById('party-sort');
+            //     const resetButton = document.getElementById('reset-filters');
+            //     const table = document.getElementById('voter-data');
+            //     const noResults = document.getElementById('no-results');
+            //     const allRows = Array.from(table.querySelectorAll('tbody tr'));
+
+            //     // Populate the county filter with unique counties
+            //     const counties = new Set();
+            //     allRows.forEach(row => {
+            //         counties.add(row.cells[0].textContent.trim());
+            //     });
+                
+            //     const sortedCounties = Array.from(counties).sort();
+            //     sortedCounties.forEach(county => {
+            //         const option = document.createElement('option');
+            //         option.value = county;
+            //         option.textContent = county;
+            //         countyFilter.appendChild(option);
+            //     });
+
+            //     // Function to parse number strings with commas
+            //     function parseNumberString(str) {
+            //         return parseInt(str.replace(/,/g, '')) || 0;
+            //     }
+
+            //     // Function to apply all filters and sorting
+            //     function applyFilters() {
+            //         const selectedYear = yearFilter.value;
+            //         const selectedCounty = countyFilter.value;
+            //         const selectedSort = partySort.value;
+                    
+            //         let visibleCount = 0;
+                    
+            //         allRows.forEach(row => {
+            //             const year = row.cells[10].textContent.trim();
+            //             const county = row.cells[0].textContent.trim();
+                        
+            //             // Check if row should be visible based on filters
+            //             const yearMatch = selectedYear === 'all' || year === selectedYear;
+            //             const countyMatch = selectedCounty === 'all' || county === selectedCounty;
+                        
+            //             const shouldShow = yearMatch && countyMatch;
+            //             row.style.display = shouldShow ? '' : 'none';
+                        
+            //             if (shouldShow) visibleCount++;
+            //         });
+                    
+            //         // Show or hide "no results" message
+            //         noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+                    
+            //         // Apply sorting if needed
+            //         if (selectedSort !== 'none') {
+            //             const columnIndex = {
+            //                 'Democrat': 1,
+            //                 'Republican': 2,
+            //                 'Unaffiliated': 8
+            //             }[selectedSort];
+                        
+            //             const visibleRows = allRows.filter(row => row.style.display !== 'none');
+                        
+            //             visibleRows.sort((a, b) => {
+            //                 const valueA = parseNumberString(a.cells[columnIndex].textContent);
+            //                 const valueB = parseNumberString(b.cells[columnIndex].textContent);
+            //                 return valueB - valueA; // Descending order
+            //             });
+                        
+            //             const tbody = table.querySelector('tbody');
+            //             visibleRows.forEach(row => tbody.appendChild(row));
+            //         }
+            //     }
+
+            //     // Apply filters when any filter changes
+            //     yearFilter.addEventListener('change', applyFilters);
+            //     countyFilter.addEventListener('change', applyFilters);
+            //     partySort.addEventListener('change', applyFilters);
+                
+            //     // Reset all filters
+            //     resetButton.addEventListener('click', function() {
+            //         yearFilter.value = 'all';
+            //         countyFilter.value = 'all';
+            //         partySort.value = 'none';
+            //         applyFilters();
+            //     });
+                
+            //     // Apply filters on page load (to handle any default selections)
+            //     applyFilters();
+            
         </script>
     </body>
 </html>
