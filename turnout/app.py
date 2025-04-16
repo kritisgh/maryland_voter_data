@@ -60,23 +60,6 @@ class EligibleActive(Model):
         database = db
         primary_key = False
 
-def paginate(data, page=1, per_page=20):
-    total = len(data)
-    start = (page - 1) * per_page
-    end = start + per_page
-    paginated_data = data[start:end]
-
-    return {
-        'data': paginated_data,
-        'total': total,
-        'page': page,
-        'per_page': per_page,
-        'has_prev': page > 1,
-        'has_next': end < total,
-        'prev_page': page - 1,
-        'next_page': page + 1
-    }
-
 def paginate_by_year(data, year=None):
     # Extract all available years and sort them
     all_years = sorted(list(set(int(item['Year']) for item in data)))
@@ -136,33 +119,47 @@ def get_eligible_active_csv():
 @app.route("/official-turnout")
 def official_turnout():
     template = 'official_turnout.html'
-    page = int(request.args.get('page', 1))
+    
+    # Get year parameter instead of page
+    requested_year = request.args.get('year')
+    if requested_year:
+        requested_year = int(requested_year)
+    
     object_list = get_official_turnout_csv()
-    paginated = paginate(object_list, page, per_page=20)
+    paginated = paginate_by_year(object_list, requested_year)
+    
     return render_template(
         template,
         object_list=paginated['data'],
-        page=paginated['page'],
+        year=paginated['year'],
+        all_years=paginated['all_years'],
         has_prev=paginated['has_prev'],
         has_next=paginated['has_next'],
-        prev_page=paginated['prev_page'],
-        next_page=paginated['next_page']
+        prev_year=paginated['prev_year'],
+        next_year=paginated['next_year']
     )
 
 @app.route("/eligible-inactive")
 def eligible_inactive():
     template = 'eligible_inactive.html'
-    page = int(request.args.get('page', 1))
+    
+    # Get year parameter instead of page
+    requested_year = request.args.get('year')
+    if requested_year:
+        requested_year = int(requested_year)
+    
     object_list = get_eligible_inactive_csv()
-    paginated = paginate(object_list, page, per_page=20)
+    paginated = paginate_by_year(object_list, requested_year)
+    
     return render_template(
         template,
         object_list=paginated['data'],
-        page=paginated['page'],
+        year=paginated['year'],
+        all_years=paginated['all_years'],
         has_prev=paginated['has_prev'],
         has_next=paginated['has_next'],
-        prev_page=paginated['prev_page'],
-        next_page=paginated['next_page']
+        prev_year=paginated['prev_year'],
+        next_year=paginated['next_year']
     )
 
 @app.route("/eligible-active")
