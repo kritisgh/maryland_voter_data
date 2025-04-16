@@ -1,28 +1,263 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
-        <script src="static/script.js"></script>
-    </head>
-    <body>
-        <div id="map" style="width:60%; height:300px;">
-
-        <p>Select Party:</p>
-
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maryland 2024 Election: Map and Detailed Tooltip Chart</title>
+    <!-- Include required styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <!-- Include static js, Chart.js and D3.js -->
+    <script src="static/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- For Datawrapper events -->
+    <script src="//static.dwcdn.net/js/events.js"></script>
+    <script type="text/javascript">
+      // Global variable: default party selection for the map.
+      let chartId = 'YcZmw';
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+        overflow-y: auto;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      /* Fix the map container height and hide overflow */
+      .map {
+        width: 80%;
+        overflow: hidden;
+        margin: 0 auto 30px;
+        position: relative;
+      }
+      /* Force the iframe to match the container height */
+      .map iframe {
+        width: 100%;
+        height: 500px !important;
+        margin: 0;
+        border: none;
+      }
+      select {
+        padding: 8px;
+        font-size: 16px;
+        border-radius: 4px;
+        width: 300px;
+        margin-bottom: 20px;
+      }
+      h1 {
+        color: #333;
+      }
+      /* Modified tooltip styling: increased size and space for the integrated chart */
+      .tooltip {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 4px;
+        margin: 20px auto;
+        cursor: pointer;
+        width: 80%;
+        max-width: 600px;
+        min-height: 500px;
+      }
+      /* Center the SVG element inside the chart placeholder */
+      #tooltipChart svg {
+        display: block;
+        margin: 0 auto;
+      }
+      /* D3 chart text labels styling */
+      .bar text {
+        fill: white;
+        font: 10px sans-serif;
+        text-anchor: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Who Voted in the 2024 Election in Maryland?</h1>
+    <div class="container">
+      <div class="map" id="map">
+        <h3>Select Party:</h3>
         <select onchange="switchVis(this.value)">
-        <option value="SWYqY">Democrats</option>
-            <option value="IHN3Q">Republicans</option>
-            <option value="iusCX">Unaffiliated</option>
-
+          <option value="YcZmw">Democrats</option>
+          <option value="xElgG">Republicans</option>
+          <option value="iusCX">Unaffiliated</option>
         </select>
+        <iframe title="Maryland Counties Map" id="datawrapper-chart-YcZmw" src="https://datawrapper.dwcdn.net/YcZmw/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
+      </div>
+      <!-- Integrated tooltip: this will expand to show county info plus the chart -->
+      <div class="tooltip" id="tooltip">  
+        <p>Hover over a county on the map to see details here.</p>
+      </div>
+    </div>
+    
+    <script>
+      // Global variables to track current county and debounce.
+      let currentCounty = "";
+      let lastCounty = "";
+      let debounceTimeout;
+      
+      // Select the tooltip element.
+      const tooltip = document.getElementById('tooltip');
+      
+      // Datawrapper event: on mouseenter, update and show the tooltip (with integrated chart placeholder).
+      datawrapper.on('region.mouseenter', ({data}) => {
+        function formatCountyName(name) {
+          return (name === "Baltimore City" || name === "Baltimore County") ? name : name + " County";
+        }
+        
+        const newCounty = data.id || data.County;
+        if (newCounty === lastCounty) {
+          return;  // avoid redundant updates if still over the same county.
+        }
+        lastCounty = newCounty;
+        currentCounty = newCounty;
+        
+        // Build the tooltip content with a header and a chart placeholder.
+        let headerHTML = "";
+        if (chartId === 'YcZmw') {
+          headerHTML = `<h3>${formatCountyName(newCounty)}</h3>
+                        <p>Percentage of 2024 General Election Votes from Registered Democrats: ${((data.value || data.DEM) || 0).toFixed(2)}%</p>`;
+        } else if (chartId === 'xElgG') {
+          headerHTML = `<h3>${formatCountyName(newCounty)}</h3>
+                        <p>Percentage of 2024 General Election Votes from Registered Republicans: ${((data.value || data.REP) || 0).toFixed(2)}%</p>`;
+        } else if (chartId === 'iusCX') {
+          headerHTML = `<h3>${formatCountyName(newCounty)}</h3>
+                        <p>Percentage of 2024 General Election Votes from Unaffiliated Voters: ${((data.value || data.UNA) || 0).toFixed(2)}%</p>`;
+        }
+        // Create the full markup with a placeholder for the integrated chart.
+        tooltip.innerHTML = `
+          ${headerHTML}
+          <div id="tooltipChart" style="margin-top:20px;"></div>
+        `;
+        tooltip.style.display = 'block';
+        
+        // Debounce chart updating to avoid stutter when hovering borders.
+        if (debounceTimeout) {
+          clearTimeout(debounceTimeout);
+        }
+        debounceTimeout = setTimeout(() => {
+          updateChart(newCounty);
+        }, 0);
+      });
+      
 
-        <iframe title="State Legislative districts with the highest percent of Maryland Democrats surround Washington D.C. and Baltimore" description = "" aria-label="Map" id="datawrapper-chart-SWYqY" src="https://datawrapper.dwcdn.net/SWYqY/2/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; "margin: 0 auto;" border: none;" height="487" data-external="1">
-
-        <script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"])for(var e in a.data["datawrapper-height"]){var t=document.getElementById("datawrapper-chart-"+e)||document.querySelector("iframe[src*='"+e+"']");t&&(t.style.height=a.data["datawrapper-height"][e]+"px")}}))}();
-        </script>
-        </div>
-    </body>
+      
+      // -- D3.js CHART CODE --
+      // (Note: The chart will now be drawn into the #tooltipChart container.)
+      const margin = {top: 40, right: 20, bottom: 40, left: 40};
+      const width = 600 - margin.left - margin.right;
+      const height = 400 - margin.top - margin.bottom;
+      
+      const colorMap = {
+        "Dem": "rgba(1, 51, 100, 0.6)",
+        "Rep": "rgba(211, 11, 13, 0.6)",
+        "Unaffiliated": "rgba(203, 202, 202, 0.6)",
+        "Other": "rgba(0, 0, 0, 0.6)"
+      };
+      
+      // Modified drawChart: Draws the chart inside #tooltipChart and adds a title with the county name.
+      function drawChart(data, county) {
+        function formatCountyName(name) {
+          return (name === "Baltimore City" || name === "Baltimore County") ? name : name + " County";
+        }
+        
+        const barsData = data.ages.map((age, i) => ({
+          age: age,
+          segments: [
+            { party: "Dem", value: data.dem[i] },
+            { party: "Rep", value: data.rep[i] },
+            { party: "Unaffiliated", value: data.unaffiliated[i] },
+            { party: "Other", value: data.other[i] }
+          ]
+        }));
+        
+        // Sort segments so that the largest is drawn last.
+        barsData.forEach(d => {
+          d.segments.sort((a, b) => a.value - b.value);
+        });
+        
+        // Remove any previous SVG content in the tooltip chart placeholder.
+        d3.select("#tooltipChart").select("svg").remove();
+        
+        const svg = d3.select("#tooltipChart")
+                      .append("svg")
+                      .attr("width", width + margin.left + margin.right)
+                      .attr("height", height + margin.top + margin.bottom)
+                      .append("g")
+                      .attr("transform", `translate(${margin.left},${margin.top})`);
+        
+        const x = d3.scaleBand()
+                    .domain(barsData.map(d => d.age))
+                    .range([0, width])
+                    .padding(0.2);
+        
+        const y = d3.scaleLinear()
+                    .domain([0, 100])
+                    .range([height, 0]);
+        
+        svg.append("g")
+           .attr("transform", `translate(0, ${height})`)
+           .call(d3.axisBottom(x));
+        
+        svg.append("g")
+           .call(d3.axisLeft(y));
+        
+        barsData.forEach(d => {
+          let cumulative = 0;
+          const g = svg.append("g")
+                       .attr("class", "bar")
+                       .attr("transform", `translate(${x(d.age)},0)`);
+          
+          d.segments.forEach(segment => {
+            const y0 = y(cumulative);
+            cumulative += segment.value;
+            const y1 = y(cumulative);
+            const barHeight = y0 - y1;
+            
+            g.append("rect")
+             .attr("x", 0)
+             .attr("y", y1)
+             .attr("width", x.bandwidth())
+             .attr("height", barHeight)
+             .attr("fill", colorMap[segment.party]);
+            
+            if (barHeight > 15) {
+              g.append("text")
+               .attr("x", x.bandwidth() / 2)
+               .attr("y", y1 + barHeight / 2)
+               .attr("dy", "0.35em")
+               .attr("fill", "white")
+               .attr("font-size", "10px")
+               .text(segment.party + " (" + segment.value.toFixed(1) + "%)");
+            }
+          });
+        });
+        
+        svg.append("text")
+           .attr("x", width / 2)
+           .attr("y", -10)
+           .attr("text-anchor", "middle")
+           .attr("font-size", "16px")
+           .attr("fill", "black")
+           .text("2024 Vote Percentages by Party Affiliation and Age Brackets for " + formatCountyName(county));
+      }
+      
+      // updateChart fetches data for the county and calls drawChart.
+      function updateChart(county) {
+        fetch('/data/' + encodeURIComponent(county))
+          .then(response => response.json())
+          .then(data => drawChart(data, county))
+          .catch(err => console.error(err));
+      }
+    </script>
+  </body>
 </html>

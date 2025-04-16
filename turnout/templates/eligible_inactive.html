@@ -2,10 +2,53 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" href="/static/general_style.css">
+        <style>
+            .year-navigation {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 20px 0;
+                gap: 20px;
+            }
+            
+            .year-dropdown-container {
+                display: flex;
+                justify-content: center;
+                margin: 20px 0;
+            }
+            
+            .year-button {
+                padding: 8px 16px;
+                background-color: #f0f0f0;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                text-decoration: none;
+                color: #333;
+            }
+            
+            .year-button:hover {
+                background-color: #e0e0e0;
+            }
+            
+            .current-year {
+                font-weight: bold;
+                font-size: 1.2em;
+                padding: 8px 16px;
+                background-color: #555;
+                color: white;
+                border-radius: 4px;
+            }
+            
+            .year-dropdown select {
+                padding: 8px;
+                border-radius: 4px;
+                font-size: 1em;
+            }
+        </style>
     </head>
     <body>
         <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
-
+        
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <a href="#">Home</a>
@@ -13,9 +56,22 @@
             <a href="eligible-active">Eligible Active Voters</a>
             <a href="eligible-inactive">Eligible Inactive Voters</a>
         </div>
-
+        
         <h1>Maryland Voter Turnout Data - Eligible Inactive Voters</h1>
-
+        
+        <!-- dropdown at the top -->
+        <div class="year-dropdown-container">
+            <div class="year-dropdown">
+                <form method="get" action="">
+                    <select name="year" onchange="this.form.submit()">
+                        {% for y in all_years %}
+                            <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+        </div>
+        
         <table border=1 cellpadding=7>
             <tr>
                 <th>County</th>
@@ -46,17 +102,20 @@
             </tr>
             {% endfor %}
         </table>
-
-        <div class="pagination">
+        
+        <!-- navigation buttons at the bottom -->
+        <div class="year-navigation">
             {% if has_prev %}
-              <a href="?page={{ prev_page }}">Previous</a>
+                <a href="?year={{ prev_year }}" class="year-button">&laquo; {{ prev_year }}</a>
             {% endif %}
-            Page {{ page }}
+            
+            <span class="current-year">{{ year }}</span>
+            
             {% if has_next %}
-              <a href="?page={{ next_page }}">Next</a>
+                <a href="?year={{ next_year }}" class="year-button">{{ next_year }} &raquo;</a>
             {% endif %}
         </div>
-
+        
         <script>
             function openNav() {
               document.getElementById("mySidenav").style.width = "250px";
