@@ -65,7 +65,7 @@
         margin: 20px auto;
         cursor: pointer;
         width: 80%;
-        max-width: 600px;
+        max-width: 700px;
         min-height: 500px;
       }
       /* Center the SVG element inside the chart placeholder */
@@ -89,14 +89,28 @@
         <select onchange="switchVis(this.value)">
           <option value="YcZmw">Democrats</option>
           <option value="xElgG">Republicans</option>
-          <option value="iusCX">Unaffiliated</option>
+          <option value="nuu3A">Unaffiliated</option>
         </select>
         <iframe title="Maryland Counties Map" id="datawrapper-chart-YcZmw" src="https://datawrapper.dwcdn.net/YcZmw/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
       </div>
       <!-- Integrated tooltip: this will expand to show county info plus the chart -->
-      <div class="tooltip" id="tooltip">  
-        <p>Hover over a county on the map to see details here.</p>
+      <div class="tooltip" id="tooltip">
+        <!-- 1) Header area we’ll overwrite on hover or select -->
+        <div id="tooltipHeader">
+          <p>Hover over a county on the map to see details here, or use the county dropdown below!</p>
+        </div>
+        <div id="tooltipDropdown">
+          <p>Select a County</p>
+          <select id="county-dropdown">
+            <option value="">-- Select County --</option>
+            {% for county in counties %}
+              <option value="{{ county }}">{{ county }}</option>
+            {% endfor %}
+          </select>
+          <div id="tooltipChart" style="margin-top:20px;"></div>
+        </div>
       </div>
+      
     </div>
     
     <script>
@@ -108,60 +122,64 @@
       // Select the tooltip element.
       const tooltip = document.getElementById('tooltip');
       
-      // Datawrapper event: on mouseenter, update and show the tooltip (with integrated chart placeholder).
       datawrapper.on('region.mouseenter', ({data}) => {
-        function formatCountyName(name) {
+  function formatCountyName(name) {
+    return (name === "Baltimore City" || name === "Baltimore County")
+      ? name
+      : name + " County";
+  }
+  const newCounty = data.id || data.County;
+  if (newCounty === lastCounty) return;
+  lastCounty = newCounty;
+
+  // Build just the header
+  let headerHTML = `<h3>${formatCountyName(newCounty)}</h3>`;
+  if (chartId === 'YcZmw') {
+    headerHTML += `<p>Democratic Turnout: ${((data.value||data.DEM)||0).toFixed(2)}%</p>`;
+  } else if (chartId === 'xElgG') {
+    headerHTML += `<p>Republican Turnout: ${((data.value||data.REP)||0).toFixed(2)}%</p>`;
+  } else {
+    headerHTML += `<p>Unaffiliated Turnout: ${((data.value||data.UNA)||0).toFixed(2)}%</p>`;
+  }
+
+  // Only overwrite the header div
+  document.getElementById('tooltipHeader').innerHTML = headerHTML;
+  const dropdown = document.getElementById('county-dropdown');
+  dropdown.value = newCounty;
+  // optionally fire its change handler so you don’t duplicate updateChart calls:
+  dropdown.dispatchEvent(new Event('change'));
+
+  // Debounce & redraw the chart
+  if (debounceTimeout) clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => updateChart(newCounty), 0);
+});
+
+document.getElementById('county-dropdown')
+  .addEventListener('change', function() {
+    const selected = this.value;
+    if (!selected) return;
+
+    function formatCountyName(name) {
           return (name === "Baltimore City" || name === "Baltimore County") ? name : name + " County";
         }
-        
-        const newCounty = data.id || data.County;
-        if (newCounty === lastCounty) {
-          return;  // avoid redundant updates if still over the same county.
-        }
-        lastCounty = newCounty;
-        currentCounty = newCounty;
-        
-        // Build the tooltip content with a header and a chart placeholder.
-        let headerHTML = "";
-        if (chartId === 'YcZmw') {
-          headerHTML = `<h3>${formatCountyName(newCounty)}</h3>
-                        <p>Percentage of 2024 General Election Votes from Registered Democrats: ${((data.value || data.DEM) || 0).toFixed(2)}%</p>`;
-        } else if (chartId === 'xElgG') {
-          headerHTML = `<h3>${formatCountyName(newCounty)}</h3>
-                        <p>Percentage of 2024 General Election Votes from Registered Republicans: ${((data.value || data.REP) || 0).toFixed(2)}%</p>`;
-        } else if (chartId === 'iusCX') {
-          headerHTML = `<h3>${formatCountyName(newCounty)}</h3>
-                        <p>Percentage of 2024 General Election Votes from Unaffiliated Voters: ${((data.value || data.UNA) || 0).toFixed(2)}%</p>`;
-        }
-        // Create the full markup with a placeholder for the integrated chart.
-        tooltip.innerHTML = `
-          ${headerHTML}
-          <div id="tooltipChart" style="margin-top:20px;"></div>
-        `;
-        tooltip.style.display = 'block';
-        
-        // Debounce chart updating to avoid stutter when hovering borders.
-        if (debounceTimeout) {
-          clearTimeout(debounceTimeout);
-        }
-        debounceTimeout = setTimeout(() => {
-          updateChart(newCounty);
-        }, 0);
-      });
-      
+    // Overwrite header with just the county name
+    document.getElementById('tooltipHeader').innerHTML = `<h3>${formatCountyName(selected)}</h3>`;
 
-      
+    // Fetch & draw
+    updateChart(selected);
+  });
+
       // -- D3.js CHART CODE --
       // (Note: The chart will now be drawn into the #tooltipChart container.)
       const margin = {top: 40, right: 20, bottom: 40, left: 40};
-      const width = 600 - margin.left - margin.right;
+      const width = 700 - margin.left - margin.right;
       const height = 400 - margin.top - margin.bottom;
       
       const colorMap = {
-        "Dem": "rgba(1, 51, 100, 0.6)",
-        "Rep": "rgba(211, 11, 13, 0.6)",
-        "Unaffiliated": "rgba(203, 202, 202, 0.6)",
-        "Other": "rgba(0, 0, 0, 0.6)"
+        "Democrats": "rgba(0, 126, 167)",
+        "Republicans": "rgba(200, 30, 30)",
+        "Unaffiliated": "rgba(250, 140, 1)",
+        "Other": "rgba(203, 202, 202)"
       };
       
       // Modified drawChart: Draws the chart inside #tooltipChart and adds a title with the county name.
@@ -173,8 +191,8 @@
         const barsData = data.ages.map((age, i) => ({
           age: age,
           segments: [
-            { party: "Dem", value: data.dem[i] },
-            { party: "Rep", value: data.rep[i] },
+            { party: "Democrats", value: data.dem[i] },
+            { party: "Republicans", value: data.rep[i] },
             { party: "Unaffiliated", value: data.unaffiliated[i] },
             { party: "Other", value: data.other[i] }
           ]
@@ -236,7 +254,7 @@
                .attr("y", y1 + barHeight / 2)
                .attr("dy", "0.35em")
                .attr("fill", "white")
-               .attr("font-size", "10px")
+               .attr("font-size", "9px")
                .text(segment.party + " (" + segment.value.toFixed(1) + "%)");
             }
           });
@@ -248,7 +266,7 @@
            .attr("text-anchor", "middle")
            .attr("font-size", "16px")
            .attr("fill", "black")
-           .text("2024 Vote Percentages by Party Affiliation and Age Brackets for " + formatCountyName(county));
+           .text("2024 Vote Percentages by Party Affiliation and Age for " + formatCountyName(county));
       }
       
       // updateChart fetches data for the county and calls drawChart.
