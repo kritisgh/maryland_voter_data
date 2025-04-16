@@ -40,6 +40,10 @@ h1, h3 {
     margin-left: 50px;
 }
 
+table {
+    width:max-content;
+    background-color:snow;
+}
 
 @media screen and (max-height: 450px) {
     .sidenav {
