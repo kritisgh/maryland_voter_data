@@ -35,7 +35,7 @@ class EligibleInactive(Model):
     other_inactive = IntegerField(column_name='Other')
     unaffiliated_inactive = IntegerField(column_name='Unaffiliated')
     no_labels_inactive = IntegerField(column_name='No Labels Maryland')
-    year_inactive = IntegerField(column_name='Year')
+    year = IntegerField(column_name='Year')
 
     class Meta:
         table_name = "eligible_inactive"
@@ -53,7 +53,7 @@ class EligibleActive(Model):
     other_active = IntegerField(column_name='Other')
     unaffiliated_active = IntegerField(column_name='Unaffiliated')
     no_labels_active = IntegerField(column_name='No Labels Maryland')
-    year_active = IntegerField(column_name='Year')
+    year = IntegerField(column_name='Year')
 
     class Meta:
         table_name = "eligible_active"
@@ -62,14 +62,14 @@ class EligibleActive(Model):
 
 def paginate_by_year(data, year=None):
     # Extract all available years and sort them
-    all_years = sorted(list(set(int(item['Year']) for item in data)))
+    all_years = sorted(list(set(int(item.year) for item in data)))
     
     # If no year specified, use the first year
     if year is None and all_years:
         year = all_years[0]
     
     # Filter data by selected year
-    year_data = [item for item in data if int(item['Year']) == year]
+    year_data = [item for item in data if int(item.year) == year]
     
     # Find previous and next years
     if year in all_years:
@@ -115,7 +115,17 @@ def official_turnout():
     if requested_year:
         requested_year = int(requested_year)
     
-    object_list = get_official_turnout_csv()
+    object_list = OfficialTurnout.select(
+        OfficialTurnout.county,
+        OfficialTurnout.election_day,
+        OfficialTurnout.early_voting,
+        OfficialTurnout.vote_by_mail,
+        OfficialTurnout.provisional,
+        OfficialTurnout.eligible_voters,
+        OfficialTurnout.turnout_percent,
+        OfficialTurnout.party,
+        OfficialTurnout.year
+    )
     paginated = paginate_by_year(object_list, requested_year)
     
     return render_template(
@@ -138,7 +148,7 @@ def eligible_inactive():
     if requested_year:
         requested_year = int(requested_year)
     
-    object_list = get_eligible_inactive_csv()
+    object_list = EligibleInactive.select()
     paginated = paginate_by_year(object_list, requested_year)
     
     return render_template(
@@ -161,7 +171,7 @@ def eligible_active():
     if requested_year:
         requested_year = int(requested_year)
     
-    object_list = get_eligible_active_csv()
+    object_list = EligibleActive.select()
     paginated = paginate_by_year(object_list, requested_year)
     
     return render_template(
