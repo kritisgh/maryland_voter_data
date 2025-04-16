@@ -41,7 +41,7 @@ h1, h3 {
 }
 
 table {
-    width: 90%;
+    width:max-content;
     background-color:snow;
 }
 

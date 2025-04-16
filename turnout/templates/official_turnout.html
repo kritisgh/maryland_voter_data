@@ -87,12 +87,12 @@
             {% for obj in object_list %}
             <tr>
                 <td>{{ obj.county }}</td>
-                <td>{{ obj.election_day }}</td>
-                <td>{{ obj.early_voting }}</td>
-                <td>{{ obj.vote_by_mail }}</td>
-                <td>{{ obj.provisional }}</td>
-                <td>{{ obj.eligible_voters }}</td>
-                <td>{{ obj.turnout_percent }}</td>
+                <td>{{ "{:,}".format(obj.election_day) }}</td>
+                <td>{{ "{:,}".format(obj.early_voting) }}</td>
+                <td>{{ "{:,}".format(obj.vote_by_mail) }}</td>
+                <td>{{ "{:,}".format(obj.provisional) }}</td>
+                <td>{{ "{:,}".format(obj.eligible_voters) }}</td>
+                <td>{{ "{:,}".format(obj.turnout_percent) }}</td>
                 <td>{{ obj.party }}</td>
                 <td>{{ obj.year }}</td>
             </tr>
