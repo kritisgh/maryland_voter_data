@@ -30,15 +30,15 @@
             </tr>
             {% for obj in object_list %}
             <tr>
-                <td>{{ obj.County }}</td>
-                <td>{{ obj['Election Day'] }}</td>
-                <td>{{ obj['Early Voting'] }}</td>
-                <td>{{ obj['Vote By Mail'] }}</td>
-                <td>{{ obj.Provisional }}</td>
-                <td>{{ obj['Eligible Voters'] }}</td>
-                <td>{{ obj['Turnout Percentage'] }}</td>
-                <td>{{ obj.Party }}</td>
-                <td>{{ obj.Year }}</td>
+                <td>{{ obj.county }}</td>
+                <td>{{ obj.election_day }}</td>
+                <td>{{ obj.early_voting }}</td>
+                <td>{{ obj.vote_by_mail }}</td>
+                <td>{{ obj.provisional }}</td>
+                <td>{{ obj.eligible_voters }}</td>
+                <td>{{ obj.turnout_percent }}</td>
+                <td>{{ obj.party }}</td>
+                <td>{{ obj.year }}</td>
             </tr>
             {% endfor %}
         </table>

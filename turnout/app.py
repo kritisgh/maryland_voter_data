@@ -56,7 +56,7 @@ class EligibleActive(Model):
     year_active = IntegerField(column_name='Year')
 
     class Meta:
-        table_name = "eligible_inactive"
+        table_name = "eligible_active"
         database = db
         primary_key = False
 
@@ -82,33 +82,21 @@ def index():
     template = 'index.html'
     return render_template(template)
 
-def get_official_turnout_csv():
-    csv_path = './static/official_by_party_and_county_complete.csv'
-    csv_file = open(csv_path, 'r')
-    csv_obj = csv.DictReader(csv_file)
-    csv_list = list(csv_obj)
-    return csv_list
-
-def get_eligible_inactive_csv():
-    csv_path = './static/eligible_inactive.csv'
-    csv_file = open(csv_path, 'r')
-    csv_obj = csv.DictReader(csv_file)
-    csv_list = list(csv_obj)
-    return csv_list
-
-
-def get_eligible_active_csv():
-    csv_path = './static/eligible_active.csv'
-    csv_file = open(csv_path, 'r')
-    csv_obj = csv.DictReader(csv_file)
-    csv_list = list(csv_obj)
-    return csv_list
-
 @app.route("/official-turnout")
 def official_turnout():
+    object_list = OfficialTurnout.select(
+        OfficialTurnout.county,
+        OfficialTurnout.election_day,
+        OfficialTurnout.early_voting,
+        OfficialTurnout.vote_by_mail,
+        OfficialTurnout.provisional,
+        OfficialTurnout.eligible_voters,
+        OfficialTurnout.turnout_percent,
+        OfficialTurnout.party,
+        OfficialTurnout.year
+    )
     template = 'official_turnout.html'
     page = int(request.args.get('page', 1))
-    object_list = get_official_turnout_csv()
     paginated = paginate(object_list, page, per_page=20)
     return render_template(
         template,
@@ -119,12 +107,12 @@ def official_turnout():
         prev_page=paginated['prev_page'],
         next_page=paginated['next_page']
     )
-
+    
 @app.route("/eligible-inactive")
 def eligible_inactive():
     template = 'eligible_inactive.html'
     page = int(request.args.get('page', 1))
-    object_list = get_eligible_inactive_csv()
+    object_list = EligibleInactive.select()
     paginated = paginate(object_list, page, per_page=20)
     return render_template(
         template,
@@ -140,7 +128,7 @@ def eligible_inactive():
 def eligible_active():
     template = 'eligible_active.html'
     page = int(request.args.get('page', 1))
-    object_list = get_eligible_active_csv()
+    object_list = EligibleActive.select()
     paginated = paginate(object_list, page, per_page=20)
     return render_template(
         template,

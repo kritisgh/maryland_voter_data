@@ -32,17 +32,17 @@
             </tr>
             {% for obj in object_list %}
             <tr>
-                <td>{{ obj.County }}</td>
-                <td>{{ obj['Democrat'] }}</td>
-                <td>{{ obj['Republican'] }}</td>
-                <td>{{ obj['Bread and Roses'] }}</td>
-                <td>{{ obj.Green }}</td>
-                <td>{{ obj.Libertarian }}</td>
-                <td>{{ obj['Working Class Party'] }}</td>
-                <td>{{ obj.Other }}</td>
-                <td>{{ obj.Unaffiliated }}</td>
-                <td>{{ obj['No Labels Maryland'] }}</td>
-                <td>{{ obj.Year }}</td>
+                <td>{{ obj.county }}</td>
+                <td>{{ obj.democrat_active }}</td>
+                <td>{{ obj.republican_active }}</td>
+                <td>{{ obj.bread_and_roses_active }}</td>
+                <td>{{ obj.green_active }}</td>
+                <td>{{ obj.libertarian_active }}</td>
+                <td>{{ obj.working_class_active }}</td>
+                <td>{{ obj.other_active }}</td>
+                <td>{{ obj.unaffiliated_active }}</td>
+                <td>{{ obj.no_labels_active }}</td>
+                <td>{{ obj.year_active }}</td>
             </tr>
             {% endfor %}
         </table>
