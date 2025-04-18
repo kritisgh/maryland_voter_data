@@ -86,16 +86,16 @@ Blockers:
 2024-04-18
 
 Features of our News App: 
-Introduction to what the data means
-Given the timeframe of the data in our app, we know that we are going to discuss the role that the pandemic had in the differences between voter turnout and the turnout methods used
-We also plan to discuss any notable differences in behavior by voter party preferences 
-Once we get our data visualizations on the pages, we will reference them in the text 
-Bullet points summarizing the most interesting findings (written by us after finding trends or using Groq)
-Statewide choropleth map that displays changes in turnout over time
-If the numbers don’t show a common pattern, we could do a row chart instead 
-County-level line charts that display changes in turnout over time (you could filter to certain counties so it won’t be too cluttered) 
-Tooltips to hover over and easily see the numbers/navigate the data
-Filters/Dropdown bar that provides an option to show breakdown by county or party
+- Introduction to what the data means
+   - Given the timeframe of the data in our app, we know that we are going to discuss the role that the pandemic had in the differences between voter turnout and the turnout methods used
+   - We also plan to discuss any notable differences in behavior by voter party preferences 
+   - Once we get our data visualizations on the pages, we will reference them in the text 
+- Bullet points summarizing the most interesting findings (written by us after finding trends or using Groq)
+- Statewide choropleth map that displays changes in turnout over time
+   - If the numbers don’t show a common pattern, we could do a row chart instead 
+- County-level bar graphs (or line charts) that display changes in turnout over time (you could filter to certain counties so it won’t be too cluttered) 
+   - Tooltips to hover over and easily see the numbers/navigate the data
+- Filters/Dropdown bar that provides an option to show breakdown by county or party
 
 
 Final Project Update: 
