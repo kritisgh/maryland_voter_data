@@ -82,3 +82,32 @@ Now that we have our basic layout and all of our data as structured and connecte
 
 Blockers:
 - some of our updates are still waiting to be pushed so we will have to be careful when trying to push them to avoid damage to other files
+
+2024-04-18
+
+Features of our News App: 
+Introduction to what the data means
+Given the timeframe of the data in our app, we know that we are going to discuss the role that the pandemic had in the differences between voter turnout and the turnout methods used
+We also plan to discuss any notable differences in behavior by voter party preferences 
+Once we get our data visualizations on the pages, we will reference them in the text 
+Bullet points summarizing the most interesting findings (written by us after finding trends or using Groq)
+Statewide choropleth map that displays changes in turnout over time
+If the numbers don’t show a common pattern, we could do a row chart instead 
+County-level line charts that display changes in turnout over time (you could filter to certain counties so it won’t be too cluttered) 
+Tooltips to hover over and easily see the numbers/navigate the data
+Filters/Dropdown bar that provides an option to show breakdown by county or party
+
+
+Final Project Update: 
+
+This past week, we were about to refine our news app so that it will have three web pages explaining voter turnout information. Not only does the home page of the website have photos and links leading to subpages, but our web pages have detailed information as well. We have webpages for official Maryland turnout, eligible active voters and eligible inactive voters.
+
+We updated our tables by incorporating the DataTables JavaScript library into all three of the detailed pages. The library gave us an easier way to paginate and style the tables. More importantly, it helped us add interactivity to the tables because in the Official Turnout page, users can sort the counties by: Election Day turnout, Early Voting turnout, Vote by Mail turnout, Provisional turnout, number of Eligible Voters, Turnout Percentage, and year in increasing or decreasing order. Since it would not make sense to sort the data by party or county, we created filters for these attributes and for year as well. We created the filter buttons in HTML, but we used AI to write the code to give them functionality since it required JavaScript. We provided the HTML code for it to see the buttons and the Python code for it to understand the structure of the data we were trying to create filters for. On the first prompt, it provided the functional JavaScript code to dynamically load county names and to filter the tables based on the selected conditions. We’re also planning on creating filters for the type of turnout for the Official Turnout page in case users want to compare differences within turnout method between the two years (e.g., early voting turnout in 2020 vs 2024). 
+
+The Eligible Inactive and Eligible Active voter pages have the same filters (year, county, and party), but the tables on these pages can be sorted by party turnout: Democrat, Bread and Roses, Green, Libertarian, Working Class Party, No Labels Maryland, Unaffiliated, or Other. We used the same code from the Official Turnout page to make the filters functional. These pages will be the main focus now because we want to use the chart.js library to create bar graphs for voter turnout by party by county across the two different years (2020 and 2024). The idea is to allow users to select a county and then display the bars for the two years beside each other for each party. If the user has the Statewide option selected, it would aggregate all the county data by party for each year and display those differences. We will color-code the bars and make an easy-to-read legend. 
+
+
+We also explored creating data visualizations for our news app but realized that they may present some of the data as more confusing. For example, we originally planned to create a table on Datawrapper showing Maryland voter turnout across each county. But after realizing that voter turnout increased slightly in almost every county, we concluded that the visualization would just be repetitive with displaying information from each county. Instead, we realized that it might be better to write up a few bullet points describing the three data tables we have. This will create more simplicity for a news app that is loaded with data tables. We will be drafting the language of these bullet points and incorporating them into our news app this upcoming week. 
+
+Blockers:
+- No major blockers, we're just learning more about our data as we keep trying our ideas, so we're adjusting as we learn. 
