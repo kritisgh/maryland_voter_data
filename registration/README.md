@@ -1,7 +1,7 @@
 4/18/25:
 We focused on getting our visualizations and non-data information completed this week. This includes:
 <li>DB: Writing homepage summary of application as well as county summaries</li>
-<li>April and Olivia: Creating chlorpleth <a href="https://www.datawrapper.de/_/mQolF/?v=3"> maps </a> for state-level and county-level registration numbers</li>
+<li>April and Olivia: Creating chlorpleth <a href="https://www.datawrapper.de/_/mQolF/?v=3"> maps </a> for state-level and county-level registration numbers</li>; creating <a href="https://docs.google.com/document/d/1EE2RkDMOWsT7CAx5rRDMeiSMldnc0uWkEzAmDiBKFXg/edit?tab=t.e1lr5q7ltp2m">multiline graphs</a> of registration numbers by election cycles at the county level
 <li>Anthony: creating HTML/CSS code for the home page (to start)</li>
 
 <p>4/11/25:</p> 
