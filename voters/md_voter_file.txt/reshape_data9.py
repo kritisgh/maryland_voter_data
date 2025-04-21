@@ -1,10 +1,5 @@
 import pandas as pd
-import matplotlib
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-# Set the matplotlib backend to Agg for headless environments
-matplotlib.use('Agg')
+import plotly.express as px
 
 # Load the data from the CSV file
 df = pd.read_csv('agg_MD.csv')
@@ -27,23 +22,24 @@ male_rep_merged = pd.merge(male_rep_data, total_counts, on='age_bracket')
 # Calculate the percentage of Male_REP relative to the total for each age bracket
 male_rep_merged['Percentage'] = (male_rep_merged['Count'] / male_rep_merged['Total']) * 100
 
-# Define a custom color palette with distinct colors for each age group
-custom_palette = ['brown', 'teal', 'lime', 'navy', 'gold']
-
-# Plot the data using seaborn
-plt.figure(figsize=(12, 8))
-sns.barplot(
-    data=male_rep_merged, 
+# Create an interactive bar chart using Plotly
+fig = px.bar(
+    male_rep_merged, 
     x='age_bracket', 
-    y='Percentage', 
-    palette=custom_palette
+    y='Percentage',
+    title='Male REP Participation in each Age Group',
+    labels={'Percentage': 'Percentage', 'age_bracket': 'Age Group'},
+    hover_data={'Percentage': ':.2f'},  # Format hover data to two decimal places
+    color='age_bracket',  # Use distinct colors for each age group
+    color_discrete_sequence=px.colors.qualitative.Bold  # Custom color palette
 )
-plt.title('Male REP Participation in each Age Group')
-plt.xticks(rotation=45)
-plt.ylabel('Percentage')
-plt.xlabel('Age Group')
-plt.tight_layout()
 
-# Save the plot to a file instead of displaying it
-plt.savefig('male_rep_percentage_distribution_chart.png')
-print("Chart saved as 'male_rep_percentage_distribution_chart.png'")
+# Update layout for better aesthetics
+fig.update_layout(
+    xaxis_title='Age Group',
+    yaxis_title='Percentage',
+    xaxis_tickangle=-45
+)
+
+# Show the interactive plot
+fig.show()

@@ -27,8 +27,8 @@ female_una_merged = pd.merge(female_una_data, total_counts, on='age_bracket')
 # Calculate the percentage of Female_UNA relative to the total for each age bracket
 female_una_merged['Percentage'] = (female_una_merged['Count'] / female_una_merged['Total']) * 100
 
-# Define a uniform orange color palette
-uniform_palette = ['orange'] * len(female_una_merged['age_bracket'].unique())
+# custom color pallete
+custom_palette = ['brown', 'teal', 'lime', 'navy', 'gold']
 
 # Plot the data using seaborn
 plt.figure(figsize=(12, 8))
@@ -36,9 +36,9 @@ sns.barplot(
     data=female_una_merged, 
     x='age_bracket', 
     y='Percentage', 
-    palette=uniform_palette
+    palette=custom_palette
 )
-plt.title('Female_UNA Participation in each Age Group')
+plt.title('Female UNA Participation in each Age Group')
 plt.xticks(rotation=45)
 plt.ylabel('Percentage')
 plt.xlabel('Age Group')
