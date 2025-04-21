@@ -223,13 +223,13 @@ txt.append("tspan")
 title.append("tspan")
     .attr("x", width / 2)
     .attr("dy", "-1.8em")         // lift up 1em above y=0
-    .text("Vote Percentages by Party Affiliation and Age");
+    .text("Party Affiliation of 2024 Voters by Age");
 
 // second line
 title.append("tspan")
     .attr("x", width / 2)
     .attr("dy", "1.2em")        // drop down 1.2em from the previous line
-    .text("for " + formatCountyName(county) + " in 2024");
+    .text("for " + formatCountyName(county));
       }
       
       // updateChart fetches data for the county and calls drawChart.
