@@ -53,6 +53,7 @@
             </div>
             
             <button id="reset-filters">Reset Filters</button>
+        </div>
         
         <table id="voter-data" border=1 cellpadding=7>
             <thead>
@@ -91,8 +92,7 @@
 
         <script type="text/javascript">
             $('#voter-data').DataTable({
-                paging: false,
-                scrollY: '400px',
+                paging: true,
                 searching: false,
                 autoWidth: false,
                 columnDefs: [
@@ -109,98 +109,74 @@
             function closeNav() {
               document.getElementById("mySidenav").style.width = "0";
             }
-
-            // document.addEventListener('DOMContentLoaded', function() {
-            //     // Get all the filter/sort elements
-            //     const yearFilter = document.getElementById('year-filter');
-            //     const countyFilter = document.getElementById('county-filter');
-            //     const partySort = document.getElementById('party-sort');
-            //     const resetButton = document.getElementById('reset-filters');
-            //     const table = document.getElementById('voter-data');
-            //     const noResults = document.getElementById('no-results');
-            //     const allRows = Array.from(table.querySelectorAll('tbody tr'));
-
-            //     // Populate the county filter with unique counties
-            //     const counties = new Set();
-            //     allRows.forEach(row => {
-            //         counties.add(row.cells[0].textContent.trim());
-            //     });
-                
-            //     const sortedCounties = Array.from(counties).sort();
-            //     sortedCounties.forEach(county => {
-            //         const option = document.createElement('option');
-            //         option.value = county;
-            //         option.textContent = county;
-            //         countyFilter.appendChild(option);
-            //     });
-
-            //     // Function to parse number strings with commas
-            //     function parseNumberString(str) {
-            //         return parseInt(str.replace(/,/g, '')) || 0;
-            //     }
-
-            //     // Function to apply all filters and sorting
-            //     function applyFilters() {
-            //         const selectedYear = yearFilter.value;
-            //         const selectedCounty = countyFilter.value;
-            //         const selectedSort = partySort.value;
-                    
-            //         let visibleCount = 0;
-                    
-            //         allRows.forEach(row => {
-            //             const year = row.cells[10].textContent.trim();
-            //             const county = row.cells[0].textContent.trim();
-                        
-            //             // Check if row should be visible based on filters
-            //             const yearMatch = selectedYear === 'all' || year === selectedYear;
-            //             const countyMatch = selectedCounty === 'all' || county === selectedCounty;
-                        
-            //             const shouldShow = yearMatch && countyMatch;
-            //             row.style.display = shouldShow ? '' : 'none';
-                        
-            //             if (shouldShow) visibleCount++;
-            //         });
-                    
-            //         // Show or hide "no results" message
-            //         noResults.style.display = visibleCount === 0 ? 'block' : 'none';
-                    
-            //         // Apply sorting if needed
-            //         if (selectedSort !== 'none') {
-            //             const columnIndex = {
-            //                 'Democrat': 1,
-            //                 'Republican': 2,
-            //                 'Unaffiliated': 8
-            //             }[selectedSort];
-                        
-            //             const visibleRows = allRows.filter(row => row.style.display !== 'none');
-                        
-            //             visibleRows.sort((a, b) => {
-            //                 const valueA = parseNumberString(a.cells[columnIndex].textContent);
-            //                 const valueB = parseNumberString(b.cells[columnIndex].textContent);
-            //                 return valueB - valueA; // Descending order
-            //             });
-                        
-            //             const tbody = table.querySelector('tbody');
-            //             visibleRows.forEach(row => tbody.appendChild(row));
-            //         }
-            //     }
-
-            //     // Apply filters when any filter changes
-            //     yearFilter.addEventListener('change', applyFilters);
-            //     countyFilter.addEventListener('change', applyFilters);
-            //     partySort.addEventListener('change', applyFilters);
-                
-            //     // Reset all filters
-            //     resetButton.addEventListener('click', function() {
-            //         yearFilter.value = 'all';
-            //         countyFilter.value = 'all';
-            //         partySort.value = 'none';
-            //         applyFilters();
-            //     });
-                
-            //     // Apply filters on page load (to handle any default selections)
-            //     applyFilters();
+            function openNav() {
+              document.getElementById("mySidenav").style.width = "250px";
+            }
             
+            function closeNav() {
+              document.getElementById("mySidenav").style.width = "0";
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const table = $('#voter-data').DataTable(); // Get the DataTable instance
+
+                const countyFilter = document.getElementById('county-filter');
+                const yearFilter = document.getElementById('year-filter');
+                const partyFilter = document.getElementById('party-filter');
+                const resetButton = document.getElementById('reset-filters');
+
+                // Get unique county names and populate the dropdown
+                const uniqueCounties = new Set();
+                table.rows().every(function () {
+                    const data = this.data();
+                    uniqueCounties.add(data[0]); // County is in column index 0
+                });
+
+                Array.from(uniqueCounties).sort().forEach(county => {
+                    const opt = document.createElement('option');
+                    opt.value = county;
+                    opt.textContent = county;
+                    countyFilter.appendChild(opt);
+                });
+
+                // Filter function
+                function applyFilters() {
+                    const year = yearFilter.value;
+                    const county = countyFilter.value;
+                    const party = partyFilter.value;
+
+                    table.rows().every(function () {
+                        const data = this.data();
+
+                        const showRow =
+                            (year === 'all' || data[8] == year) && // Year is column index 8
+                            (county === 'all' || data[0] == county) && // County index 0
+                            (party === 'none' || data[7] == party); // Party index 7
+
+                        if (showRow) {
+                            $(this.node()).show();
+                        } else {
+                            $(this.node()).hide();
+                        }
+                    });
+                }
+
+                // Attach change listeners
+                yearFilter.addEventListener('change', applyFilters);
+                countyFilter.addEventListener('change', applyFilters);
+                partyFilter.addEventListener('change', applyFilters);
+
+                // Reset button
+                resetButton.addEventListener('click', () => {
+                    yearFilter.value = 'all';
+                    countyFilter.value = 'all';
+                    partyFilter.value = 'none';
+                    applyFilters();
+                });
+
+                // Apply once on load
+                applyFilters();
+            });
         </script>
     </body>
 </html>

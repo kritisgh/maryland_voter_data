@@ -31,7 +31,7 @@ def county_detail(slug):
     total_rep = Registration.select(fn.SUM(Registration.rep)).where(Registration.county == county).scalar()
     total_unaf = Registration.select(fn.SUM(Registration.unaf)).where(Registration.county == county).scalar()
     total_other = Registration.select(fn.SUM(Registration.other)).where(Registration.county == county).scalar()
-
+    counties = Registration.select(Registration.county).distinct().order_by(Registration.county)
     return render_template(
         "county_detail.html",
         county=county,
@@ -40,7 +40,8 @@ def county_detail(slug):
         total_dem=total_dem,
         total_rep=total_rep,
         total_unaf=total_unaf,
-        total_other=total_other
+        total_other=total_other,
+        counties=counties
     )
 
 if __name__ == '__main__':
