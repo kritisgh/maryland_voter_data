@@ -41,7 +41,6 @@ h1, h3 {
 }
 
 table {
-    width:max-content;
     background-color:snow;
 }
 
@@ -53,4 +52,9 @@ table {
     .sidenav a {
         font-size: 18px;
     }
+}
+
+#voter-data {
+    width: 100%;
+    table-layout: auto;
 }
