@@ -3,20 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Registration</title>
 </head>
 <body>
-    <h1>Registration</h1>
-    <iframe src='https://flo.uri.sh/visualisation/22526918/embed' title='Interactive or visual content' class='flourish-embed-iframe' frameborder='0' scrolling='no' style='width:80%;height:600px;' sandbox='allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation'></iframe>
-    <div style='width:100%!;margin-top:4px!important;text-align:right!important;'><a class='flourish-credit' href='https://public.flourish.studio/visualisation/22526918/?utm_source=embed&utm_campaign=visualisation/22526918' target='_top' style='text-decoration:none!important'>
-        <img alt='Made with Flourish' src='https://public.flourish.studio/resources/made_with_flourish.svg' style='width:105px!important;height:16px!important;border:none!important;margin:0!important;'> </a>
-    </div>
-
-    <h2>Maryland Voter Registration by County</h2>
-    <ul>
+    <h1>Maryland Voter Registration Dashboard</h1>
+    <iframe src='https://flo.uri.sh/visualisation/22440716/embed' title='Interactive or visual content' class='flourish-embed-iframe' frameborder='0' scrolling='no' style='width:100%;height:600px;' sandbox='allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation'></iframe><div style='width:100%!;margin-top:4px!important;text-align:right!important;'><a class='flourish-credit' href='https://public.flourish.studio/visualisation/22440716/?utm_source=embed&utm_campaign=visualisation/22440716' target='_top' style='text-decoration:none!important'><img alt='Made with Flourish' src='https://public.flourish.studio/resources/made_with_flourish.svg' style='width:105px!important;height:16px!important;border:none!important;margin:0!important;'> </a></div>
+    <label for="county-select">Select County:</label>
+    <select id="county-select">
+        <option value="">-- Select County --</option>
+        <option value="/">Statewide</option>
         {% for c in counties %}
-            <li><a href="{{ url_for('county_detail', slug=c.county) }}">{{ c.county }}</a></li>
+            <option value="/county/{{ c.county }}">{{ c.county }}</option>
         {% endfor %}
-    </ul>
+    </select>
+
+    <script>
+    document.getElementById("county-select").addEventListener("change", function () {
+        if (this.value) {
+            window.location.href = this.value;
+        }
+    });
+    </script>
 </body>
 </html>

@@ -1,10 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>{{ county }} - Voter Registration</title>
 </head>
 <body>
-    <h1>Voter Registration for {{ county }}</h1>
+    <h1>Voter Registration for {{ county.title() }}</h1>
+
+    <label for="county-select">Select County:</label>
+    <select id="county-select">
+        <option value="">-- Select County --</option>
+        <option value="/">Statewide</option>
+        {% for c in counties %}
+            <option value="/county/{{ c.county }}">{{ c.county }}</option>
+        {% endfor %}
+    </select>
+
+    <script>
+    document.getElementById("county-select").addEventListener("change", function () {
+        if (this.value) {
+            window.location.href = this.value;
+        }
+    });
+    </script>
 
     <p><strong>Total Records:</strong> {{ records_count }}</p>
 

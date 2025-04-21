@@ -1,4 +1,5 @@
-import os
+#create csv
+"""import os
 import camelot
 import pandas as pd
 
@@ -50,8 +51,9 @@ for folder in os.listdir(base_dir):
 final_df = pd.DataFrame(data)
 print(final_df)
 
-final_df.to_csv("voter_registration_summary.csv", index=False)
+final_df.to_csv("voter_registration_summary.csv", index=False)"""
 
+#fix csv
 '''pdf_dir = "pdfs"
 output_dir = "csvs"
 
@@ -116,3 +118,58 @@ for filename in os.listdir(pdf_dir):
 
         if not table_processed:
             print(f"Could not find 'TOTAL REGISTRATION' in any table in {filename}")'''
+
+
+
+
+#fix db
+"""import pandas as pd
+import sqlite3
+
+# Load the clean CSV
+df = pd.read_csv("static/voter_registration_summary.csv")
+
+# Normalize county names
+def clean_county(name):
+    name = str(name).strip().upper()
+    name = " ".join(name.split())  # Remove extra spaces
+
+    # Fix specific known typos
+    typo_fixes = {
+        "BALTIMORE C ITY": "BALTIMORE CITY",
+        "BALTIMORE C O.": "BALTIMORE CO.",
+        "BALTIMORE C O": "BALTIMORE CO.",
+        "BALTIMORE C ITY.": "BALTIMORE CITY"
+    }
+
+    return typo_fixes.get(name, name)
+
+df['county'] = df['county'].apply(clean_county)
+
+# Connect to SQLite
+conn = sqlite3.connect("registration.db")
+cursor = conn.cursor()
+
+# Drop existing table if it exists
+cursor.execute("DROP TABLE IF EXISTS registration")
+
+# Create a fresh table
+cursor.execute("""
+    CREATE TABLE registration (
+        year INTEGER,
+        month INTEGER,
+        county TEXT,
+        dem INTEGER,
+        rep INTEGER,
+        unaf INTEGER,
+        other INTEGER
+    )
+""")
+
+# Insert data into table
+df.to_sql("registration", conn, if_exists="append", index=False)
+
+conn.commit()
+conn.close()
+
+print("registration.db recreated with cleaned county names.")"""
