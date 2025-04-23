@@ -7,7 +7,7 @@ df = pd.read_csv('agg_MD.csv')
 # Group the data by age bracket, gender, and party, then sum the counts
 grouped_df = df.groupby(['age_bracket', 'Gender', 'Party']).sum().reset_index()
 
-# Calculate total counts for each age bracket
+# Calculate total counts for each age bracket across all genders and parties
 total_counts = grouped_df.groupby('age_bracket')['Count'].sum().reset_index()
 total_counts.rename(columns={'Count': 'Total'}, inplace=True)
 
@@ -27,14 +27,14 @@ fig = px.bar(
     male_rep_merged, 
     x='age_bracket', 
     y='Percentage',
-    title='Male REP Participation in each Age Group',
+    title='Male REP Participation in Each Age Group',
     labels={'Percentage': 'Percentage', 'age_bracket': 'Age Group'},
     hover_data={
         'Percentage': ':.2f',  # Format percentage to two decimal places
-        'Total': ':.0f'        # Include total count in hover data, formatted as integer
+        'Total': ':.0f'  # Include total count in hover data, formatted as integer
     },
     color='age_bracket',  # Use distinct colors for each age group
-    color_discrete_sequence=px.colors.qualitative.Bold  # Custom color palette
+    color_discrete_sequence=['brown', 'teal', 'lime', 'navy', 'gold']  # Custom color palette
 )
 
 # Update layout for better aesthetics
