@@ -27,7 +27,7 @@ fig = px.bar(
     male_rep_merged, 
     x='age_bracket', 
     y='Percentage',
-    title='Male REP Participation in Each Age Group',
+    title='Male REP Participation Leans Heavier Towards Older Age Groups',
     labels={'Percentage': 'Percentage', 'age_bracket': 'Age Group'},
     hover_data={
         'Percentage': ':.2f',  # Format percentage to two decimal places
