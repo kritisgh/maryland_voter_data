@@ -28,7 +28,7 @@ female_rep_merged = pd.merge(female_rep_data, total_counts, on='age_bracket')
 female_rep_merged['Percentage'] = (female_rep_merged['Count'] / female_rep_merged['Total']) * 100
 
 # Define a custom color palette with distinct colors for each age group
-custom_palette = ['cyan', 'magenta', 'yellow', 'black', 'pink']
+custom_palette = ['brown', 'teal', 'lime', 'navy', 'gold']
 
 # Plot the data using seaborn
 plt.figure(figsize=(12, 8))
@@ -38,7 +38,7 @@ sns.barplot(
     y='Percentage', 
     palette=custom_palette
 )
-plt.title('Female_REP Participation for Each Age Group')
+plt.title('Female REP Participation for Each Age Group')
 plt.xticks(rotation=45)
 plt.ylabel('Percentage')
 plt.xlabel('Age Group')

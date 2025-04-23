@@ -28,7 +28,7 @@ male_dem_merged = pd.merge(male_dem_data, total_counts, on='age_bracket')
 male_dem_merged['Percentage'] = (male_dem_merged['Count'] / male_dem_merged['Total']) * 100
 
 # Define a custom color palette with distinct colors for each age group
-custom_palette = ['violet', 'turquoise', 'salmon', 'olive', 'maroon']
+custom_palette = ['brown', 'teal', 'lime', 'navy', 'gold']
 
 # Plot the data using seaborn
 plt.figure(figsize=(12, 8))
@@ -38,7 +38,7 @@ sns.barplot(
     y='Percentage', 
     palette=custom_palette
 )
-plt.title('Male_DEM Participation in each Age Group')
+plt.title('Male DEM Participation in each Age Group')
 plt.xticks(rotation=45)
 plt.ylabel('Percentage')
 plt.xlabel('Age Group')

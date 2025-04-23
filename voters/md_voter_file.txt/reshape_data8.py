@@ -28,7 +28,7 @@ male_una_merged = pd.merge(male_una_data, total_counts, on='age_bracket')
 male_una_merged['Percentage'] = (male_una_merged['Count'] / male_una_merged['Total']) * 100
 
 # Define a uniform green color palette
-uniform_palette = ['green'] * len(male_una_merged['age_bracket'].unique())
+custom_palette = ['brown', 'teal', 'lime', 'navy', 'gold']
 
 # Plot the data using seaborn
 plt.figure(figsize=(12, 8))
@@ -36,9 +36,9 @@ sns.barplot(
     data=male_una_merged, 
     x='age_bracket', 
     y='Percentage', 
-    palette=uniform_palette
+    palette=custom_palette
 )
-plt.title('Male_UNA Participation in each Age Group')
+plt.title('Male UNA Participation in each Age Group')
 plt.xticks(rotation=45)
 plt.ylabel('Percentage')
 plt.xlabel('Age Group')

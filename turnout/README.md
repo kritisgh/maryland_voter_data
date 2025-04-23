@@ -95,8 +95,8 @@ Features of our News App:
    - If the numbers don’t show a common pattern, we could do a row chart instead 
 - County-level bar graphs (or line charts) that display changes in turnout over time (you could filter to certain counties so it won’t be too cluttered) 
    - Tooltips to hover over and easily see the numbers/navigate the data
-- Filters/Dropdown bar that provides an option to show breakdown by county or party
-
+- Interactive (sortable/filterable) data tables for each view of turnout data (described below)
+   - Filters/Dropdown bar that provides an option to show breakdown by county or party
 
 Final Project Update: 
 
