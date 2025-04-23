@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- … your head tags … -->
+  </head>
+  <body>
+    <h1>Who Voted in the 2024 Election in Maryland?</h1><br>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('gender') }}">By Gender</a></li>
+        <li><a href="{{ url_for('nonvoters') }}">Non-Voters</a></li>
+      </ul>
+    </nav>
+
+    {% block content %}{% endblock %}
+  </body>
+</html>
