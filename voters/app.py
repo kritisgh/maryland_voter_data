@@ -29,6 +29,15 @@ def get_bracket_lower(bracket):
 @app.route("/")
 def index():
     return render_template("index.html", counties=counties)
+@app.route("/gender")
+def gender():
+    # pass in any data your gender page needs
+    return render_template("gender.html")
+
+@app.route("/nonvoters")
+def nonvoters():
+    # pass in any data your nonvoters page needs
+    return render_template("nonvoters.html")
 
 @app.route("/data/<county>")
 def county_data(county):

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maryland 2024 Election: Map and Detailed Tooltip Chart</title>
+    <!-- Include required styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <!-- Include static js, Chart.js and D3.js -->
+    <script src="static/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- For Datawrapper events -->
+    <script src="//static.dwcdn.net/js/events.js"></script>
+    <script type="text/javascript">
+      // Global variable: default party selection for the map.
+      let chartId = 'YcZmw';
+    </script>
+    <style>
+      
+    </style>
+  </head>
+  <!-- … the rest of index.html … -->
+{% endblock %}

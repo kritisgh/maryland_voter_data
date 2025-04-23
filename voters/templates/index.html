@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maryland 2024 Election: Map and Detailed Tooltip Chart</title>
-    <!-- Include required styles -->
+    <title>Maryland 2024 Election</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
@@ -24,7 +23,14 @@
   </head>
   <body>
     <h1>Who Voted in the 2024 Election in Maryland?</h1><br>
-    <h2 style = "text-align: left;text-decoration: underline;">By County: </h2>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('gender') }}">By Gender</a></li>
+        <li><a href="{{ url_for('nonvoters') }}">Non-Voters</a></li>
+      </ul>
+    </nav>
+    <h2 style = "text-align: left;text-decoration: underline;"></h2>
     <div class="container">
       <div class="map" id="map">
         <iframe title="Maryland Counties Map" id="datawrapper-chart-4O228" src="https://datawrapper.dwcdn.net/4O228/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
