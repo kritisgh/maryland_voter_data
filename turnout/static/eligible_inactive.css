@@ -33,3 +33,16 @@ button {
 button:hover {
     background: #45a049;
 }
+
+canvas{
+    background-color:aliceblue;
+}
+
+.chart-container {
+    height: 600px;
+    position: relative;
+}
+#turnout-chart {
+    height: 100% !important;
+    max-height: 100% !important;
+}

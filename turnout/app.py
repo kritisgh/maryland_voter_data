@@ -42,6 +42,23 @@ class EligibleInactive(Model):
         database = db
         primary_key = False
 
+class EligibleInactiveCalculations(Model):
+    county = CharField(column_name='County')
+    democrat_diff = IntegerField(column_name='Democrat_Diff')
+    republican_diff = IntegerField(column_name='Republican_Diff')
+    bread_and_roses_diff = IntegerField(column_name='Bread_and_Roses_Diff')
+    green_diff = IntegerField(column_name='Green_Diff')
+    libertarian_diff = IntegerField(column_name='Libertarian_Diff')
+    working_class_party_diff = IntegerField(column_name='Working_Class_Party_Diff')
+    no_labels_maryland_diff = IntegerField(column_name='No_Labels_Maryland_Diff')
+    other_diff = IntegerField(column_name='Other_Diff')
+    unaffiliated_diff = IntegerField(column_name='Unaffiliated_Diff')
+
+    class Meta:
+        table_name = "eligible_inactive_calculations"
+        database = db
+        primary_key = False
+
 class EligibleActive(Model):
     county = CharField(column_name='County')
     democrat_active = IntegerField(column_name='Democrat')
@@ -88,7 +105,24 @@ def eligible_inactive():
 
     object_list = EligibleInactive.select()
 
-    return render_template(template, object_list=object_list)
+    graph_query = EligibleInactiveCalculations.select()
+    graph_data = [
+        {
+            "county": row.county,
+            "democrat_diff": row.democrat_diff,
+            "republican_diff": row.republican_diff,
+            "bread_and_roses_diff": row.bread_and_roses_diff,
+            "green_diff": row.green_diff,
+            "libertarian_diff": row.libertarian_diff,
+            "working_class_party_diff": row.working_class_party_diff,
+            "no_labels_maryland_diff": row.no_labels_maryland_diff,
+            "unaffiliated_diff": row.unaffiliated_diff,
+            "other_diff": row.other_diff
+        }
+        for row in graph_query
+    ]
+
+    return render_template(template, object_list=object_list, graph_data=graph_data)
 
 @app.route("/eligible-active")
 def eligible_active():
