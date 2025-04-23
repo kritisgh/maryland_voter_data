@@ -27,7 +27,7 @@ fig = px.bar(
     male_una_merged, 
     x='age_bracket', 
     y='Percentage',
-    title='Male UNA Participation in each Age Group',
+    title='Male UNA Participation Significantly Lower As Age Group Increases',
     labels={'Percentage': 'Percentage', 'age_bracket': 'Age Group'},
     hover_data={
         'Percentage': ':.2f',  # Format percentage to two decimal places

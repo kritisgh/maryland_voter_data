@@ -23,6 +23,18 @@
 
     <h1>Maryland Voter Turnout Data - Eligible Inactive Voters</h1>
 
+    <div class="chart-container">
+        <h3>Turnout by County</h3>
+        <div class="graph-filter">
+            <label for="county-graph-filter"><strong>Select County:</strong></label>
+            <select id="county-graph-filter">
+                <option value="all">All Counties</option>
+            </select>
+        </div>
+        <br>
+        <canvas id="turnout-chart"></canvas>
+    </div>
+
     <div class="controls">
         <div class="filter-group">
             <label for="year-filter">Filter by Year:</label>
@@ -64,51 +76,27 @@
                 <th class="no-sort">County</th>
                 <th>Democrat</th>
                 <th>Republican</th>
-                <th>Bread and Roses</th>
                 <th>Green</th>
                 <th>Libertarian</th>
-                <th>Working Class Party</th>
-                <th>No Labels Maryland</th>
                 <th>Unaffiliated</th>
                 <th>Other</th>
-                <th class="no-sort">Year</th>
             </tr>
         </thead>
         <tbody>
             {% for obj in object_list %}
             <tr>
                 <td>{{ obj.county }}</td>
-                <td>{{ "{:,}".format(obj.democrat_inactive) }}</td>
-                <td>{{ "{:,}".format(obj.republican_inactive) }}</td>
-                <td>{{ "{:,}".format(obj.bread_and_roses_inactive) }}</td>
-                <td>{{ "{:,}".format(obj.green_inactive) }}</td>
-                <td>{{ "{:,}".format(obj.libertarian_inactive) }}</td>
-                <td>{{ "{:,}".format(obj.working_class_inactive) }}</td>
-                <td>{{ "{:,}".format(obj.no_labels_inactive) }}</td>
-                <td>{{ "{:,}".format(obj.unaffiliated_inactive) }}</td>
-                <td>{{ "{:,}".format(obj.other_inactive) }}</td>
-                <td>{{ obj.year }}</td>
+                <td>{{ "{:,}".format(obj.democrat_diff) }}</td>
+                <td>{{ "{:,}".format(obj.republican_diff) }}</td>
+                <td>{{ "{:,}".format(obj.green_diff) }}</td>
+                <td>{{ "{:,}".format(obj.libertarian_diff) }}</td>
+                <td>{{ "{:,}".format(obj.unaffiliated_diff) }}</td>
+                <td>{{ "{:,}".format(obj.other_diff) }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <div class="chart-container">
-        <h3>Turnout by County</h3>
-        <div class="graph-filter">
-            <label for="county-graph-filter"><strong>Select County:</strong></label>
-            <select id="county-graph-filter">
-                <option value="all">All Counties</option>
-            </select>
-        </div>
-        <br>
-        <canvas id="turnout-chart"></canvas>
-    </div>
-
-    <div class="most-inactive-container">
-        <h3>Most Inactive Counties</h3>
-        <p>becjeninn32o3oidn32iond</p>
-    </div>
 
     <script type="text/javascript">
         $('#voter-data').DataTable({
@@ -181,7 +169,6 @@
                     const cells = row.querySelectorAll('td');
 
                     const rowCounty = cells[0].innerText;
-                    const rowYear = cells[10].innerText;
 
                     let matches = true;
 
@@ -189,9 +176,6 @@
                         matches = false;
                     }
 
-                    if (year !== 'all' && rowYear !== year) {
-                        matches = false;
-                    }
 
                     if (party !== 'none') {
                         const partyMap = {
@@ -215,8 +199,11 @@
                     // Show/hide the row
                     row.style.display = matches ? '' : 'none';
                 });
+
+                const table = $('#voter-data').DataTable();
+                table.page('first').draw('page');
             }
- 
+
             // Attach change listeners
             yearFilter.addEventListener('change', applyFilters);
             countyFilter.addEventListener('change', () => {
@@ -256,9 +243,8 @@
             type: 'bar',
             data: {
                 labels: [
-                    "Democrat", "Republican", "Bread and Roses", "Green",
-                    "Libertarian", "Working Class Party", "No Labels Maryland",
-                    "Unaffiliated", "Other"
+                    "Democrat", "Republican", "Green",
+                    "Libertarian", "Unaffiliated", "Other"
                 ],
                 datasets: [{
                     label: 'Difference in Voters (2020 → 2024)',
@@ -266,22 +252,16 @@
                     backgroundColor: [
                         'rgba(70, 130, 180, 0.7)',   // Democrat - steel blue
                         'rgba(220, 100, 100, 0.7)',  // Republican - soft red
-                        'rgba(255, 160, 180, 0.7)',  // Bread and Roses - dusty rose
                         'rgba(120, 200, 120, 0.7)',  // Green - leafy green
                         'rgba(240, 200, 130, 0.7)',  // Libertarian - warm gold
-                        'rgba(120, 150, 200, 0.7)',  // Working Class Party - muted blue
-                        'rgba(190, 160, 200, 0.7)',  // No Labels Maryland - lavender
                         'rgba(180, 180, 180, 0.7)',  // Unaffiliated - medium gray
                         'rgba(255, 170, 100, 0.7)'   // Other - pumpkin orange
                     ],
                     borderColor: [
                         'rgba(70, 130, 180, 1)',
                         'rgba(220, 100, 100, 1)',
-                        'rgba(255, 160, 180, 1)',
                         'rgba(120, 200, 120, 1)',
                         'rgba(240, 200, 130, 1)',
-                        'rgba(120, 150, 200, 1)',
-                        'rgba(190, 160, 200, 1)',
                         'rgba(180, 180, 180, 1)',
                         'rgba(255, 170, 100, 1)'
                     ],
@@ -329,15 +309,12 @@
                 diffs = graphData.reduce((totals, row) => {
                     totals[0] += row.democrat_diff;
                     totals[1] += row.republican_diff;
-                    totals[2] += row.bread_and_roses_diff;
-                    totals[3] += row.green_diff;
-                    totals[4] += row.libertarian_diff;
-                    totals[5] += row.working_class_party_diff;
-                    totals[6] += row.no_labels_maryland_diff;
-                    totals[7] += row.unaffiliated_diff;
-                    totals[8] += row.other_diff;
+                    totals[2] += row.green_diff;
+                    totals[3] += row.libertarian_diff;
+                    totals[4] += row.unaffiliated_diff;
+                    totals[5] += row.other_diff;
                     return totals;
-                }, Array(9).fill(0));
+                }, Array(6).fill(0));
             } else {
                 // Find selected county
                 const countyData = graphData.find(row => row.county === county);
@@ -346,11 +323,8 @@
                 diffs = [
                     countyData.democrat_diff,
                     countyData.republican_diff,
-                    countyData.bread_and_roses_diff,
                     countyData.green_diff,
                     countyData.libertarian_diff,
-                    countyData.working_class_party_diff,
-                    countyData.no_labels_maryland_diff,
                     countyData.unaffiliated_diff,
                     countyData.other_diff
                 ];

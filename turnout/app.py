@@ -59,6 +59,20 @@ class EligibleInactiveCalculations(Model):
         database = db
         primary_key = False
 
+class EligibleInactiveDifferences(Model):
+    county = CharField(column_name='county')
+    democrat_diff = IntegerField(column_name='democrat_diff')
+    republican_diff = IntegerField(column_name='republican_diff')
+    green_diff = IntegerField(column_name='green_diff')
+    libertarian_diff = IntegerField(column_name='libertarian_diff')
+    unaffiliated_diff = IntegerField(column_name='unaffiliated_diff')
+    other_diff = IntegerField(column_name='other_diff')
+    
+    class Meta:
+        table_name = "inactivity_differences"
+        database = db
+        primary_key = False
+
 class EligibleActive(Model):
     county = CharField(column_name='County')
     democrat_active = IntegerField(column_name='Democrat')
@@ -103,19 +117,16 @@ def official_turnout():
 def eligible_inactive():
     template = 'eligible_inactive.html'
 
-    object_list = EligibleInactive.select()
+    object_list = EligibleInactiveDifferences.select()
 
-    graph_query = EligibleInactiveCalculations.select()
+    graph_query = EligibleInactiveDifferences.select()
     graph_data = [
         {
             "county": row.county,
             "democrat_diff": row.democrat_diff,
             "republican_diff": row.republican_diff,
-            "bread_and_roses_diff": row.bread_and_roses_diff,
             "green_diff": row.green_diff,
             "libertarian_diff": row.libertarian_diff,
-            "working_class_party_diff": row.working_class_party_diff,
-            "no_labels_maryland_diff": row.no_labels_maryland_diff,
             "unaffiliated_diff": row.unaffiliated_diff,
             "other_diff": row.other_diff
         }

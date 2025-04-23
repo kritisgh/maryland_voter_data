@@ -4,30 +4,30 @@ import plotly.express as px
 # Load the data from the CSV file
 df = pd.read_csv('agg_MD.csv')
 
-# Group the data by age bracket, gender, and party, then sum the counts
-grouped_df = df.groupby(['age_bracket', 'Gender', 'Party']).sum().reset_index()
+# Group the data by age bracket and party, then sum the counts
+grouped_df = df.groupby(['age_bracket', 'Party']).sum().reset_index()
 
-# Calculate total counts for each age bracket across all genders and parties
+# Calculate total counts for each age bracket across all parties
 total_counts = grouped_df.groupby('age_bracket')['Count'].sum().reset_index()
 total_counts.rename(columns={'Count': 'Total'}, inplace=True)
 
-# Prepare data for Female_DEM
-female_dem_data = grouped_df[
-    (grouped_df['Gender'] == 'Female') & (grouped_df['Party'] == 'DEM')
+# Prepare data for UNA party
+una_data = grouped_df[
+    (grouped_df['Party'] == 'UNA')
 ]
 
 # Merge total counts with the filtered data
-female_dem_merged = pd.merge(female_dem_data, total_counts, on='age_bracket')
+una_merged = pd.merge(una_data, total_counts, on='age_bracket')
 
-# Calculate the percentage of Female_DEM relative to the total for each age bracket
-female_dem_merged['Percentage'] = (female_dem_merged['Count'] / female_dem_merged['Total']) * 100
+# Calculate the percentage of UNA relative to the total for each age bracket
+una_merged['Percentage'] = (una_merged['Count'] / una_merged['Total']) * 100
 
 # Create an interactive bar chart using Plotly
 fig = px.bar(
-    female_dem_merged, 
+    una_merged, 
     x='age_bracket', 
     y='Percentage',
-    title='Female DEM Participation Tends To Be Higher As Age Group increases',
+    title='Combined Male and Female UNA Participation Significantly Lower as Age Group Increases',
     labels={'Percentage': 'Percentage', 'age_bracket': 'Age Group'},
     hover_data={
         'Percentage': ':.2f',  # Format percentage to two decimal places
