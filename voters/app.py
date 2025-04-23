@@ -1,4 +1,5 @@
 import pandas as pd
+import plotly.express as px
 from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
@@ -25,14 +26,61 @@ def get_bracket_lower(bracket):
         return int(bracket.split('-')[0])
     except Exception:
         return float('inf')
+def create_graphs(gender_label):
+    # load and group the data (same as in your male_*.py / female_*.py scripts) :contentReference[oaicite:0]{index=0}
+    df = pd.read_csv('md_voter_file.txt/agg_MD.csv')
+    grouped = df.groupby(['age_bracket', 'Gender', 'Party']).sum().reset_index()
+    total = (grouped
+             .groupby('age_bracket')['Count']
+             .sum()
+             .reset_index()
+             .rename(columns={'Count':'Total'}))
+
+    graphs = {}
+    for party in ['DEM','REP','UNA']:
+        sub = grouped[
+            (grouped['Gender'] == gender_label) &
+            (grouped['Party'] == party)
+        ]
+        merged = pd.merge(sub, total, on='age_bracket')
+        merged['Percentage'] = merged['Count'] / merged['Total'] * 100
+
+        # build figure
+        fig = px.bar(
+            merged,
+            x='age_bracket',
+            y='Percentage',
+            title=f'{gender_label} {party} Participation by Age',
+            labels={'age_bracket': 'Age Group','Percentage':'%'},
+            hover_data={'Percentage':':.2f','Total':':.0f'},
+            color='age_bracket'
+        )
+        # rotate labels
+        fig.update_layout(xaxis_tickangle=-45)
+
+        # <<< add these three lines >>>
+        fig.update_layout(bargap=0.2, bargroupgap=0.1)
+        fig.update_traces(width=0.6)
+
+        # grab just the div+js (we'll include plotly.js once in the template)
+        graphs[party.lower()] = fig.to_html(full_html=False, include_plotlyjs=False)
+
+    return graphs
 
 @app.route("/")
 def index():
     return render_template("index.html", counties=counties)
-@app.route("/gender")
+
+
+@app.route('/gender')
 def gender():
-    # pass in any data your gender page needs
-    return render_template("gender.html")
+    male_graphs   = create_graphs('Male')
+    female_graphs = create_graphs('Female')
+    return render_template(
+        'gender.html',
+        male_graphs=male_graphs,
+        female_graphs=female_graphs
+    )
 
 @app.route("/nonvoters")
 def nonvoters():
