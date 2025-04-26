@@ -113,7 +113,8 @@ Blockers:
 - No major blockers, we're just learning more about our data as we keep trying our ideas, so we're adjusting as we learn. 
 
 
-2024-04-25
+**2024-04-25**
+
 We want users to explore turnout (and lack of turnout) in their county and compare it to statewide turnout and/or turnout from another county of their choice. 
 
 In the Eligible Active and Inactive pages (changing page names):
