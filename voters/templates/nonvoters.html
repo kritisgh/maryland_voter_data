@@ -16,11 +16,228 @@
     <script src="//static.dwcdn.net/js/events.js"></script>
     <script type="text/javascript">
       // Global variable: default party selection for the map.
-      let chartId = 'YcZmw';
+      let chartId = '4ntx6';
     </script>
     <style>
       
     </style>
   </head>
-  <!-- … the rest of index.html … -->
+  <body>
+    <h2 style = "text-align: left;text-decoration: underline;"></h2>
+    <div class="container">
+      <div class="map" id="map">
+        <iframe title="Maryland Counties Map" id="datawrapper-chart-4ntx6" src="https://datawrapper.dwcdn.net/4ntx6/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
+        <p>Select Party:</p>
+        <select onchange="switchVis(this.value)">
+          <option value="4ntx6">Democrats</option>
+          <option value="xElgG">Republicans</option>
+          <option value="nuu3A">Unaffiliated</option>
+        </select>
+      </div>
+      <!-- Integrated tooltip: this will expand to show county info plus the chart -->
+      <div class="tooltip" id="tooltip">
+        <!-- 1) Header area we’ll overwrite on hover or select -->
+        <div id="tooltipHeader">
+          <p>Hover over a county on the map to see details here, or use the county dropdown below!</p>
+        </div>
+        <div id="tooltipDropdown">
+          <p>Select a County</p>
+          <select id="county-dropdown">
+            <option value="">-- Select County --</option>
+            {% for county in counties %}
+              <option value="{{ county }}">{{ county }}</option>
+            {% endfor %}
+          </select>
+          <div id="tooltipChart" style="margin-top:20px;"></div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <script>
+      // Global variables to track current county and debounce.
+      let currentCounty = "";
+      let lastCounty = "";
+      let debounceTimeout;
+      
+      // Select the tooltip element.
+      const tooltip = document.getElementById('tooltip');
+      
+      datawrapper.on('region.mouseenter', ({data}) => {
+  function formatCountyName(name) {
+    return (name === "Baltimore City" || name === "Baltimore County")
+      ? name
+      : name + " County";
+  }
+  const newCounty = data.id || data.County;
+  if (newCounty === lastCounty) return;
+  lastCounty = newCounty;
+
+  // Build just the header
+  let headerHTML = `<h3>${formatCountyName(newCounty)}</h3>`;
+  if (chartId === 'YcZmw') {
+    headerHTML += `<p>Democratic Turnout: ${((data.value||data.DEM)||0).toFixed(2)}%</p>`;
+  } else if (chartId === 'xElgG') {
+    headerHTML += `<p>Republican Turnout: ${((data.value||data.REP)||0).toFixed(2)}%</p>`;
+  } else {
+    headerHTML += `<p>Unaffiliated Turnout: ${((data.value||data.UNA)||0).toFixed(2)}%</p>`;
+  }
+
+  // Only overwrite the header div
+  document.getElementById('tooltipHeader').innerHTML = headerHTML;
+  const dropdown = document.getElementById('county-dropdown');
+  dropdown.value = newCounty;
+  // optionally fire its change handler so you don’t duplicate updateChart calls:
+  dropdown.dispatchEvent(new Event('change'));
+
+  // Debounce & redraw the chart
+  if (debounceTimeout) clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => updateChart(newCounty), 0);
+});
+
+document.getElementById('county-dropdown')
+  .addEventListener('change', function() {
+    const selected = this.value;
+    if (!selected) return;
+
+    function formatCountyName(name) {
+          return (name === "Baltimore City" || name === "Baltimore County") ? name : name + " County";
+        }
+    // Overwrite header with just the county name
+    document.getElementById('tooltipHeader').innerHTML = `<h3 style = margin-block-start: 1em;>${formatCountyName(selected)}</h3>`;
+
+    // Fetch & draw
+    updateChart(selected);
+  });
+
+      // -- D3.js CHART CODE --
+      // (Note: The chart will now be drawn into the #tooltipChart container.)
+      const margin = {top: 40, right: 20, bottom: 40, left: 40};
+      const width = 500 - margin.left - margin.right;
+      const height = 500 - margin.top - margin.bottom;
+      
+      const colorMap = {
+        "Democrats": "rgba(3, 89, 127)",
+        "Republicans": "rgba(200, 30, 30)",
+        "Unaffiliated": "rgba(255, 185, 64)",
+        "Other": "rgba(203, 202, 202)"
+      };
+      
+      // Modified drawChart: Draws the chart inside #tooltipChart and adds a title with the county name.
+      function drawChart(data, county) {
+        function formatCountyName(name) {
+          return (name === "Baltimore City" || name === "Baltimore County") ? name : name + " County";
+        }
+        
+        const barsData = data.ages.map((age, i) => ({
+          age: age,
+          segments: [
+            { party: "Democrats", value: data.dem[i] },
+            { party: "Republicans", value: data.rep[i] },
+            { party: "Unaffiliated", value: data.unaffiliated[i] },
+            { party: "Other", value: data.other[i] }
+          ]
+        }));
+        
+        // Sort segments so that the largest is drawn last.
+        barsData.forEach(d => {
+          d.segments.sort((a, b) => a.value - b.value);
+        });
+        
+        // Remove any previous SVG content in the tooltip chart placeholder.
+        d3.select("#tooltipChart").select("svg").remove();
+        
+        const svg = d3.select("#tooltipChart")
+                      .append("svg")
+                      .attr("width", width + margin.left + margin.right)
+                      .attr("height", height + margin.top + margin.bottom)
+                      .append("g")
+                      .attr("transform", `translate(${margin.left},${margin.top})`);
+        
+        const x = d3.scaleBand()
+                    .domain(barsData.map(d => d.age))
+                    .range([0, width])
+                    .padding(0.2);
+        
+        const y = d3.scaleLinear()
+                    .domain([0, 100])
+                    .range([height, 0]);
+        
+        svg.append("g")
+           .attr("transform", `translate(0, ${height})`)
+           .call(d3.axisBottom(x));
+        
+        svg.append("g")
+           .call(d3.axisLeft(y));
+        
+        barsData.forEach(d => {
+          let cumulative = 0;
+          const g = svg.append("g")
+                       .attr("class", "bar")
+                       .attr("transform", `translate(${x(d.age)},0)`);
+          
+          d.segments.forEach(segment => {
+            const y0 = y(cumulative);
+            cumulative += segment.value;
+            const y1 = y(cumulative);
+            const barHeight = y0 - y1;
+            
+            g.append("rect")
+             .attr("x", 0)
+             .attr("y", y1)
+             .attr("width", x.bandwidth())
+             .attr("height", barHeight)
+             .attr("fill", colorMap[segment.party]);
+            
+            if (barHeight > 15) {
+              const txt = g.append("text")
+  .attr("x", x.bandwidth() / 2)
+  .attr("y", y1 + barHeight / 2 - 4)   // adjust so two lines center nicely
+  .attr("text-anchor", "middle")
+  .attr("fill", "white")
+  .attr("font-size", "9px");
+
+txt.append("tspan")
+   .attr("x", x.bandwidth() / 2)
+   .attr("dy", "0em")
+   .text(segment.party);
+
+txt.append("tspan")
+   .attr("x", x.bandwidth() / 2)
+   .attr("dy", "1.2em")
+   .text(`${segment.value.toFixed(1)}%`);          
+            }
+          });
+        });
+        
+        const title = svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", 0)               // baseline for first line
+    .attr("text-anchor", "middle")
+    .attr("font-size", "16px")
+    .attr("fill", "black");
+
+// first line
+title.append("tspan")
+    .attr("x", width / 2)
+    .attr("dy", "-1.8em")         // lift up 1em above y=0
+    .text("Party Affiliation of 2024 Voters by Age");
+
+// second line
+title.append("tspan")
+    .attr("x", width / 2)
+    .attr("dy", "1.2em")        // drop down 1.2em from the previous line
+    .text("for " + formatCountyName(county));
+      }
+      
+      // updateChart fetches data for the county and calls drawChart.
+      function updateChart(county) {
+        fetch('/data/' + encodeURIComponent(county))
+          .then(response => response.json())
+          .then(data => drawChart(data, county))
+          .catch(err => console.error(err));
+      }
+    </script>
+  </body>
+</html>
 {% endblock %}

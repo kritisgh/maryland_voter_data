@@ -1,9 +1,8 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: Poppins, sans-serif;
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
-    text-align: center;
     overflow-y: auto;
   }
 /* 1) Change the container to a row flexbox */
@@ -70,7 +69,6 @@ body {
   /* Center the SVG element inside the chart placeholder */
   #tooltipChart svg {
     display: block;
-    margin: 0 auto;
   }
   /* D3 chart text labels styling */
   .bar text {
