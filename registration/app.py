@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template
+from flourish_id import flourish_id
 from peewee import *
 app = Flask(__name__)
 
@@ -26,6 +27,7 @@ def index():
 @app.route('/county/<slug>')
 def county_detail(slug):
     county = slug
+    flourish_id = flourish_id.get(county)
     records = Registration.select().where(Registration.county == county)
     total_dem = Registration.select(fn.SUM(Registration.dem)).where(Registration.county == county).scalar()
     total_rep = Registration.select(fn.SUM(Registration.rep)).where(Registration.county == county).scalar()
@@ -35,6 +37,7 @@ def county_detail(slug):
     return render_template(
         "county_detail.html",
         county=county,
+        flourish_id=flourish_id,
         records=records,
         records_count=records.count(),
         total_dem=total_dem,

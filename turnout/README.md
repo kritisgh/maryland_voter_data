@@ -111,3 +111,46 @@ We also explored creating data visualizations for our news app but realized that
 
 Blockers:
 - No major blockers, we're just learning more about our data as we keep trying our ideas, so we're adjusting as we learn. 
+
+
+**2024-04-25**
+
+We want users to explore turnout (and lack of turnout) in their county and compare it to statewide turnout and/or turnout from another county of their choice. 
+
+In the Eligible Active and Inactive pages (changing page names):
+- The users will be able to initially see statewide turnout differences in a vertical bar graph made with chart.js
+   - The bars will represent the difference in voter turnout between 2020 and 2024 
+- Users will also be able to see and interact with a data table that displays the same data in a tabular format 
+   - The columns are the parties, and there is a column for the county name
+   - The rows are the calculated difference in voter turnout between 2020 and 2024 
+   - Users can sort the data by turnout difference for a given party in increasing or decreasing order
+   - When statewide data is selected in the dropdown, users can see the difference in turnout for all counties 
+- The table and graph update in sync (selecting one county in one dropdown updates the table to show the same data)
+- They will also see text explaining interesting findings and then use an LLM to connect some of the subsets of data to those findings 
+- We will have a feature/section that explains what an eligible voter is 
+- We can also explain how to become an active voter in the inactive voter page
+
+In the Official Turnout page (changing page name):
+- We are going to restructure the parties similar to how we did for the other datatables (add Working Class Party, No Labels Maryland, and Bread and Roses  to the “other” numbers because they are parties with very low numbers)
+- Have a county selector and present the data based on turnout percent change by party in decreasing order 
+   - For example, if a user selects Allgeny, they would see a vertical bar chart with differences in turnout percentage and percent change for each voting method
+- We would present (in text) the party with the highest percent change in turnout for that county, the voting method with the highest percent increase between the two years, and the least used voting method (or most decreased percentage)
+
+We will present full data tables in the “statewide” filter selection to add to the flexibility in case users want to explore neighboring counties or other counties of interest
+
+If we had to describe the use of our app in a sentence or two, we would say that it allows users to explore statewide trends and shifts in voter turnout between 2020 and 2024 (presedential elections). We encourage users to closely examine their county to identify shifts in party alliance and turnout activity between the presedential elections. 
+
+- Closest page to being completely functional: Eligible Inactive Voters
+   - We are going to focus on finishing this page first, then we are going to translate the same logic to the other pages for similar functionality
+- We added the chart.js charts 
+- We changed the layout to present the vertical bar chart before the synced datatable 
+- We grouped the data for Working Class Party, No Labels Maryland, and Bread and Roses into the “other” column because the differences were too insignificant and unnoticeable independently 
+- Instead of having two rows (one for each year), we calculated the differences and displayed them instead 
+- We are going to work on adding dynamic titles to the data to give relevant context  
+
+- We still have to add the findings in the structure described above for each county 
+- It will be dynamic to change with each county, but the data will change following a common structure 
+   - Similar to one of the news apps we critiqued 
+
+Blockers:
+   - None, we have a clearer plan for this week 
