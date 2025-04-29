@@ -1,9 +1,18 @@
 body {
-    background-color: blanchedalmond;
+    background-color: #FAF9F6;
 }
 
-h1, h3{
+h1 {
     text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 4em;
+    color: #1979b9;
+    margin-bottom: 2%;
+}
+
+h3 {
+    text-align: center;
+    font-family: "Poppins", sans-serif;
 }
 
 .sidenav {
@@ -41,13 +50,12 @@ h1, h3{
 }
 
 #main-container {
-    display: flex;
-    flex-direction: column;
-    align-items:start;
-    gap: 15px;
+    display: flex; /* Aligns the child elements (the sections) horizontally */
+    justify-content: space-between; /* Distributes space between the sections */
+    gap: 20px; /* Adds space between the sections */
     margin-left: 15%;
+    margin-right: 15%;
 }
-
 
 #main-container img {
     width: 200px;
@@ -63,8 +71,8 @@ h1, h3{
     display: flex;
     flex-direction: column;
     text-decoration: underline;
-    color:black;
-    text-align:right;
+    color: black;
+    text-align: right;
 }
 
 @media screen and (max-height: 450px) {
@@ -75,4 +83,59 @@ h1, h3{
     .sidenav a {
         font-size: 18px;
     }
+}
+
+.section-container {
+    display: flex;
+    justify-content: space-around; /* or space-between or center depending on the spacing you want */
+    align-items: stretch;
+    margin: 50px auto;
+    max-width: 1200px; /* keeps it from stretching super wide */
+}
+
+.section {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    flex: 1; /* Ensures all sections take equal width */
+    max-width: 300px; /* Optional: Limits the width of each section */
+}
+
+.section-icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section-link {
+    display: block; /* Makes the <a> tag block-level so it takes up the entire space */
+    text-decoration: none; /* Removes default underline from the <a> */
+}
+
+/* Optional: Add a hover effect to the section */
+.section:hover {
+    background-color: #f0f0f0; /* Light grey background on hover */
+}
+
+/* Make the section clickable by covering the entire box with a link */
+.section {
+    position: relative;
+}
+
+.section a {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-decoration: none; /* Removes default underline */
+    color: inherit; /* Inherit the color from the section */
 }
