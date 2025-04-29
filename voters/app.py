@@ -16,6 +16,22 @@ df = df.dropna(subset=['County', 'age_bracket', 'Party', 'voted_2024'])
 
 # Get a sorted list of unique counties for the dropdown menu.
 counties = sorted(df['County'].unique())
+turnout_df = pd.read_csv("md_voter_file.txt/county x 100.csv")
+
+party_averages = {
+    'DEM': dict(zip(turnout_df['County'], turnout_df['DEM'])),
+    'REP': dict(zip(turnout_df['County'], turnout_df['REP'])),
+    'UNA': dict(zip(turnout_df['County'], turnout_df['UNA']))
+}
+
+# Compute min/max for each party
+party_ranges = {
+    party: {
+        'min': min(avgs.values()),
+        'max': max(avgs.values())
+    }
+    for (party, avgs) in party_averages.items()
+}
 
 def get_bracket_lower(bracket):
     """
@@ -71,6 +87,14 @@ def create_graphs(gender_label):
 def index():
     return render_template("index.html", counties=counties)
 
+@app.route("/election_2024")
+def election_2024():
+    return render_template(
+        "election_2024.html",
+        counties=counties,
+        partyAverages=party_averages,
+        partyRanges=party_ranges
+    )
 
 @app.route('/gender')
 def gender():
@@ -85,7 +109,9 @@ def gender():
 @app.route("/nonvoters")
 def nonvoters():
     # pass in any data your nonvoters page needs
-    return render_template("nonvoters.html")
+    return render_template("nonvoters.html", counties=counties)
+
+
 
 @app.route("/data/<county>")
 def county_data(county):

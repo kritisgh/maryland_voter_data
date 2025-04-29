@@ -1,10 +1,9 @@
-{% extends "base.html" %}
-{% block content %}
-<head>
+<!doctype html>
+<html lang="en">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maryland 2024 Election: Map and Detailed Tooltip Chart</title>
-    <!-- Include required styles -->
+    <title>Maryland 2024 Election</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
@@ -12,25 +11,53 @@
     <script src="static/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <!-- For Datawrapper events -->
+    <script>
+      // Your Flask→JS data:
+      const partyAverages = {{ partyAverages|tojson }};
+      const partyRanges   = {{ partyRanges|tojson }};
+    
+      // map Datawrapper chartId → party code
+      const chartIdToParty = {
+        'YcZmw': 'DEM',   // Democrats map
+        'xElgG': 'REP',   // Republicans map
+        'nuu3A': 'UNA'    // Unaffiliated map
+      };
+    
+      // colors for the line+marker
+      const partyColors = {
+        DEM: 'steelblue',
+        REP: 'crimson',
+        UNA: 'goldenrod'
+      };
+    </script>    
     <script src="//static.dwcdn.net/js/events.js"></script>
     <script type="text/javascript">
       // Global variable: default party selection for the map.
-      let chartId = '4ntx6';
+      let chartId = 'YcZmw';
     </script>
     <style>
       
     </style>
   </head>
   <body>
+    <h1>Who Votes in Maryland?</h1><br>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('election_2024') }}">2024 Election</a></li>
+        <li><a href="{{ url_for('gender') }}">By Gender and Age</a></li>
+        <li><a href="{{ url_for('nonvoters') }}">Non-Voters</a></li>
+      </ul>
+    </nav>
     <h2 style = "text-align: left;text-decoration: underline;"></h2>
     <div class="container">
       <div class="map" id="map">
-        <iframe title="Maryland Counties Map" id="datawrapper-chart-4ntx6" src="https://datawrapper.dwcdn.net/4ntx6/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
+        <iframe title="Maryland Counties Map" id="datawrapper-chart-4O228" src="https://datawrapper.dwcdn.net/4O228/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
         <p>Select Party:</p>
         <select onchange="switchVis(this.value)">
-          <option value="4ntx6">Democrats</option>
-          <option value="vcL3j">Republicans</option>
+          <option value = "4O228">All Parties</option>
+          <option value="YcZmw">Democrats</option>
+          <option value="xElgG">Republicans</option>
           <option value="nuu3A">Unaffiliated</option>
         </select>
       </div>
@@ -48,7 +75,8 @@
               <option value="{{ county }}">{{ county }}</option>
             {% endfor %}
           </select>
-          <div id="tooltipChart" style="margin-top:20px;"></div>
+          <p>Statewide Average:</p>
+          <div id="tooltipRange" style="margin-top:20px;"></div>
         </div>
       </div>
       
@@ -107,6 +135,7 @@ document.getElementById('county-dropdown')
     document.getElementById('tooltipHeader').innerHTML = `<h3 style = margin-block-start: 1em;>${formatCountyName(selected)}</h3>`;
 
     // Fetch & draw
+    drawSingleRange(selected);
     updateChart(selected);
   });
 
@@ -237,7 +266,75 @@ title.append("tspan")
           .then(data => drawChart(data, county))
           .catch(err => console.error(err));
       }
+
+      function drawSingleRange(county) {
+  const party = chartIdToParty[chartId];
+  if (!party) {
+    d3.select("#tooltipRange").selectAll("svg").remove();
+    return;
+  }
+
+  const { min, max } = partyRanges[party];
+  const avg = partyAverages[party][county] ?? min;
+
+  d3.select("#tooltipRange").selectAll("svg").remove();
+
+  const w   = 300,
+        h   = 50,    // added some extra height for labels
+        pad = 20;
+
+  const x = d3.scaleLinear()
+              .domain([min, max])
+              .range([pad, w - pad]);
+
+  const svg = d3.select("#tooltipRange")
+                .append("svg")
+                  .attr("width", w)
+                  .attr("height", h);
+
+  // Baseline
+  svg.append("line")
+     .attr("x1", x(min))
+     .attr("y1", h/2)
+     .attr("x2", x(max))
+     .attr("y2", h/2)
+     .attr("stroke", partyColors[party])
+     .attr("stroke-width", 2);
+
+  // Marker
+  svg.append("circle")
+     .attr("cx", x(avg))
+     .attr("cy", h/2)
+     .attr("r", 6)
+     .attr("fill", partyColors[party])
+     .attr("stroke", "#333");
+
+  // Min label (above left end)
+  svg.append("text")
+     .attr("x", x(min))
+     .attr("y", h/2 - 10)
+     .attr("text-anchor", "middle")
+     .attr("font-size", "10px")
+     .text(`${min.toFixed(1)}%`);
+
+  // Max label (above right end)
+  svg.append("text")
+     .attr("x", x(max))
+     .attr("y", h/2 - 10)
+     .attr("text-anchor", "middle")
+     .attr("font-size", "10px")
+     .text(`${max.toFixed(1)}%`);
+
+  // Current county’s avg label (below marker)
+  svg.append("text")
+     .attr("x", x(avg))
+     .attr("y", h/2 + 20)
+     .attr("text-anchor", "middle")
+     .attr("font-size", "10px")
+     .attr("font-weight", "bold")
+     .text(`${avg.toFixed(1)}%`);
+}
+
     </script>
   </body>
 </html>
-{% endblock %}
