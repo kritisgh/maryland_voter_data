@@ -13,10 +13,11 @@ df['voted_2024'] = pd.to_numeric(df['voted_2024'], errors='coerce')
 
 # Remove rows missing critical data.
 df = df.dropna(subset=['County', 'age_bracket', 'Party', 'voted_2024'])
-
+countyTotals = df.groupby('County')['voted_2024'].sum().to_dict()
 # Get a sorted list of unique counties for the dropdown menu.
 counties = sorted(df['County'].unique())
 turnout_df = pd.read_csv("md_voter_file.txt/county x 100.csv")
+turnout_df['County'] = turnout_df['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
 
 party_averages = {
     'DEM': dict(zip(turnout_df['County'], turnout_df['DEM'])),
@@ -32,6 +33,12 @@ party_ranges = {
     }
     for (party, avgs) in party_averages.items()
 }
+
+statewide_df = pd.read_csv("md_voter_file.txt/statewide_2024.csv")
+# convert fraction→percent
+statewide_df['turnout_pct'] = statewide_df['turnout'] * 100
+# build Party → % dict
+statewideAverages = dict(zip(statewide_df['Party'], statewide_df['turnout_pct']))
 
 def get_bracket_lower(bracket):
     """
@@ -93,7 +100,9 @@ def election_2024():
         "election_2024.html",
         counties=counties,
         partyAverages=party_averages,
-        partyRanges=party_ranges
+        partyRanges=party_ranges,
+        statewideAverages=statewideAverages,
+        countyTotals=countyTotals
     )
 
 @app.route('/gender')

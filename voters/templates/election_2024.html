@@ -15,7 +15,8 @@
       // Your Flask→JS data:
       const partyAverages = {{ partyAverages|tojson }};
       const partyRanges   = {{ partyRanges|tojson }};
-    
+      const statewideAverages = {{ statewideAverages|tojson }};
+
       // map Datawrapper chartId → party code
       const chartIdToParty = {
         'YcZmw': 'DEM',   // Democrats map
@@ -28,6 +29,13 @@
         DEM: 'steelblue',
         REP: 'crimson',
         UNA: 'goldenrod'
+      };
+      const countyTotals    = {{ countyTotals|tojson }};
+      // human‐readable party names
+      const partyFullNames  = {
+        DEM: 'Democrats',
+        REP: 'Republicans',
+        UNA: 'Unaffiliated'
       };
     </script>    
     <script src="//static.dwcdn.net/js/events.js"></script>
@@ -53,12 +61,12 @@
     <div class="container">
       <div class="map" id="map">
         <iframe title="Maryland Counties Map" id="datawrapper-chart-YcZmw" src="https://datawrapper.dwcdn.net/YcZmw/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
-        <p>Select Party:</p>
-        <select onchange="switchVis(this.value)">
-          <option value="YcZmw">Democrats</option>
-          <option value="xElgG">Republicans</option>
-          <option value="nuu3A">Unaffiliated</option>
-        </select>
+        <div class="segment-control">
+          <div class="segment-slider"></div>
+          <button class="segment active" data-val="YcZmw">Democrats</button>
+          <button class="segment"      data-val="xElgG">Republicans</button>
+          <button class="segment"      data-val="nuu3A">Unaffiliated</button>
+        </div>
       </div>
       <!-- Integrated tooltip: this will expand to show county info plus the chart -->
       <div class="tooltip" id="tooltip">
@@ -74,6 +82,7 @@
               <option value="{{ county }}">{{ county }}</option>
             {% endfor %}
           </select>
+          <div id="tooltipText" style="margin: 10px 0; font-size: 0.9em;"></div>
           <p>Statewide Average:</p>
           <div id="tooltipRange" style="margin-top:20px;"></div>
         </div>
@@ -119,7 +128,38 @@
 
   // Debounce & redraw the chart
   if (debounceTimeout) clearTimeout(debounceTimeout);
-  debounceTimeout = setTimeout(() => updateChart(newCounty), 0);
+  debounceTimeout = setTimeout(() => {
+    // 1) text paragraph
+    const fmt = formatCountyName(newCounty);
+    const total = countyTotals[newCounty] || 0;
+    const party = chartIdToParty[chartId];
+    const name  = partyFullNames[party] || party;
+      // numeric percentages
+    const countyPctNum = partyAverages[party][newCounty] || 0;
+    const statePctNum  = statewideAverages[party]      || 0;
+
+    // formatted percentages
+    const countyPct = countyPctNum.toFixed(1);
+    const statePct  = statePctNum.toFixed(1);
+
+    // decide comparison
+    const diff      = countyPctNum - statePctNum;
+    const threshold = 5;  // ±5% → “about the same”
+    let compPhrase;
+    if (Math.abs(diff) <= threshold)       compPhrase = 'about the same as';
+    else if (diff > threshold)             compPhrase = 'more than';
+    else                                   compPhrase = 'less than';
+    document
+      .getElementById('tooltipText')
+      .innerHTML = 
+        `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2024. `
+      + `Of these 2024 voters, <b><u>${countyPct}%</u></b> were registered ${name}. `  
+      + `This is <b><u>${compPhrase}</u></b> the statewide average of voters who were registered ${name} in 2024, which was <b><u>${statePct}%</u></b>.`;
+
+    // 2) range bar + marker
+    // 3) age‐bracket chart
+    updateChart(newCounty);
+  }, 0);
 });
 
 document.getElementById('county-dropdown')
@@ -132,6 +172,27 @@ document.getElementById('county-dropdown')
         }
     // Overwrite header with just the county name
     document.getElementById('tooltipHeader').innerHTML = `<h3 style = margin-block-start: 1em;>${formatCountyName(selected)}</h3>`;
+    // new text paragraph:
+    const fmt = formatCountyName(selected);
+    const total = countyTotals[selected] || 0;
+    const party = chartIdToParty[chartId];
+    const name  = partyFullNames[party] || party;
+    const countyPctNum = partyAverages[party][selected] || 0;
+    const statePctNum  = statewideAverages[party]     || 0;
+    const countyPct = countyPctNum.toFixed(1);
+    const statePct  = statePctNum.toFixed(1);
+    const diff      = countyPctNum - statePctNum;
+    const threshold = 1;
+    let compPhrase;
+    if (Math.abs(diff) <= threshold)       compPhrase = 'about the same as';
+    else if (diff > threshold)             compPhrase = 'more than';
+    else                                   compPhrase = 'less than';
+    document
+      .getElementById('tooltipText')
+      .innerHTML = 
+        `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2024. `
+      + `Of these 2024 voters, <b><u>${countyPct}%</u></b> were registered ${name}. `  
+      + `This is <b><u>${compPhrase}</u></b> the statewide average of voters who were registered ${name} in 2024, which was <b><u>${statePct}%</u></b>.`;
 
     // Fetch & draw
     drawSingleRange(selected);
@@ -273,66 +334,112 @@ title.append("tspan")
     return;
   }
 
+  // party’s county‐by‐county min/max & this county’s avg
   const { min, max } = partyRanges[party];
   const avg = partyAverages[party][county] ?? min;
 
+  // statewide avg for this party
+  const stateAvg = statewideAverages[party] ?? min;
+
+  // clear old
   d3.select("#tooltipRange").selectAll("svg").remove();
 
-  const w   = 300,
-        h   = 50,    // added some extra height for labels
-        pad = 20;
+  // dimensions
+  const w   = 300;
+  const h   = 60;    // extra height for three labels
+  const pad = 20;
+  const yMid = h / 2;
 
+  // x-scale
   const x = d3.scaleLinear()
               .domain([min, max])
               .range([pad, w - pad]);
 
+  // create svg
   const svg = d3.select("#tooltipRange")
                 .append("svg")
                   .attr("width", w)
                   .attr("height", h);
 
-  // Baseline
+  // 1) baseline line
   svg.append("line")
-     .attr("x1", x(min))
-     .attr("y1", h/2)
-     .attr("x2", x(max))
-     .attr("y2", h/2)
+     .attr("x1", x(min)).attr("y1", yMid)
+     .attr("x2", x(max)).attr("y2", yMid)
      .attr("stroke", partyColors[party])
      .attr("stroke-width", 2);
 
-  // Marker
+  // 2) county marker (circle)
   svg.append("circle")
      .attr("cx", x(avg))
-     .attr("cy", h/2)
+     .attr("cy", yMid)
      .attr("r", 6)
      .attr("fill", partyColors[party])
      .attr("stroke", "#333");
 
-  // Min label (above left end)
+  const tickHeight = 25;
+  svg.append("line")
+     .attr("x1", x(stateAvg))
+     .attr("y1", yMid - tickHeight/2)
+     .attr("x2", x(stateAvg))
+     .attr("y2", yMid + tickHeight/2)
+     .attr("stroke", "grey")
+     .attr("stroke-width", 3)
+     .attr("opacity", 0.8);
+
+  // 4) min label above left
   svg.append("text")
-     .attr("x", x(min))
-     .attr("y", h/2 - 10)
+     .attr("x", x(min)).attr("y", yMid - 15)
      .attr("text-anchor", "middle")
      .attr("font-size", "10px")
      .text(`${min.toFixed(1)}%`);
 
-  // Max label (above right end)
+  // 5) max label above right
   svg.append("text")
-     .attr("x", x(max))
-     .attr("y", h/2 - 10)
+     .attr("x", x(max)).attr("y", yMid - 15)
      .attr("text-anchor", "middle")
      .attr("font-size", "10px")
      .text(`${max.toFixed(1)}%`);
 
-  // Current county’s avg label (below marker)
+
+  // 7) county label below its circle
   svg.append("text")
-     .attr("x", x(avg))
-     .attr("y", h/2 + 20)
+     .attr("x", x(avg)).attr("y", yMid + 25)
      .attr("text-anchor", "middle")
      .attr("font-size", "10px")
      .attr("font-weight", "bold")
      .text(`${avg.toFixed(1)}%`);
 }
+
+
+const control   = document.querySelector('.segment-control');
+const buttons   = control.querySelectorAll('.segment');
+const slider    = control.querySelector('.segment-slider');
+const gap       = 8;    // must match --gap in CSS (in px)
+
+// map your party IDs → colors
+const partyColors2 = {
+  'YcZmw': 'steelblue',   // blue
+  'xElgG': 'crimson',   // red
+  'nuu3A': 'goldenrod'    // yellow
+};
+
+buttons.forEach((btn, idx) => {
+  btn.addEventListener('click', () => {
+    // 1) toggle active text color
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // 2) slide the highlight:  idx×100% + idx×gap pixels
+    slider.style.transform =
+      `translateX(calc(${idx * 100}% + ${idx * gap}px))`;
+
+    // 3) change background color per party
+    slider.style.backgroundColor = partyColors2[btn.dataset.val];
+
+    // 4) call your existing function
+    switchVis(btn.dataset.val);
+  });
+});
 
     </script>
   </body>
