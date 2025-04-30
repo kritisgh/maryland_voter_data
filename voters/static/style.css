@@ -191,3 +191,33 @@ body {
 #tooltipDropdown.selection #countyPrompt {
   display: none;
 }
+/* ensure label lives in the dropdown cell */
+
+
+/* hide on initial load */
+#tooltipDropdown.no-selection #dropdownLabel {
+  display: none;
+}
+
+/* show once a county is selected */
+#tooltipDropdown.selection #dropdownLabel {
+  display: block;
+}
+
+/* 1) New wrapper is the dropdown grid‐area */
+#tooltipDropdown #countySelector {
+  grid-area: dropdown;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* 2) Hide label on load */
+#tooltipDropdown.no-selection #dropdownLabel {
+  display: none;
+}
+
+/* 3) Show label once a county is selected */
+#tooltipDropdown.selection #dropdownLabel {
+  display: block;
+}

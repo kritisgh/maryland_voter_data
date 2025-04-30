@@ -48,12 +48,22 @@
           <div id="tooltipHeader">
             <p>Hover over a county on the map to see details here, or use the dropdown below!</p>
           </div>
-          <select id="county-dropdown" style="width: auto;">
-            <option value="">-- Select a County --</option>
-            {% for county in counties %}
-              <option value="{{ county }}">{{ county }}</option>
-            {% endfor %}
-          </select>
+          <div id="countySelector">
+            <label
+              id="dropdownLabel"
+              for="county-dropdown"
+              style="font-size:0.9em;"
+            >
+              Select another county:
+            </label>
+            <select id="county-dropdown" style="width:auto;">
+              <option value="">-- Select a County --</option>
+              {% for county in counties %}
+                <option value="{{ county }}">{{ county }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        
       
           <div id="tooltipText" style="margin: 10px 0; font-size: 0.9em;"></div>
       
@@ -158,7 +168,7 @@ function resetDropdownPosition() {
   lastCounty = newCounty;
 
   // Build just the header
-  let headerHTML = `<h3>${formatCountyName(newCounty)}</h3>`;
+  let headerHTML = `<h2>${formatCountyName(newCounty)}</h2>`;
   if (chartId === 'YcZmw') {
     headerHTML += `<p>Democratic Turnout: ${((data.value||data.DEM)||0).toFixed(2)}%</p>`;
   } else if (chartId === 'xElgG') {
@@ -222,7 +232,7 @@ document.getElementById('county-dropdown')
           return (name === "Baltimore City" || name === "Baltimore County") ? name : name + " County";
         }
     // Overwrite header with just the county name
-    document.getElementById('tooltipHeader').innerHTML = `<h3 style = margin-block-start: 1em;>${formatCountyName(selected)}</h3>`;
+    document.getElementById('tooltipHeader').innerHTML = `<h2 style = margin-block-start: 1em;>${formatCountyName(selected)}</h2>`;
     // new text paragraph:
     const fmt = formatCountyName(selected);
     if (!selected) {
