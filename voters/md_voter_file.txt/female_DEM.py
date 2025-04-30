@@ -34,7 +34,7 @@ fig = px.bar(
         'Total': ':.0f'  # Include total count in hover data, formatted as integer
     },
     color='age_bracket',  # Use distinct colors for each age group
-    color_discrete_sequence=['brown', 'teal', 'lime', 'navy', 'gold']  # Custom color palette
+    color_discrete_sequence=['blue', 'blue', 'blue', 'blue', 'blue']  # Custom color palette
 )
 
 # Update layout for better aesthetics

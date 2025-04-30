@@ -8,19 +8,18 @@ app = Flask(__name__)
 
 db = SqliteDatabase('turnout.db')
 
-class OfficialTurnout(Model):
+class CountyTurnout(Model):
     county = CharField(column_name='County')
-    election_day = IntegerField(column_name='Election Day')
-    early_voting = IntegerField(column_name='Early Voting')
-    vote_by_mail = IntegerField(column_name='Vote By Mail')
-    provisional = IntegerField(column_name='Provisional')
-    eligible_voters = IntegerField(column_name='Eligible Voters')
-    turnout_percent = DoubleField(column_name='Turnout Percentage')
-    party = CharField(column_name='Party')
-    year = IntegerField(column_name='Year')
+    democrat_diff = DoubleField(column_name='democrat_diff')
+    republican_diff = DoubleField(column_name='republican_diff')
+    green_diff = DoubleField(column_name='green_diff')
+    libertarian_diff = DoubleField(column_name='libertarian_diff')
+    unaffiliated_diff = DoubleField(column_name='unaffiliated_diff')
+    other_diff = DoubleField(column_name='other_diff')
+    statewide_diff = DoubleField(column_name='statewide_diff')
 
     class Meta:
-        table_name = "official_turnout"
+        table_name = "turnout_changes"
         database = db
         primary_key = False
 
@@ -46,7 +45,7 @@ class EligibleInactiveDifferences(Model):
     county = CharField(column_name='county')
     democrat_diff = IntegerField(column_name='democrat_diff')
     republican_diff = IntegerField(column_name='republican_diff')
-    green_diff = IntegerField(column_name='green_diff')
+    green_diff = IntegerField(column_name='green_diff', null=True)
     libertarian_diff = IntegerField(column_name='libertarian_diff')
     unaffiliated_diff = IntegerField(column_name='unaffiliated_diff')
     other_diff = IntegerField(column_name='other_diff')
@@ -95,17 +94,7 @@ def index():
 
 @app.route("/official-turnout")
 def official_turnout():
-    object_list = OfficialTurnout.select(
-        OfficialTurnout.county,
-        OfficialTurnout.election_day,
-        OfficialTurnout.early_voting,
-        OfficialTurnout.vote_by_mail,
-        OfficialTurnout.provisional,
-        OfficialTurnout.eligible_voters,
-        OfficialTurnout.turnout_percent,
-        OfficialTurnout.party,
-        OfficialTurnout.year
-    )
+    object_list = CountyTurnout.select()
     template = 'official_turnout.html'
     
     return render_template(template, object_list=object_list)
@@ -129,7 +118,7 @@ def eligible_inactive():
         }
         for row in graph_query
     ]
-
+    
     return render_template(template, object_list=object_list, graph_data=graph_data)
 
 @app.route("/eligible-active")

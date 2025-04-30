@@ -22,34 +22,12 @@
         <h1>Maryland Voter Turnout Data</h1>
         
         <div class="controls">
-            <div class="filter-group">
-                <label for="year-filter">Filter by Year:</label>
-                <select id="year-filter">
-                    <option value="all">All Years</option>
-                    <option value="2020">2020</option>
-                    <option value="2024">2024</option>
-                </select>
-            </div>
             
             <div class="filter-group">
                 <label for="county-filter">Filter by County:</label>
                 <select id="county-filter">
                     <option value="all">All Counties</option>
                     <!-- Counties will be populated via JavaScript -->
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="party-filter">Filter by Party:</label>
-                <select id="party-filter">
-                    <option value="none">All Parties</option>
-                    <option value="Democrat">Democrat</option>
-                    <option value="Bread and Roses">Bread and Roses</option>
-                    <option value="Green">Green</option>
-                    <option value="Libertarian">Libertarian</option>
-                    <option value="Working Class Party">Working Class Party</option>
-                    <option value="No Labels Maryland">No Labels Maryland</option>
-                    <option value="Unaffiliated">Unaffiliated</option>
-                    <option value="Other">Other</option>
                 </select>
             </div>
             
@@ -60,28 +38,26 @@
             <thead>
                 <tr>
                     <th>County</th>
-                    <th>Election Day</th>
-                    <th>Early Voting</th>
-                    <th>Vote by Mail</th>
-                    <th>Provisional</th>
-                    <th>Eligible Voters</th>
-                    <th>Turnout Percentage</th>
-                    <th>Party</th>
-                    <th>Year</th>
+                    <th>Statewide</th>
+                    <th>Democrat</th>
+                    <th>Republican</th>
+                    <th>Green</th>
+                    <th>Libertarian</th>
+                    <th>Unaffiliated</th>
+                    <th>Other</th>    
                 </tr>
             </thead>
             <tbody>
                 {% for obj in object_list %}
                 <tr>
                     <td>{{ obj.county }}</td>
-                    <td>{{ "{:,}".format(obj.election_day) }}</td>
-                    <td>{{ "{:,}".format(obj.early_voting) }}</td>
-                    <td>{{ "{:,}".format(obj.vote_by_mail) }}</td>
-                    <td>{{ "{:,}".format(obj.provisional) }}</td>
-                    <td>{{ "{:,}".format(obj.eligible_voters) }}</td>
-                    <td>{{ "{:,}".format(obj.turnout_percent) }}</td>
-                    <td>{{ obj.party }}</td>
-                    <td>{{ obj.year }}</td>
+                    <td>{{ "{:,}".format(obj.statewide_diff) }}</td>
+                    <td>{{ "{:,}".format(obj.democrat_diff) }}</td>
+                    <td>{{ "{:,}".format(obj.republican_diff) }}</td>
+                    <td>{{ "{:,}".format(obj.green_diff) }}</td>
+                    <td>{{ "{:,}".format(obj.libertarian_diff) }}</td>
+                    <td>{{ "{:,}".format(obj.unaffiliated_diff) }}</td>
+                    <td>{{ "{:,}".format(obj.other_diff) }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
