@@ -11,7 +11,17 @@ df['County'] = df['County'].str.replace("Saint Mary's", "St. Mary's", regex=Fals
 # Convert voted_2024 to numeric (this is critical if the column is read as strings)
 df['voted_2024'] = pd.to_numeric(df['voted_2024'], errors='coerce')
 
-# Remove rows missing critical data.
+df2020 = pd.read_csv("md_voter_file.txt/agg_MD_noGenderSplit_County.csv")
+df2020['County'] = df2020['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
+df2020['voted_2020'] = pd.to_numeric(df2020['voted_2020'], errors='coerce')
+df2020 = df2020.dropna(subset=['County', 'age_bracket', 'Party', 'voted_2020'])
+
+turnout2020 = pd.read_csv("md_voter_file.txt/county x 100_2020.csv")
+turnout2020['County'] = turnout2020['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
+
+statewide2020 = pd.read_csv("md_voter_file.txt/statewide_2020.csv")
+statewide2020['turnout_pct'] = statewide2020['turnout'] * 100
+
 df = df.dropna(subset=['County', 'age_bracket', 'Party', 'voted_2024'])
 countyTotals = df.groupby('County')['voted_2024'].sum().to_dict()
 # Get a sorted list of unique counties for the dropdown menu.
@@ -39,7 +49,25 @@ statewide_df = pd.read_csv("md_voter_file.txt/statewide_2024.csv")
 statewide_df['turnout_pct'] = statewide_df['turnout'] * 100
 # build Party → % dict
 statewideAverages = dict(zip(statewide_df['Party'], statewide_df['turnout_pct']))
+countyTotals2020 = df2020.groupby('County')['voted_2020'].sum().to_dict()
 
+# partyAverages for 2020
+party_averages_2020 = {
+    'DEM': dict(zip(turnout2020['County'], turnout2020['DEM'])),
+    'REP': dict(zip(turnout2020['County'], turnout2020['REP'])),
+    'UNA': dict(zip(turnout2020['County'], turnout2020['UNA']))
+}
+# partyRanges for 2020
+party_ranges_2020 = {
+    p: {'min': min(vals.values()), 'max': max(vals.values())}
+    for p, vals in party_averages_2020.items()
+}
+
+# statewideAverages for 2020
+statewideAverages2020 = dict(zip(statewide2020['Party'], statewide2020['turnout_pct']))
+
+# sorted county list
+counties2020 = sorted(df2020['County'].unique())
 def get_bracket_lower(bracket):
     """
     Extract the lower bound from a given age_bracket string.
@@ -103,6 +131,16 @@ def election_2024():
         partyRanges=party_ranges,
         statewideAverages=statewideAverages,
         countyTotals=countyTotals
+    )
+@app.route("/election_2020")
+def election_2020():
+    return render_template(
+        "election_2020.html",
+        counties=counties2020,
+        partyAverages=party_averages_2020,
+        partyRanges=party_ranges_2020,
+        statewideAverages=statewideAverages2020,
+        countyTotals=countyTotals2020
     )
 
 @app.route('/gender')
@@ -179,6 +217,31 @@ def county_data(county):
         "rep": rep_pct,
         "other": other_pct,
         "unaffiliated": unaffiliated_pct
+    })
+@app.route("/data2020/<county>")
+def county_data_2020(county):
+    sub = df2020[df2020['County']==county].copy()
+    sub['bracket_order'] = sub['age_bracket'].apply(get_bracket_lower)
+    sub = sub.sort_values("bracket_order")
+    pivot = sub.pivot_table(
+        index="age_bracket",
+        columns="Party",
+        values="voted_2020",
+        aggfunc='sum'
+    ).fillna(0)
+    pivot['total'] = pivot.sum(axis=1)
+    pivot["Dem_pct"] = pivot.get("DEM",0) / pivot['total'] * 100
+    pivot["Rep_pct"] = pivot.get("REP",0) / pivot['total'] * 100
+    pivot["Unaffiliated_pct"] = pivot.get("UNA",0) / pivot['total'] * 100
+    pivot["Oth_pct"] = pivot.get("OTH",0) / pivot['total'] * 100
+    pivot.reset_index(inplace=True)
+
+    return jsonify({
+        "ages": pivot["age_bracket"].tolist(),
+        "dem": pivot["Dem_pct"].tolist(),
+        "rep": pivot["Rep_pct"].tolist(),
+        "unaffiliated": pivot["Unaffiliated_pct"].tolist(),
+        "other": pivot["Oth_pct"].tolist()
     })
 
 if __name__ == "__main__":
