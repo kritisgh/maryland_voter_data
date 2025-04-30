@@ -13,11 +13,11 @@ def extract_info(text):
     messages=[
         {
             "role": "system",
-            "content": "With the data I provided, generate 2-3 randomized facts about general voter data in the years 2020-2024 on the given data. For years 2020-2024, find some quick but notable trends. Keep it within 2-3 sentences and keep randomizing the facts every time I prompt you. Try not to keep the facts limited to ages like 18-24, I want diverse facts. An example of this would be Allegany County: The 2024 voter data from Allegany County shows a strong presence of Republican voters, with 11,152 registered Republicans, compared to 983 registered Democrats. In addition to the small paragraph, give me 2-3 voter facts for each county in the 2024 election cycle. Please advise 'UNA' stands for unaffiliated. You should sound like a news reporter when giving the results. Note that I do not want any '*' or '**' in the response."
+            "content": "Go through this Maryland Voter Detail from the election years 2020 and 2024 text I gave you, give me very brief 1-2 random facts about each county and try to diversify the age ranges as well. These facts should be very quick digestable information for the reader to read. Please advise 'UNA' stands for unaffiliated and 'OTH' stands for other. You should sound like a news reporter when giving the results. Note that I do not want any '*' or '**' in the response."
         },
         {
             "role": "user",
-            "content": f"Give me some random quick hits about this data: {text}."
+            "content": f"Give me some random quick hits for each county about this data: {text}."
         }
     ],
     temperature=0,
@@ -55,7 +55,7 @@ def process_batches(raw_text_list, batch_size=10, wait=2):
     return results
 
 if __name__ == "__main__":
-    counties = open("example.txt").read().splitlines()
+    counties = open("md_voter_details.txt").read().splitlines()
     all_reports = process_batches(counties, batch_size=5, wait=1)
     for batch_info in all_reports:
         print(batch_info["groq_report"])
