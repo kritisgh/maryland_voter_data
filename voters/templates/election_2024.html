@@ -154,7 +154,7 @@
       .innerHTML = 
         `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2024. `
       + `Of these 2024 voters, <b><u>${countyPct}%</u></b> were registered ${name}. `  
-      + `This is <b><u>${compPhrase}</u></b> the statewide average of voters who were registered ${name} in 2024, which was <b><u>${statePct}%</u></b>.`;
+      + `This is <b><u>${compPhrase}</u></b> the statewide average of 2024 voters who were registered ${name}, which was <b><u>${statePct}%</u></b>.`;
 
     // 2) range bar + marker
     // 3) age‐bracket chart
@@ -192,7 +192,7 @@ document.getElementById('county-dropdown')
       .innerHTML = 
         `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2024. `
       + `Of these 2024 voters, <b><u>${countyPct}%</u></b> were registered ${name}. `  
-      + `This is <b><u>${compPhrase}</u></b> the statewide average of voters who were registered ${name} in 2024, which was <b><u>${statePct}%</u></b>.`;
+      + `This is <b><u>${compPhrase}</u></b> the statewide average of 2024 voters who were registered ${name}, which was <b><u>${statePct}%</u></b>.`;
 
     // Fetch & draw
     drawSingleRange(selected);
