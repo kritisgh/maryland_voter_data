@@ -472,6 +472,13 @@ title.append("tspan")
      .attr("font-size", "10px")
      .text(`${max.toFixed(1)}%`);
 
+    svg.append("text")
+     .attr("x", x(stateAvg))
+     .attr("y", yMid - tickHeight/2 - 5)
+     .attr("text-anchor", "middle")
+     .attr("font-size", "10px")
+     .attr("font-style", "bold")
+     .text(`State Avg: ${stateAvg.toFixed(1)}%`);
 
   // 7) county label below its circle
   svg.append("text")
