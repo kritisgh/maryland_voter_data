@@ -86,12 +86,12 @@
             {% for obj in object_list %}
             <tr>
                 <td>{{ obj.county }}</td>
-                <td>{{ "{:,}".format(obj.democrat_diff) }}</td>
-                <td>{{ "{:,}".format(obj.republican_diff) }}</td>
-                <td>{{ "{:,}".format(obj.green_diff) }}</td>
-                <td>{{ "{:,}".format(obj.libertarian_diff) }}</td>
-                <td>{{ "{:,}".format(obj.unaffiliated_diff) }}</td>
-                <td>{{ "{:,}".format(obj.other_diff) }}</td>
+                <td>{{ obj.democrat_diff }}</td>
+                <td>{{ obj.republican_diff }}</td>
+                <td>{{ obj.green_diff }}</td>
+                <td>{{ obj.libertarian_diff }}</td>
+                <td>{{ obj.unaffiliated_diff }}</td>
+                <td>{{ obj.other_diff }}</td>
             </tr>
             {% endfor %}
         </tbody>
