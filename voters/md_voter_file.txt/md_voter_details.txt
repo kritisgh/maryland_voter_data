@@ -1,0 +1,961 @@
+age_bracket,Gender,County,Party,Count,voted_2024,voted_2020
+18-24,Female,Allegany,DEM,589,372,139
+18-24,Female,Allegany,OTH,73,31,6
+18-24,Female,Allegany,REP,831,479,186
+18-24,Female,Allegany,UNA,755,314,80
+18-24,Female,Anne Arundel,DEM,10324,6538,2799
+18-24,Female,Anne Arundel,OTH,612,240,69
+18-24,Female,Anne Arundel,REP,4154,2491,1046
+18-24,Female,Anne Arundel,UNA,8491,3801,1273
+18-24,Female,Baltimore City,DEM,12515,7043,2655
+18-24,Female,Baltimore City,OTH,548,177,39
+18-24,Female,Baltimore City,REP,785,353,108
+18-24,Female,Baltimore City,UNA,4092,1653,474
+18-24,Female,Baltimore County,DEM,17719,11050,4607
+18-24,Female,Baltimore County,OTH,856,301,112
+18-24,Female,Baltimore County,REP,4245,2559,1002
+18-24,Female,Baltimore County,UNA,9679,4273,1432
+18-24,Female,Calvert,DEM,1485,937,423
+18-24,Female,Calvert,OTH,112,27,19
+18-24,Female,Calvert,REP,1140,725,253
+18-24,Female,Calvert,UNA,1541,701,246
+18-24,Female,Caroline,DEM,342,201,89
+18-24,Female,Caroline,OTH,42,12,4
+18-24,Female,Caroline,REP,491,297,99
+18-24,Female,Caroline,UNA,488,184,74
+18-24,Female,Carroll,DEM,2221,1452,683
+18-24,Female,Carroll,OTH,127,57,25
+18-24,Female,Carroll,REP,2428,1583,652
+18-24,Female,Carroll,UNA,2633,1258,432
+18-24,Female,Cecil,DEM,1120,640,246
+18-24,Female,Cecil,OTH,114,41,11
+18-24,Female,Cecil,REP,1543,961,350
+18-24,Female,Cecil,UNA,1602,624,194
+18-24,Female,Charles,DEM,4773,2924,1282
+18-24,Female,Charles,OTH,130,55,15
+18-24,Female,Charles,REP,770,472,192
+18-24,Female,Charles,UNA,2180,1004,329
+18-24,Female,Dorchester,DEM,413,212,91
+18-24,Female,Dorchester,OTH,45,14,5
+18-24,Female,Dorchester,REP,319,203,87
+18-24,Female,Dorchester,UNA,407,150,45
+18-24,Female,Frederick,DEM,5099,3197,1327
+18-24,Female,Frederick,OTH,281,116,35
+18-24,Female,Frederick,REP,2360,1453,569
+18-24,Female,Frederick,UNA,4599,2079,730
+18-24,Female,Garrett,DEM,149,94,35
+18-24,Female,Garrett,OTH,30,15,5
+18-24,Female,Garrett,REP,558,319,133
+18-24,Female,Garrett,UNA,263,105,37
+18-24,Female,Harford,DEM,3977,2477,1099
+18-24,Female,Harford,OTH,275,93,35
+18-24,Female,Harford,REP,2847,1749,666
+18-24,Female,Harford,UNA,4044,1823,619
+18-24,Female,Howard,DEM,8334,5423,2383
+18-24,Female,Howard,OTH,274,111,39
+18-24,Female,Howard,REP,1471,872,373
+18-24,Female,Howard,UNA,5141,2417,892
+18-24,Female,Kent,DEM,196,107,54
+18-24,Female,Kent,OTH,18,5,0
+18-24,Female,Kent,REP,169,101,45
+18-24,Female,Kent,UNA,196,91,28
+18-24,Female,Montgomery,DEM,25636,15916,7075
+18-24,Female,Montgomery,OTH,826,322,108
+18-24,Female,Montgomery,REP,2934,1691,712
+18-24,Female,Montgomery,UNA,13275,5990,2109
+18-24,Female,Prince George's,DEM,23399,14336,6244
+18-24,Female,Prince George's,OTH,868,319,87
+18-24,Female,Prince George's,REP,1091,564,173
+18-24,Female,Prince George's,UNA,8680,3730,1202
+18-24,Female,Queen Anne's,DEM,630,375,198
+18-24,Female,Queen Anne's,OTH,47,24,8
+18-24,Female,Queen Anne's,REP,785,484,209
+18-24,Female,Queen Anne's,UNA,760,307,119
+18-24,Female,Saint Mary's,DEM,1529,922,441
+18-24,Female,Saint Mary's,OTH,111,44,15
+18-24,Female,Saint Mary's,REP,1425,921,331
+18-24,Female,Saint Mary's,UNA,1686,733,266
+18-24,Female,Somerset,DEM,266,113,57
+18-24,Female,Somerset,OTH,22,10,6
+18-24,Female,Somerset,REP,210,126,37
+18-24,Female,Somerset,UNA,216,97,27
+18-24,Female,Talbot,DEM,523,292,128
+18-24,Female,Talbot,OTH,45,10,3
+18-24,Female,Talbot,REP,338,200,76
+18-24,Female,Talbot,UNA,486,199,73
+18-24,Female,Washington,DEM,1977,1109,469
+18-24,Female,Washington,OTH,173,69,21
+18-24,Female,Washington,REP,1655,1005,360
+18-24,Female,Washington,UNA,2294,927,296
+18-24,Female,Wicomico,DEM,1567,880,337
+18-24,Female,Wicomico,OTH,138,46,12
+18-24,Female,Wicomico,REP,1000,563,227
+18-24,Female,Wicomico,UNA,1444,586,191
+18-24,Female,Worcester,DEM,590,317,170
+18-24,Female,Worcester,OTH,45,14,5
+18-24,Female,Worcester,REP,648,375,153
+18-24,Female,Worcester,UNA,689,296,105
+18-24,Male,Allegany,DEM,351,177,82
+18-24,Male,Allegany,OTH,65,14,9
+18-24,Male,Allegany,REP,1226,639,232
+18-24,Male,Allegany,UNA,757,242,75
+18-24,Male,Anne Arundel,DEM,6921,3566,1657
+18-24,Male,Anne Arundel,OTH,660,218,78
+18-24,Male,Anne Arundel,REP,7082,3730,1548
+18-24,Male,Anne Arundel,UNA,9674,3603,1284
+18-24,Male,Baltimore City,DEM,9032,3693,1684
+18-24,Male,Baltimore City,OTH,455,87,19
+18-24,Male,Baltimore City,REP,1217,469,153
+18-24,Male,Baltimore City,UNA,4279,1311,414
+18-24,Male,Baltimore County,DEM,12557,6210,2968
+18-24,Male,Baltimore County,OTH,784,219,98
+18-24,Male,Baltimore County,REP,7195,3801,1528
+18-24,Male,Baltimore County,UNA,10997,4069,1437
+18-24,Male,Calvert,DEM,908,488,222
+18-24,Male,Calvert,OTH,95,42,11
+18-24,Male,Calvert,REP,1767,1017,389
+18-24,Male,Calvert,UNA,1543,603,194
+18-24,Male,Caroline,DEM,229,88,53
+18-24,Male,Caroline,OTH,41,12,2
+18-24,Male,Caroline,REP,641,353,140
+18-24,Male,Caroline,UNA,486,158,49
+18-24,Male,Carroll,DEM,1227,685,343
+18-24,Male,Carroll,OTH,176,83,38
+18-24,Male,Carroll,REP,3677,2184,932
+18-24,Male,Carroll,UNA,2714,1090,442
+18-24,Male,Cecil,DEM,675,277,123
+18-24,Male,Cecil,OTH,105,38,11
+18-24,Male,Cecil,REP,2150,1201,425
+18-24,Male,Cecil,UNA,1592,512,167
+18-24,Male,Charles,DEM,3895,1924,1042
+18-24,Male,Charles,OTH,152,57,23
+18-24,Male,Charles,REP,1180,634,257
+18-24,Male,Charles,UNA,2626,959,357
+18-24,Male,Dorchester,DEM,295,113,40
+18-24,Male,Dorchester,OTH,20,3,2
+18-24,Male,Dorchester,REP,447,247,95
+18-24,Male,Dorchester,UNA,348,91,20
+18-24,Male,Frederick,DEM,3371,1791,839
+18-24,Male,Frederick,OTH,315,116,45
+18-24,Male,Frederick,REP,4004,2233,892
+18-24,Male,Frederick,UNA,5170,1941,736
+18-24,Male,Garrett,DEM,79,44,31
+18-24,Male,Garrett,OTH,14,5,4
+18-24,Male,Garrett,REP,802,427,173
+18-24,Male,Garrett,UNA,261,93,32
+18-24,Male,Harford,DEM,2664,1307,617
+18-24,Male,Harford,OTH,327,115,55
+18-24,Male,Harford,REP,4444,2531,1092
+18-24,Male,Harford,UNA,4397,1712,638
+18-24,Male,Howard,DEM,6063,3333,1542
+18-24,Male,Howard,OTH,326,135,47
+18-24,Male,Howard,REP,2862,1614,732
+18-24,Male,Howard,UNA,6507,2627,995
+18-24,Male,Kent,DEM,121,55,32
+18-24,Male,Kent,OTH,11,3,2
+18-24,Male,Kent,REP,278,178,55
+18-24,Male,Kent,UNA,209,74,25
+18-24,Male,Montgomery,DEM,18836,9636,4603
+18-24,Male,Montgomery,OTH,916,292,133
+18-24,Male,Montgomery,REP,6052,3063,1314
+18-24,Male,Montgomery,UNA,17267,6476,2552
+18-24,Male,Prince George's,DEM,19310,9244,4790
+18-24,Male,Prince George's,OTH,914,252,72
+18-24,Male,Prince George's,REP,2351,1026,372
+18-24,Male,Prince George's,UNA,10831,3527,1338
+18-24,Male,Queen Anne's,DEM,349,181,94
+18-24,Male,Queen Anne's,OTH,53,24,6
+18-24,Male,Queen Anne's,REP,1174,658,278
+18-24,Male,Queen Anne's,UNA,753,284,115
+18-24,Male,Saint Mary's,DEM,1065,526,249
+18-24,Male,Saint Mary's,OTH,123,47,11
+18-24,Male,Saint Mary's,REP,1963,1145,433
+18-24,Male,Saint Mary's,UNA,1696,633,217
+18-24,Male,Somerset,DEM,160,52,27
+18-24,Male,Somerset,OTH,24,3,1
+18-24,Male,Somerset,REP,295,135,40
+18-24,Male,Somerset,UNA,234,74,26
+18-24,Male,Talbot,DEM,274,110,70
+18-24,Male,Talbot,OTH,34,13,6
+18-24,Male,Talbot,REP,550,286,135
+18-24,Male,Talbot,UNA,530,178,70
+18-24,Male,Washington,DEM,1283,579,257
+18-24,Male,Washington,OTH,159,62,18
+18-24,Male,Washington,REP,2476,1319,525
+18-24,Male,Washington,UNA,2237,708,244
+18-24,Male,Wicomico,DEM,1109,420,218
+18-24,Male,Wicomico,OTH,122,28,4
+18-24,Male,Wicomico,REP,1424,741,323
+18-24,Male,Wicomico,UNA,1391,421,142
+18-24,Male,Worcester,DEM,409,170,85
+18-24,Male,Worcester,OTH,62,20,7
+18-24,Male,Worcester,REP,1015,511,211
+18-24,Male,Worcester,UNA,628,213,78
+25-34,Female,Allegany,DEM,948,514,493
+25-34,Female,Allegany,OTH,101,32,26
+25-34,Female,Allegany,REP,1355,900,781
+25-34,Female,Allegany,UNA,959,410,330
+25-34,Female,Anne Arundel,DEM,17448,11672,10953
+25-34,Female,Anne Arundel,OTH,778,371,318
+25-34,Female,Anne Arundel,REP,7753,5238,4586
+25-34,Female,Anne Arundel,UNA,10263,5392,4636
+25-34,Female,Baltimore City,DEM,34300,19977,16997
+25-34,Female,Baltimore City,OTH,1092,383,292
+25-34,Female,Baltimore City,REP,2499,1214,970
+25-34,Female,Baltimore City,UNA,8662,3729,2820
+25-34,Female,Baltimore County,DEM,30536,19430,18781
+25-34,Female,Baltimore County,OTH,1191,485,434
+25-34,Female,Baltimore County,REP,7639,5012,4370
+25-34,Female,Baltimore County,UNA,11776,5738,5018
+25-34,Female,Calvert,DEM,2086,1346,1315
+25-34,Female,Calvert,OTH,129,72,56
+25-34,Female,Calvert,REP,1758,1247,1028
+25-34,Female,Calvert,UNA,1464,750,604
+25-34,Female,Caroline,DEM,511,260,258
+25-34,Female,Caroline,OTH,50,19,18
+25-34,Female,Caroline,REP,735,523,466
+25-34,Female,Caroline,UNA,545,256,210
+25-34,Female,Carroll,DEM,2871,1924,2026
+25-34,Female,Carroll,OTH,204,116,113
+25-34,Female,Carroll,REP,3731,2682,2552
+25-34,Female,Carroll,UNA,2915,1566,1486
+25-34,Female,Cecil,DEM,1797,1050,861
+25-34,Female,Cecil,OTH,162,72,44
+25-34,Female,Cecil,REP,2308,1635,1285
+25-34,Female,Cecil,UNA,1882,840,589
+25-34,Female,Charles,DEM,7032,4557,4552
+25-34,Female,Charles,OTH,210,88,90
+25-34,Female,Charles,REP,1325,834,734
+25-34,Female,Charles,UNA,2544,1279,1134
+25-34,Female,Dorchester,DEM,796,404,382
+25-34,Female,Dorchester,OTH,56,24,18
+25-34,Female,Dorchester,REP,571,442,370
+25-34,Female,Dorchester,UNA,452,209,177
+25-34,Female,Frederick,DEM,8254,5535,5318
+25-34,Female,Frederick,OTH,334,159,141
+25-34,Female,Frederick,REP,4196,2826,2569
+25-34,Female,Frederick,UNA,4971,2672,2368
+25-34,Female,Garrett,DEM,245,151,141
+25-34,Female,Garrett,OTH,30,10,10
+25-34,Female,Garrett,REP,917,632,590
+25-34,Female,Garrett,UNA,320,143,118
+25-34,Female,Harford,DEM,6239,4124,4025
+25-34,Female,Harford,OTH,401,202,177
+25-34,Female,Harford,REP,4654,3372,3028
+25-34,Female,Harford,UNA,4509,2375,2102
+25-34,Female,Howard,DEM,11943,8188,8119
+25-34,Female,Howard,OTH,365,173,157
+25-34,Female,Howard,REP,2373,1482,1419
+25-34,Female,Howard,UNA,4703,2574,2394
+25-34,Female,Kent,DEM,320,192,188
+25-34,Female,Kent,OTH,18,8,5
+25-34,Female,Kent,REP,317,236,208
+25-34,Female,Kent,UNA,248,133,98
+25-34,Female,Montgomery,DEM,38186,25393,23792
+25-34,Female,Montgomery,OTH,993,456,432
+25-34,Female,Montgomery,REP,4944,3016,2628
+25-34,Female,Montgomery,UNA,13014,7049,6137
+25-34,Female,Prince George's,DEM,44544,26185,26213
+25-34,Female,Prince George's,OTH,1230,462,409
+25-34,Female,Prince George's,REP,2520,1235,1019
+25-34,Female,Prince George's,UNA,11532,5068,4405
+25-34,Female,Queen Anne's,DEM,820,520,522
+25-34,Female,Queen Anne's,OTH,57,28,26
+25-34,Female,Queen Anne's,REP,1166,880,807
+25-34,Female,Queen Anne's,UNA,848,470,406
+25-34,Female,Saint Mary's,DEM,2652,1579,1555
+25-34,Female,Saint Mary's,OTH,174,84,76
+25-34,Female,Saint Mary's,REP,2269,1599,1372
+25-34,Female,Saint Mary's,UNA,2087,1049,826
+25-34,Female,Somerset,DEM,454,221,222
+25-34,Female,Somerset,OTH,28,11,7
+25-34,Female,Somerset,REP,341,244,229
+25-34,Female,Somerset,UNA,271,92,80
+25-34,Female,Talbot,DEM,757,449,479
+25-34,Female,Talbot,OTH,43,14,15
+25-34,Female,Talbot,REP,572,385,357
+25-34,Female,Talbot,UNA,491,228,219
+25-34,Female,Washington,DEM,3069,1735,1596
+25-34,Female,Washington,OTH,243,85,80
+25-34,Female,Washington,REP,2684,1730,1457
+25-34,Female,Washington,UNA,2692,1120,897
+25-34,Female,Wicomico,DEM,2632,1395,1360
+25-34,Female,Wicomico,OTH,143,56,49
+25-34,Female,Wicomico,REP,1522,994,883
+25-34,Female,Wicomico,UNA,1797,727,663
+25-34,Female,Worcester,DEM,975,553,577
+25-34,Female,Worcester,OTH,67,32,28
+25-34,Female,Worcester,REP,1005,661,613
+25-34,Female,Worcester,UNA,840,390,355
+25-34,Male,Allegany,DEM,694,344,327
+25-34,Male,Allegany,OTH,124,54,38
+25-34,Male,Allegany,REP,1652,963,813
+25-34,Male,Allegany,UNA,1096,391,340
+25-34,Male,Anne Arundel,DEM,12432,6977,6952
+25-34,Male,Anne Arundel,OTH,997,431,386
+25-34,Male,Anne Arundel,REP,10269,6553,5665
+25-34,Male,Anne Arundel,UNA,11686,5382,4464
+25-34,Male,Baltimore City,DEM,24483,10929,10116
+25-34,Male,Baltimore City,OTH,1038,298,260
+25-34,Male,Baltimore City,REP,3684,1743,1377
+25-34,Male,Baltimore City,UNA,9782,3638,2888
+25-34,Male,Baltimore County,DEM,21162,10698,11190
+25-34,Male,Baltimore County,OTH,1358,514,478
+25-34,Male,Baltimore County,REP,10389,6293,5437
+25-34,Male,Baltimore County,UNA,13353,5619,4999
+25-34,Male,Calvert,DEM,1387,733,731
+25-34,Male,Calvert,OTH,150,73,58
+25-34,Male,Calvert,REP,2216,1468,1200
+25-34,Male,Calvert,UNA,1633,759,624
+25-34,Male,Caroline,DEM,347,154,177
+25-34,Male,Caroline,OTH,51,29,28
+25-34,Male,Caroline,REP,851,581,497
+25-34,Male,Caroline,UNA,474,207,173
+25-34,Male,Carroll,DEM,1950,1152,1222
+25-34,Male,Carroll,OTH,316,143,144
+25-34,Male,Carroll,REP,4811,3119,3069
+25-34,Male,Carroll,UNA,2962,1423,1295
+25-34,Male,Cecil,DEM,1218,567,509
+25-34,Male,Cecil,OTH,206,96,81
+25-34,Male,Cecil,REP,2722,1837,1407
+25-34,Male,Cecil,UNA,1871,749,517
+25-34,Male,Charles,DEM,5511,2560,2930
+25-34,Male,Charles,OTH,249,92,84
+25-34,Male,Charles,REP,1731,1020,880
+25-34,Male,Charles,UNA,2886,1180,1107
+25-34,Male,Dorchester,DEM,502,200,189
+25-34,Male,Dorchester,OTH,49,21,18
+25-34,Male,Dorchester,REP,700,472,409
+25-34,Male,Dorchester,UNA,468,172,124
+25-34,Male,Frederick,DEM,5640,3314,3258
+25-34,Male,Frederick,OTH,462,219,205
+25-34,Male,Frederick,REP,5505,3424,3117
+25-34,Male,Frederick,UNA,5633,2662,2385
+25-34,Male,Garrett,DEM,149,85,72
+25-34,Male,Garrett,OTH,32,10,9
+25-34,Male,Garrett,REP,1020,641,606
+25-34,Male,Garrett,UNA,326,135,115
+25-34,Male,Harford,DEM,4287,2345,2440
+25-34,Male,Harford,OTH,542,256,211
+25-34,Male,Harford,REP,5933,4004,3600
+25-34,Male,Harford,UNA,4901,2341,2051
+25-34,Male,Howard,DEM,8986,5374,5566
+25-34,Male,Howard,OTH,444,189,177
+25-34,Male,Howard,REP,3618,2182,2005
+25-34,Male,Howard,UNA,6262,3100,2851
+25-34,Male,Kent,DEM,246,114,107
+25-34,Male,Kent,OTH,29,13,15
+25-34,Male,Kent,REP,390,272,237
+25-34,Male,Kent,UNA,285,135,111
+25-34,Male,Montgomery,DEM,28762,16620,16624
+25-34,Male,Montgomery,OTH,1187,482,477
+25-34,Male,Montgomery,REP,7512,4277,3780
+25-34,Male,Montgomery,UNA,16978,7941,7243
+25-34,Male,Prince George's,DEM,35559,15717,17583
+25-34,Male,Prince George's,OTH,1346,364,375
+25-34,Male,Prince George's,REP,4084,1773,1446
+25-34,Male,Prince George's,UNA,14713,5170,5013
+25-34,Male,Queen Anne's,DEM,528,290,293
+25-34,Male,Queen Anne's,OTH,86,46,45
+25-34,Male,Queen Anne's,REP,1436,991,902
+25-34,Male,Queen Anne's,UNA,779,370,338
+25-34,Male,Saint Mary's,DEM,1927,1010,1008
+25-34,Male,Saint Mary's,OTH,227,112,96
+25-34,Male,Saint Mary's,REP,2893,1898,1562
+25-34,Male,Saint Mary's,UNA,2337,1101,841
+25-34,Male,Somerset,DEM,311,117,130
+25-34,Male,Somerset,OTH,26,7,4
+25-34,Male,Somerset,REP,400,252,234
+25-34,Male,Somerset,UNA,245,88,74
+25-34,Male,Talbot,DEM,530,251,289
+25-34,Male,Talbot,OTH,57,24,21
+25-34,Male,Talbot,REP,727,447,425
+25-34,Male,Talbot,UNA,552,215,212
+25-34,Male,Washington,DEM,2063,933,903
+25-34,Male,Washington,OTH,274,119,83
+25-34,Male,Washington,REP,3284,1938,1602
+25-34,Male,Washington,UNA,2740,1006,753
+25-34,Male,Wicomico,DEM,1761,700,755
+25-34,Male,Wicomico,OTH,210,77,74
+25-34,Male,Wicomico,REP,1809,1086,937
+25-34,Male,Wicomico,UNA,1836,676,593
+25-34,Male,Worcester,DEM,646,291,314
+25-34,Male,Worcester,OTH,89,33,28
+25-34,Male,Worcester,REP,1238,738,688
+25-34,Male,Worcester,UNA,857,311,320
+35-50,Female,Allegany,DEM,1471,941,867
+35-50,Female,Allegany,OTH,135,52,48
+35-50,Female,Allegany,REP,2461,1761,1632
+35-50,Female,Allegany,UNA,1410,716,582
+35-50,Female,Anne Arundel,DEM,29467,22941,21691
+35-50,Female,Anne Arundel,OTH,1121,632,548
+35-50,Female,Anne Arundel,REP,14686,11269,10439
+35-50,Female,Anne Arundel,UNA,16640,10736,9572
+35-50,Female,Baltimore City,DEM,47276,29534,28825
+35-50,Female,Baltimore City,OTH,1278,437,410
+35-50,Female,Baltimore City,REP,3485,1503,1430
+35-50,Female,Baltimore City,UNA,10079,4369,4033
+35-50,Female,Baltimore County,DEM,48237,35414,34567
+35-50,Female,Baltimore County,OTH,1734,867,762
+35-50,Female,Baltimore County,REP,14614,10966,10033
+35-50,Female,Baltimore County,UNA,18084,10683,9725
+35-50,Female,Calvert,DEM,3393,2668,2374
+35-50,Female,Calvert,OTH,175,116,88
+35-50,Female,Calvert,REP,3431,2802,2324
+35-50,Female,Calvert,UNA,2732,1866,1418
+35-50,Female,Caroline,DEM,805,530,535
+35-50,Female,Caroline,OTH,57,30,26
+35-50,Female,Caroline,REP,1343,1066,997
+35-50,Female,Caroline,UNA,819,468,431
+35-50,Female,Carroll,DEM,5177,4203,4034
+35-50,Female,Carroll,OTH,307,200,181
+35-50,Female,Carroll,REP,7082,5880,5630
+35-50,Female,Carroll,UNA,4788,3276,3014
+35-50,Female,Cecil,DEM,2627,1705,1433
+35-50,Female,Cecil,OTH,202,85,65
+35-50,Female,Cecil,REP,4386,3503,2985
+35-50,Female,Cecil,UNA,2616,1440,1082
+35-50,Female,Charles,DEM,12795,10076,9602
+35-50,Female,Charles,OTH,317,173,160
+35-50,Female,Charles,REP,2531,1872,1700
+35-50,Female,Charles,UNA,4049,2530,2219
+35-50,Female,Dorchester,DEM,1287,813,806
+35-50,Female,Dorchester,OTH,59,20,25
+35-50,Female,Dorchester,REP,917,726,673
+35-50,Female,Dorchester,UNA,621,318,283
+35-50,Female,Frederick,DEM,13850,11007,10190
+35-50,Female,Frederick,OTH,488,283,236
+35-50,Female,Frederick,REP,7920,6264,5822
+35-50,Female,Frederick,UNA,8693,5860,5014
+35-50,Female,Garrett,DEM,385,257,221
+35-50,Female,Garrett,OTH,38,21,16
+35-50,Female,Garrett,REP,1452,1111,1095
+35-50,Female,Garrett,UNA,462,240,205
+35-50,Female,Harford,DEM,10434,8031,7779
+35-50,Female,Harford,OTH,564,315,290
+35-50,Female,Harford,REP,9285,7669,7235
+35-50,Female,Harford,UNA,7088,4658,4258
+35-50,Female,Howard,DEM,21103,17045,16056
+35-50,Female,Howard,OTH,565,307,275
+35-50,Female,Howard,REP,5082,3926,3565
+35-50,Female,Howard,UNA,9359,6597,5825
+35-50,Female,Kent,DEM,568,404,386
+35-50,Female,Kent,OTH,28,15,12
+35-50,Female,Kent,REP,446,357,321
+35-50,Female,Kent,UNA,339,211,176
+35-50,Female,Montgomery,DEM,62815,49606,44509
+35-50,Female,Montgomery,OTH,1507,794,706
+35-50,Female,Montgomery,REP,10264,7307,6353
+35-50,Female,Montgomery,UNA,23722,15644,13200
+35-50,Female,Prince George's,DEM,69800,46772,45956
+35-50,Female,Prince George's,OTH,2272,709,647
+35-50,Female,Prince George's,REP,4695,2495,2178
+35-50,Female,Prince George's,UNA,15858,8324,7758
+35-50,Female,Queen Anne's,DEM,1391,1044,1005
+35-50,Female,Queen Anne's,OTH,75,48,41
+35-50,Female,Queen Anne's,REP,2173,1785,1686
+35-50,Female,Queen Anne's,UNA,1225,832,760
+35-50,Female,Saint Mary's,DEM,3889,2849,2710
+35-50,Female,Saint Mary's,OTH,221,120,102
+35-50,Female,Saint Mary's,REP,4166,3351,3011
+35-50,Female,Saint Mary's,UNA,3008,1932,1603
+35-50,Female,Somerset,DEM,710,393,417
+35-50,Female,Somerset,OTH,38,24,19
+35-50,Female,Somerset,REP,597,456,439
+35-50,Female,Somerset,UNA,357,178,170
+35-50,Female,Talbot,DEM,1211,884,827
+35-50,Female,Talbot,OTH,49,28,27
+35-50,Female,Talbot,REP,1033,829,782
+35-50,Female,Talbot,UNA,752,454,415
+35-50,Female,Washington,DEM,4589,3098,2836
+35-50,Female,Washington,OTH,341,160,145
+35-50,Female,Washington,REP,4959,3734,3269
+35-50,Female,Washington,UNA,3956,2185,1800
+35-50,Female,Wicomico,DEM,3716,2394,2345
+35-50,Female,Wicomico,OTH,216,92,93
+35-50,Female,Wicomico,REP,2600,2025,1866
+35-50,Female,Wicomico,UNA,2282,1258,1107
+35-50,Female,Worcester,DEM,1591,1137,1104
+35-50,Female,Worcester,OTH,104,52,45
+35-50,Female,Worcester,REP,1783,1402,1300
+35-50,Female,Worcester,UNA,1229,692,643
+35-50,Male,Allegany,DEM,1140,662,596
+35-50,Male,Allegany,OTH,177,68,66
+35-50,Male,Allegany,REP,2729,1864,1667
+35-50,Male,Allegany,UNA,1503,727,568
+35-50,Male,Anne Arundel,DEM,19200,13047,12598
+35-50,Male,Anne Arundel,OTH,1535,808,746
+35-50,Male,Anne Arundel,REP,17090,12713,11513
+35-50,Male,Anne Arundel,UNA,18358,11244,10039
+35-50,Male,Baltimore City,DEM,35834,17845,17922
+35-50,Male,Baltimore City,OTH,1627,471,457
+35-50,Male,Baltimore City,REP,4908,2053,1897
+35-50,Male,Baltimore City,UNA,12775,4822,4535
+35-50,Male,Baltimore County,DEM,31237,19707,19383
+35-50,Male,Baltimore County,OTH,2024,949,877
+35-50,Male,Baltimore County,REP,17089,12204,11034
+35-50,Male,Baltimore County,UNA,20056,11097,10199
+35-50,Male,Calvert,DEM,2192,1434,1307
+35-50,Male,Calvert,OTH,259,155,123
+35-50,Male,Calvert,REP,3787,2958,2429
+35-50,Male,Calvert,UNA,2746,1757,1297
+35-50,Male,Caroline,DEM,539,283,284
+35-50,Male,Caroline,OTH,80,34,32
+35-50,Male,Caroline,REP,1383,1074,984
+35-50,Male,Caroline,UNA,741,410,367
+35-50,Male,Carroll,DEM,3249,2421,2340
+35-50,Male,Carroll,OTH,480,313,298
+35-50,Male,Carroll,REP,8069,6471,6019
+35-50,Male,Carroll,UNA,5042,3313,3048
+35-50,Male,Cecil,DEM,1780,973,859
+35-50,Male,Cecil,OTH,290,138,108
+35-50,Male,Cecil,REP,4478,3406,2826
+35-50,Male,Cecil,UNA,2518,1289,1056
+35-50,Male,Charles,DEM,8074,5211,5180
+35-50,Male,Charles,OTH,369,170,153
+35-50,Male,Charles,REP,2942,2062,1835
+35-50,Male,Charles,UNA,4503,2478,2157
+35-50,Male,Dorchester,DEM,805,377,361
+35-50,Male,Dorchester,OTH,76,33,36
+35-50,Male,Dorchester,REP,1030,764,707
+35-50,Male,Dorchester,UNA,578,273,244
+35-50,Male,Frederick,DEM,9151,6751,6180
+35-50,Male,Frederick,OTH,690,408,357
+35-50,Male,Frederick,REP,9310,7176,6475
+35-50,Male,Frederick,UNA,9347,6054,5239
+35-50,Male,Garrett,DEM,283,174,157
+35-50,Male,Garrett,OTH,65,34,30
+35-50,Male,Garrett,REP,1577,1155,1072
+35-50,Male,Garrett,UNA,486,244,225
+35-50,Male,Harford,DEM,6550,4492,4427
+35-50,Male,Harford,OTH,728,439,388
+35-50,Male,Harford,REP,10329,8219,7690
+35-50,Male,Harford,UNA,7528,4755,4273
+35-50,Male,Howard,DEM,13616,10358,9830
+35-50,Male,Howard,OTH,674,354,312
+35-50,Male,Howard,REP,5903,4427,4063
+35-50,Male,Howard,UNA,10660,7228,6455
+35-50,Male,Kent,DEM,413,247,247
+35-50,Male,Kent,OTH,36,23,18
+35-50,Male,Kent,REP,571,434,400
+35-50,Male,Kent,UNA,337,188,163
+35-50,Male,Montgomery,DEM,43685,32007,28743
+35-50,Male,Montgomery,OTH,1745,896,800
+35-50,Male,Montgomery,REP,12379,8658,7389
+35-50,Male,Montgomery,UNA,27632,17403,14872
+35-50,Male,Prince George's,DEM,50614,26598,27385
+35-50,Male,Prince George's,OTH,2576,666,622
+35-50,Male,Prince George's,REP,6360,3156,2701
+35-50,Male,Prince George's,UNA,19518,8683,8218
+35-50,Male,Queen Anne's,DEM,815,540,521
+35-50,Male,Queen Anne's,OTH,120,79,65
+35-50,Male,Queen Anne's,REP,2411,1964,1793
+35-50,Male,Queen Anne's,UNA,1246,827,717
+35-50,Male,Saint Mary's,DEM,2481,1581,1498
+35-50,Male,Saint Mary's,OTH,294,160,138
+35-50,Male,Saint Mary's,REP,4568,3550,3114
+35-50,Male,Saint Mary's,UNA,3159,1953,1657
+35-50,Male,Somerset,DEM,453,189,231
+35-50,Male,Somerset,OTH,45,20,17
+35-50,Male,Somerset,REP,669,452,451
+35-50,Male,Somerset,UNA,338,146,127
+35-50,Male,Talbot,DEM,784,488,469
+35-50,Male,Talbot,OTH,90,48,45
+35-50,Male,Talbot,REP,1158,915,845
+35-50,Male,Talbot,UNA,756,441,387
+35-50,Male,Washington,DEM,3231,1906,1744
+35-50,Male,Washington,OTH,356,177,156
+35-50,Male,Washington,REP,5545,3950,3407
+35-50,Male,Washington,UNA,3926,2029,1681
+35-50,Male,Wicomico,DEM,2415,1263,1243
+35-50,Male,Wicomico,OTH,245,103,83
+35-50,Male,Wicomico,REP,2925,2135,1940
+35-50,Male,Wicomico,UNA,2244,1139,999
+35-50,Male,Worcester,DEM,1060,598,580
+35-50,Male,Worcester,OTH,118,53,45
+35-50,Male,Worcester,REP,1954,1437,1357
+35-50,Male,Worcester,UNA,1331,718,650
+51-64,Female,Allegany,DEM,1340,956,889
+51-64,Female,Allegany,OTH,69,37,27
+51-64,Female,Allegany,REP,3150,2586,2396
+51-64,Female,Allegany,UNA,890,543,482
+51-64,Female,Anne Arundel,DEM,23398,19383,19142
+51-64,Female,Anne Arundel,OTH,570,368,356
+51-64,Female,Anne Arundel,REP,18306,15310,15265
+51-64,Female,Anne Arundel,UNA,10166,7439,7194
+51-64,Female,Baltimore City,DEM,35977,24176,24669
+51-64,Female,Baltimore City,OTH,469,185,181
+51-64,Female,Baltimore City,REP,2898,1520,1533
+51-64,Female,Baltimore City,UNA,4295,2039,1990
+51-64,Female,Baltimore County,DEM,40068,32514,32517
+51-64,Female,Baltimore County,OTH,857,541,530
+51-64,Female,Baltimore County,REP,18522,15318,15024
+51-64,Female,Baltimore County,UNA,10852,7341,7183
+51-64,Female,Calvert,DEM,3406,2913,2764
+51-64,Female,Calvert,OTH,103,72,58
+51-64,Female,Calvert,REP,4253,3731,3398
+51-64,Female,Calvert,UNA,1713,1303,1150
+51-64,Female,Caroline,DEM,790,617,619
+51-64,Female,Caroline,OTH,33,19,20
+51-64,Female,Caroline,REP,1506,1284,1281
+51-64,Female,Caroline,UNA,471,303,288
+51-64,Female,Carroll,DEM,4340,3764,3695
+51-64,Female,Carroll,OTH,183,130,120
+51-64,Female,Carroll,REP,9189,8047,8019
+51-64,Female,Carroll,UNA,3051,2330,2277
+51-64,Female,Cecil,DEM,2686,1979,1749
+51-64,Female,Cecil,OTH,126,84,67
+51-64,Female,Cecil,REP,5003,4260,3852
+51-64,Female,Cecil,UNA,1793,1198,989
+51-64,Female,Charles,DEM,12379,10504,10418
+51-64,Female,Charles,OTH,160,102,91
+51-64,Female,Charles,REP,3626,2996,2972
+51-64,Female,Charles,UNA,2493,1740,1702
+51-64,Female,Dorchester,DEM,1300,982,950
+51-64,Female,Dorchester,OTH,35,20,16
+51-64,Female,Dorchester,REP,1276,1100,1034
+51-64,Female,Dorchester,UNA,441,299,276
+51-64,Female,Frederick,DEM,10175,8546,8413
+51-64,Female,Frederick,OTH,219,148,125
+51-64,Female,Frederick,REP,9756,8264,8220
+51-64,Female,Frederick,UNA,5243,3875,3747
+51-64,Female,Garrett,DEM,448,352,316
+51-64,Female,Garrett,OTH,37,21,22
+51-64,Female,Garrett,REP,1859,1571,1486
+51-64,Female,Garrett,UNA,311,203,165
+51-64,Female,Harford,DEM,8536,7090,7105
+51-64,Female,Harford,OTH,256,168,169
+51-64,Female,Harford,REP,11723,10267,10154
+51-64,Female,Harford,UNA,4226,3135,3074
+51-64,Female,Howard,DEM,16101,13882,13817
+51-64,Female,Howard,OTH,356,247,224
+51-64,Female,Howard,REP,7047,5934,5972
+51-64,Female,Howard,UNA,6288,4775,4837
+51-64,Female,Kent,DEM,740,598,555
+51-64,Female,Kent,OTH,26,19,17
+51-64,Female,Kent,REP,702,608,551
+51-64,Female,Kent,UNA,301,223,204
+51-64,Female,Montgomery,DEM,54644,45564,45213
+51-64,Female,Montgomery,OTH,1027,661,638
+51-64,Female,Montgomery,REP,13650,10775,10624
+51-64,Female,Montgomery,UNA,18496,13118,12842
+51-64,Female,Prince George's,DEM,69676,52625,53279
+51-64,Female,Prince George's,OTH,1764,536,537
+51-64,Female,Prince George's,REP,5031,3174,3200
+51-64,Female,Prince George's,UNA,8408,5073,4973
+51-64,Female,Queen Anne's,DEM,1578,1325,1252
+51-64,Female,Queen Anne's,OTH,47,33,33
+51-64,Female,Queen Anne's,REP,2993,2631,2560
+51-64,Female,Queen Anne's,UNA,981,747,701
+51-64,Female,Saint Mary's,DEM,3426,2722,2665
+51-64,Female,Saint Mary's,OTH,116,80,68
+51-64,Female,Saint Mary's,REP,4790,4127,3957
+51-64,Female,Saint Mary's,UNA,1724,1264,1185
+51-64,Female,Somerset,DEM,750,566,562
+51-64,Female,Somerset,OTH,19,12,11
+51-64,Female,Somerset,REP,856,721,675
+51-64,Female,Somerset,UNA,239,140,129
+51-64,Female,Talbot,DEM,1362,1137,1094
+51-64,Female,Talbot,OTH,38,27,26
+51-64,Female,Talbot,REP,1580,1336,1307
+51-64,Female,Talbot,UNA,642,475,442
+51-64,Female,Washington,DEM,4105,3124,2972
+51-64,Female,Washington,OTH,147,90,73
+51-64,Female,Washington,REP,6498,5442,5067
+51-64,Female,Washington,UNA,2421,1615,1421
+51-64,Female,Wicomico,DEM,3449,2579,2556
+51-64,Female,Wicomico,OTH,124,71,68
+51-64,Female,Wicomico,REP,3232,2717,2653
+51-64,Female,Wicomico,UNA,1406,944,880
+51-64,Female,Worcester,DEM,1829,1429,1370
+51-64,Female,Worcester,OTH,84,60,55
+51-64,Female,Worcester,REP,2792,2349,2279
+51-64,Female,Worcester,UNA,987,682,628
+51-64,Male,Allegany,DEM,1004,679,637
+51-64,Male,Allegany,OTH,77,45,42
+51-64,Male,Allegany,REP,3177,2516,2325
+51-64,Male,Allegany,UNA,848,512,437
+51-64,Male,Anne Arundel,DEM,15450,11825,11697
+51-64,Male,Anne Arundel,OTH,724,482,437
+51-64,Male,Anne Arundel,REP,19572,15898,15733
+51-64,Male,Anne Arundel,UNA,11362,8186,7962
+51-64,Male,Baltimore City,DEM,28191,15469,15866
+51-64,Male,Baltimore City,OTH,719,273,263
+51-64,Male,Baltimore City,REP,3997,1937,1915
+51-64,Male,Baltimore City,UNA,5813,2516,2471
+51-64,Male,Baltimore County,DEM,26825,19733,19848
+51-64,Male,Baltimore County,OTH,1054,618,580
+51-64,Male,Baltimore County,REP,19623,15590,15105
+51-64,Male,Baltimore County,UNA,12241,8284,7980
+51-64,Male,Calvert,DEM,2269,1818,1703
+51-64,Male,Calvert,OTH,138,98,79
+51-64,Male,Calvert,REP,4411,3812,3376
+51-64,Male,Calvert,UNA,1757,1341,1179
+51-64,Male,Caroline,DEM,573,405,385
+51-64,Male,Caroline,OTH,42,24,17
+51-64,Male,Caroline,REP,1562,1310,1242
+51-64,Male,Caroline,UNA,455,301,300
+51-64,Male,Carroll,DEM,2669,2189,2158
+51-64,Male,Carroll,OTH,258,173,172
+51-64,Male,Carroll,REP,9635,8288,8209
+51-64,Male,Carroll,UNA,3276,2509,2447
+51-64,Male,Cecil,DEM,1914,1274,1148
+51-64,Male,Cecil,OTH,165,101,90
+51-64,Male,Cecil,REP,5142,4215,3737
+51-64,Male,Cecil,UNA,1819,1137,995
+51-64,Male,Charles,DEM,8761,6830,6865
+51-64,Male,Charles,OTH,188,113,111
+51-64,Male,Charles,REP,3778,3010,2975
+51-64,Male,Charles,UNA,2795,1895,1837
+51-64,Male,Dorchester,DEM,937,600,579
+51-64,Male,Dorchester,OTH,46,25,22
+51-64,Male,Dorchester,REP,1298,1070,1016
+51-64,Male,Dorchester,UNA,427,253,234
+51-64,Male,Frederick,DEM,6817,5441,5287
+51-64,Male,Frederick,OTH,344,217,207
+51-64,Male,Frederick,REP,10574,8736,8646
+51-64,Male,Frederick,UNA,6076,4545,4393
+51-64,Male,Garrett,DEM,281,204,189
+51-64,Male,Garrett,OTH,36,21,20
+51-64,Male,Garrett,REP,1832,1502,1440
+51-64,Male,Garrett,UNA,296,198,188
+51-64,Male,Harford,DEM,5804,4467,4516
+51-64,Male,Harford,OTH,379,241,244
+51-64,Male,Harford,REP,11849,10245,10074
+51-64,Male,Harford,UNA,4583,3371,3306
+51-64,Male,Howard,DEM,11017,9100,9064
+51-64,Male,Howard,OTH,408,267,266
+51-64,Male,Howard,REP,7941,6630,6622
+51-64,Male,Howard,UNA,7752,6034,5891
+51-64,Male,Kent,DEM,453,340,309
+51-64,Male,Kent,OTH,27,14,18
+51-64,Male,Kent,REP,718,617,559
+51-64,Male,Kent,UNA,280,188,178
+51-64,Male,Montgomery,DEM,37858,30356,30024
+51-64,Male,Montgomery,OTH,1174,742,725
+51-64,Male,Montgomery,REP,15642,12090,11897
+51-64,Male,Montgomery,UNA,21903,15865,15361
+51-64,Male,Prince George's,DEM,49926,33371,34406
+51-64,Male,Prince George's,OTH,2047,627,644
+51-64,Male,Prince George's,REP,6107,3608,3534
+51-64,Male,Prince George's,UNA,10783,6090,6102
+51-64,Male,Queen Anne's,DEM,966,755,720
+51-64,Male,Queen Anne's,OTH,83,60,50
+51-64,Male,Queen Anne's,REP,3077,2660,2609
+51-64,Male,Queen Anne's,UNA,1046,789,755
+51-64,Male,Saint Mary's,DEM,2372,1724,1704
+51-64,Male,Saint Mary's,OTH,138,93,93
+51-64,Male,Saint Mary's,REP,5104,4330,4146
+51-64,Male,Saint Mary's,UNA,1937,1438,1335
+51-64,Male,Somerset,DEM,509,315,327
+51-64,Male,Somerset,OTH,25,15,10
+51-64,Male,Somerset,REP,881,736,669
+51-64,Male,Somerset,UNA,262,160,140
+51-64,Male,Talbot,DEM,861,658,622
+51-64,Male,Talbot,OTH,54,32,36
+51-64,Male,Talbot,REP,1506,1273,1196
+51-64,Male,Talbot,UNA,630,452,411
+51-64,Male,Washington,DEM,2899,2042,1899
+51-64,Male,Washington,OTH,174,103,83
+51-64,Male,Washington,REP,6738,5485,5041
+51-64,Male,Washington,UNA,2426,1635,1449
+51-64,Male,Wicomico,DEM,2437,1584,1532
+51-64,Male,Wicomico,OTH,121,76,68
+51-64,Male,Wicomico,REP,3192,2620,2487
+51-64,Male,Wicomico,UNA,1358,865,846
+51-64,Male,Worcester,DEM,1193,821,825
+51-64,Male,Worcester,OTH,110,71,57
+51-64,Male,Worcester,REP,2965,2383,2295
+51-64,Male,Worcester,UNA,1025,702,639
+65+,Female,Allegany,DEM,2493,1890,1899
+65+,Female,Allegany,OTH,60,38,41
+65+,Female,Allegany,REP,4380,3610,3577
+65+,Female,Allegany,UNA,690,484,440
+65+,Female,Anne Arundel,DEM,27854,22880,23079
+65+,Female,Anne Arundel,OTH,443,299,303
+65+,Female,Anne Arundel,REP,19462,16001,16443
+65+,Female,Anne Arundel,UNA,7679,5782,5721
+65+,Female,Baltimore City,DEM,45653,31340,33409
+65+,Female,Baltimore City,OTH,268,129,128
+65+,Female,Baltimore City,REP,3393,2035,2164
+65+,Female,Baltimore City,UNA,2761,1378,1441
+65+,Female,Baltimore County,DEM,53370,43563,44990
+65+,Female,Baltimore County,OTH,878,605,658
+65+,Female,Baltimore County,REP,24366,20060,20661
+65+,Female,Baltimore County,UNA,8621,6072,6125
+65+,Female,Calvert,DEM,4258,3600,3522
+65+,Female,Calvert,OTH,73,50,51
+65+,Female,Calvert,REP,3711,3156,3012
+65+,Female,Calvert,UNA,1109,865,784
+65+,Female,Caroline,DEM,1227,945,971
+65+,Female,Caroline,OTH,24,19,18
+65+,Female,Caroline,REP,1528,1343,1350
+65+,Female,Caroline,UNA,388,279,283
+65+,Female,Carroll,DEM,6247,5246,5318
+65+,Female,Carroll,OTH,150,107,113
+65+,Female,Carroll,REP,9522,8239,8357
+65+,Female,Carroll,UNA,2242,1687,1675
+65+,Female,Cecil,DEM,3668,2765,2697
+65+,Female,Cecil,OTH,96,67,65
+65+,Female,Cecil,REP,4755,4000,3784
+65+,Female,Cecil,UNA,1298,918,840
+65+,Female,Charles,DEM,9536,7601,7769
+65+,Female,Charles,OTH,90,50,52
+65+,Female,Charles,REP,3584,2906,2974
+65+,Female,Charles,UNA,1361,923,916
+65+,Female,Dorchester,DEM,2024,1585,1616
+65+,Female,Dorchester,OTH,28,19,20
+65+,Female,Dorchester,REP,1669,1467,1452
+65+,Female,Dorchester,UNA,380,268,249
+65+,Female,Frederick,DEM,11858,9844,9728
+65+,Female,Frederick,OTH,169,118,117
+65+,Female,Frederick,REP,9841,8183,8166
+65+,Female,Frederick,UNA,3779,2813,2734
+65+,Female,Garrett,DEM,931,739,729
+65+,Female,Garrett,OTH,32,26,26
+65+,Female,Garrett,REP,2323,1970,1995
+65+,Female,Garrett,UNA,252,200,179
+65+,Female,Harford,DEM,10982,9097,9284
+65+,Female,Harford,OTH,265,189,182
+65+,Female,Harford,REP,12572,10982,11114
+65+,Female,Harford,UNA,3230,2517,2486
+65+,Female,Howard,DEM,17534,14704,14875
+65+,Female,Howard,OTH,287,199,206
+65+,Female,Howard,REP,7173,5859,6042
+65+,Female,Howard,UNA,4516,3348,3316
+65+,Female,Kent,DEM,1684,1472,1426
+65+,Female,Kent,OTH,29,18,19
+65+,Female,Kent,REP,1061,915,896
+65+,Female,Kent,UNA,362,276,263
+65+,Female,Montgomery,DEM,68923,56496,56704
+65+,Female,Montgomery,OTH,953,577,633
+65+,Female,Montgomery,REP,17050,12795,13250
+65+,Female,Montgomery,UNA,15926,10666,10937
+65+,Female,Prince George's,DEM,76584,57138,59749
+65+,Female,Prince George's,OTH,1477,514,569
+65+,Female,Prince George's,REP,6850,4421,4787
+65+,Female,Prince George's,UNA,5538,3297,3449
+65+,Female,Queen Anne's,DEM,2591,2184,2099
+65+,Female,Queen Anne's,OTH,55,43,39
+65+,Female,Queen Anne's,REP,3037,2627,2618
+65+,Female,Queen Anne's,UNA,771,612,557
+65+,Female,Saint Mary's,DEM,4058,3230,3309
+65+,Female,Saint Mary's,OTH,81,54,50
+65+,Female,Saint Mary's,REP,3848,3274,3216
+65+,Female,Saint Mary's,UNA,1076,777,740
+65+,Female,Somerset,DEM,1099,859,900
+65+,Female,Somerset,OTH,29,20,20
+65+,Female,Somerset,REP,1114,956,950
+65+,Female,Somerset,UNA,215,154,144
+65+,Female,Talbot,DEM,3042,2580,2558
+65+,Female,Talbot,OTH,64,44,45
+65+,Female,Talbot,REP,2627,2220,2254
+65+,Female,Talbot,UNA,870,677,634
+65+,Female,Washington,DEM,5524,4367,4287
+65+,Female,Washington,OTH,120,80,77
+65+,Female,Washington,REP,7246,6118,5947
+65+,Female,Washington,UNA,1785,1257,1193
+65+,Female,Wicomico,DEM,4904,3872,3975
+65+,Female,Wicomico,OTH,87,55,59
+65+,Female,Wicomico,REP,4184,3557,3589
+65+,Female,Wicomico,UNA,1158,822,789
+65+,Female,Worcester,DEM,3620,2919,2917
+65+,Female,Worcester,OTH,112,88,86
+65+,Female,Worcester,REP,3983,3327,3340
+65+,Female,Worcester,UNA,1075,811,790
+65+,Male,Allegany,DEM,1606,1272,1235
+65+,Male,Allegany,OTH,67,46,45
+65+,Male,Allegany,REP,3690,3205,3033
+65+,Male,Allegany,UNA,762,571,539
+65+,Male,Anne Arundel,DEM,18014,14613,14807
+65+,Male,Anne Arundel,OTH,449,302,312
+65+,Male,Anne Arundel,REP,18261,15278,15511
+65+,Male,Anne Arundel,UNA,8214,6363,6406
+65+,Male,Baltimore City,DEM,29366,18291,19120
+65+,Male,Baltimore City,OTH,328,162,156
+65+,Male,Baltimore City,REP,3513,2074,2082
+65+,Male,Baltimore City,UNA,3482,1727,1760
+65+,Male,Baltimore County,DEM,33382,27355,27790
+65+,Male,Baltimore County,OTH,888,635,635
+65+,Male,Baltimore County,REP,21680,18178,18314
+65+,Male,Baltimore County,UNA,9358,6918,6929
+65+,Male,Calvert,DEM,2872,2390,2312
+65+,Male,Calvert,OTH,95,70,70
+65+,Male,Calvert,REP,3549,3106,2892
+65+,Male,Calvert,UNA,1258,1021,934
+65+,Male,Caroline,DEM,865,698,702
+65+,Male,Caroline,OTH,20,14,16
+65+,Male,Caroline,REP,1448,1275,1260
+65+,Male,Caroline,UNA,347,257,255
+65+,Male,Carroll,DEM,4055,3472,3506
+65+,Male,Carroll,OTH,187,148,148
+65+,Male,Carroll,REP,8542,7569,7594
+65+,Male,Carroll,UNA,2287,1873,1857
+65+,Male,Cecil,DEM,2560,1947,1835
+65+,Male,Cecil,OTH,110,74,70
+65+,Male,Cecil,REP,4433,3843,3542
+65+,Male,Cecil,UNA,1353,1021,897
+65+,Male,Charles,DEM,6050,4793,4893
+65+,Male,Charles,OTH,130,94,93
+65+,Male,Charles,REP,3461,2851,2880
+65+,Male,Charles,UNA,1566,1152,1154
+65+,Male,Dorchester,DEM,1391,1057,1052
+65+,Male,Dorchester,OTH,28,20,21
+65+,Male,Dorchester,REP,1619,1438,1380
+65+,Male,Dorchester,UNA,406,300,271
+65+,Male,Frederick,DEM,7536,6358,6176
+65+,Male,Frederick,OTH,155,109,101
+65+,Male,Frederick,REP,9347,7911,7901
+65+,Male,Frederick,UNA,4025,3148,3047
+65+,Male,Garrett,DEM,636,530,513
+65+,Male,Garrett,OTH,30,23,22
+65+,Male,Garrett,REP,2118,1839,1819
+65+,Male,Garrett,UNA,307,245,223
+65+,Male,Harford,DEM,7129,5986,6078
+65+,Male,Harford,OTH,225,181,180
+65+,Male,Harford,REP,11282,10069,10097
+65+,Male,Harford,UNA,3436,2858,2801
+65+,Male,Howard,DEM,11838,9980,10142
+65+,Male,Howard,OTH,304,219,222
+65+,Male,Howard,REP,7292,6187,6326
+65+,Male,Howard,UNA,5233,4076,4055
+65+,Male,Kent,DEM,1102,948,899
+65+,Male,Kent,OTH,24,18,17
+65+,Male,Kent,REP,1026,913,886
+65+,Male,Kent,UNA,372,300,265
+65+,Male,Montgomery,DEM,46704,38544,38695
+65+,Male,Montgomery,OTH,916,581,625
+65+,Male,Montgomery,REP,16874,13118,13413
+65+,Male,Montgomery,UNA,17789,12652,12844
+65+,Male,Prince George's,DEM,49568,34838,36500
+65+,Male,Prince George's,OTH,1703,583,649
+65+,Male,Prince George's,REP,6690,4306,4559
+65+,Male,Prince George's,UNA,6504,4017,4184
+65+,Male,Queen Anne's,DEM,1733,1463,1397
+65+,Male,Queen Anne's,OTH,57,41,41
+65+,Male,Queen Anne's,REP,3014,2648,2604
+65+,Male,Queen Anne's,UNA,898,735,671
+65+,Male,Saint Mary's,DEM,2912,2355,2318
+65+,Male,Saint Mary's,OTH,82,64,57
+65+,Male,Saint Mary's,REP,3848,3351,3261
+65+,Male,Saint Mary's,UNA,1135,884,851
+65+,Male,Somerset,DEM,766,564,576
+65+,Male,Somerset,OTH,19,11,11
+65+,Male,Somerset,REP,1059,919,893
+65+,Male,Somerset,UNA,264,184,175
+65+,Male,Talbot,DEM,1891,1638,1570
+65+,Male,Talbot,OTH,53,39,41
+65+,Male,Talbot,REP,2358,2051,2023
+65+,Male,Talbot,UNA,921,756,712
+65+,Male,Washington,DEM,3689,2960,2841
+65+,Male,Washington,OTH,118,75,75
+65+,Male,Washington,REP,6477,5601,5333
+65+,Male,Washington,UNA,1847,1402,1311
+65+,Male,Wicomico,DEM,3188,2461,2499
+65+,Male,Wicomico,OTH,89,57,63
+65+,Male,Wicomico,REP,3695,3215,3174
+65+,Male,Wicomico,UNA,1153,860,812
+65+,Male,Worcester,DEM,2287,1821,1823
+65+,Male,Worcester,OTH,110,83,78
+65+,Male,Worcester,REP,3691,3126,3126
+65+,Male,Worcester,UNA,1200,914,914

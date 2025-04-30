@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/eligible_inactive.css">
     <link rel="stylesheet" href="//cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css" />
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -14,7 +15,7 @@
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Home</a>
+        <a href="index.html">Home</a>
         <a href="official-turnout">Official Maryland Turnout</a>
         <a href="eligible-active">Eligible Active Voters</a>
         <a href="eligible-inactive">Eligible Inactive Voters</a>
@@ -22,16 +23,19 @@
 
     <h1>Maryland Voter Turnout Data - Eligible Active Voters</h1>
 
-    <div class="controls">
-        <div class="filter-group">
-            <label for="year-filter">Filter by Year:</label>
-            <select id="year-filter">
-                <option value="all">All Years</option>
-                <option value="2020">2020</option>
-                <option value="2024">2024</option>
+    <div class="chart-container">
+        <h3>Turnout by County</h3>
+        <div class="graph-filter">
+            <label for="county-graph-filter"><strong>Select County:</strong></label>
+            <select id="county-graph-filter">
+                <option value="all">All Counties</option>
             </select>
         </div>
+        <br>
+        <canvas id="turnout-chart"></canvas>
+    </div>
 
+    <div class="controls">
         <div class="filter-group">
             <label for="county-filter">Filter by County:</label>
             <select id="county-filter">
@@ -44,11 +48,8 @@
                 <option value="none">All Parties</option>
                 <option value="Democrat">Democrat</option>
                 <option value="Republican">Republican</option>
-                <option value="Bread and Roses">Bread and Roses</option>
                 <option value="Green">Green</option>
                 <option value="Libertarian">Libertarian</option>
-                <option value="Working Class Party">Working Class Party</option>
-                <option value="No Labels Maryland">No Labels Maryland</option>
                 <option value="Unaffiliated">Unaffiliated</option>
                 <option value="Other">Other</option>
             </select>
@@ -63,34 +64,25 @@
                 <th>County</th>
                 <th>Democrat</th>
                 <th>Republican</th>
-                <th>Bread and Roses</th>
                 <th>Green</th>
                 <th>Libertarian</th>
-                <th>Working Class Party</th>
-                <th>Other</th>
                 <th>Unaffiliated</th>
-                <th>No Labels Maryland</th>
-                <th>Year</th>
+                <th>Other</th>
             </tr>
         </thead>
-
-        <body>
+        <tbody>
             {% for obj in object_list %}
             <tr>
                 <td>{{ obj.county }}</td>
-                <td>{{ "{:,}".format(obj.democrat_active) }}</td>
-                <td>{{ "{:,}".format(obj.republican_active) }}</td>
-                <td>{{ "{:,}".format(obj.bread_and_roses_active) }}</td>
-                <td>{{ "{:,}".format(obj.green_active) }}</td>
-                <td>{{ "{:,}".format(obj.libertarian_active) }}</td>
-                <td>{{ "{:,}".format(obj.working_class_active) }}</td>
-                <td>{{ "{:,}".format(obj.other_active) }}</td>
-                <td>{{ "{:,}".format(obj.unaffiliated_active) }}</td>
-                <td>{{ "{:,}".format(obj.no_labels_active) }}</td>
-                <td>{{ obj.year }}</td>
+                <td>{{ "{:,}".format(obj.democrat_diff) }}</td>
+                <td>{{ "{:,}".format(obj.republican_diff) }}</td>
+                <td>{{ "{:,}".format(obj.green_diff) }}</td>
+                <td>{{ "{:,}".format(obj.libertarian_diff) }}</td>
+                <td>{{ "{:,}".format(obj.unaffiliated_diff) }}</td>
+                <td>{{ "{:,}".format(obj.other_diff) }}</td>
             </tr>
             {% endfor %}
-        </body>
+        </tbody>
     </table>
 
     <script type="text/javascript">
@@ -112,121 +104,183 @@
         function closeNav() {
             document.getElementById("mySidenav").style.width = "0";
         }
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-        }
-
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-        }
 
         document.addEventListener('DOMContentLoaded', function () {
-            const table = $('#voter-data').DataTable(); // Get the DataTable instance
+            const table = $('#voter-data').DataTable(); // DataTable instance
 
             const countyFilter = document.getElementById('county-filter');
-            const yearFilter = document.getElementById('year-filter');
             const partyFilter = document.getElementById('party-filter');
             const resetButton = document.getElementById('reset-filters');
+            const graphCountyFilter = document.getElementById('county-graph-filter');
 
-            // Get unique county names and populate the dropdown
             const uniqueCounties = new Set();
             table.rows().every(function () {
                 const data = this.data();
-                uniqueCounties.add(data[0]); // County is in column index 0
+                uniqueCounties.add(data[0]); // County
             });
 
             Array.from(uniqueCounties).sort().forEach(county => {
-                const opt = document.createElement('option');
-                opt.value = county;
-                opt.textContent = county;
-                countyFilter.appendChild(opt);
+                const opt1 = document.createElement('option');
+                opt1.value = county;
+                opt1.textContent = county;
+                countyFilter.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = county;
+                opt2.textContent = county;
+                graphCountyFilter.appendChild(opt2);
             });
 
-            // Filter function
             function applyFilters() {
-                const year = yearFilter.value;
                 const county = countyFilter.value;
                 const party = partyFilter.value;
 
-                table.rows().every(function () {
-                    const data = this.data();
+                const rows = document.querySelectorAll('#voter-data tbody tr');
 
-                    const showRow =
-                        (year === 'all' || data[8] == year) && // Year is column index 8
-                        (county === 'all' || data[0] == county) && // County index 0
-                        (party === 'none' || data[7] == party); // Party index 7
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const rowCounty = cells[0].innerText;
 
-                    if (showRow) {
-                        $(this.node()).show();
-                    } else {
-                        $(this.node()).hide();
+                    let matches = true;
+
+                    if (county !== 'all' && rowCounty !== county) {
+                        matches = false;
                     }
+
+                    if (party !== 'none') {
+                        const partyMap = {
+                            'Democrat': 1,
+                            'Republican': 2,
+                            'Green': 3,
+                            'Libertarian': 4,
+                            'Unaffiliated': 5,
+                            'Other': 6
+                        };
+                        const partyIndex = partyMap[party];
+                        const partyValue = parseInt(cells[partyIndex].innerText.replace(/,/g, '')) || 0;
+                        if (partyValue <= 0) {
+                            matches = false;
+                        }
+                    }
+
+                    row.style.display = matches ? '' : 'none';
                 });
+
+                table.page('first').draw('page');
             }
 
-            // Attach change listeners
-            yearFilter.addEventListener('change', applyFilters);
-            countyFilter.addEventListener('change', applyFilters);
+            countyFilter.addEventListener('change', () => {
+                applyFilters();
+                graphCountyFilter.value = countyFilter.value;
+                updateBarChart(graphCountyFilter.value);
+            });
+
             partyFilter.addEventListener('change', applyFilters);
 
-            // Reset button
+            graphCountyFilter.addEventListener('change', () => {
+                countyFilter.value = graphCountyFilter.value;
+                applyFilters();
+                updateBarChart(graphCountyFilter.value);
+            });
+
             resetButton.addEventListener('click', () => {
-                yearFilter.value = 'all';
                 countyFilter.value = 'all';
                 partyFilter.value = 'none';
                 applyFilters();
+                updateBarChart('all');
             });
 
-            // Apply once on load
             applyFilters();
+            updateBarChart('all');
+        });
+    </script>
 
-            const ctx = document.getElementById('turnout-chart').getContext('2d');
-            const chartConfig = {
-                type: 'bar',
-                data: {
-                    labels: [],  // initially empty
-                    datasets: [{
-                        label: '',
-                        data: [],
-                        backgroundColor: []
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    animation: {
-                        duration: 800,
-                        easing: 'easeOutQuart'
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Change in Inactive Voters (2024 vs 2020)'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Party'
-                            }
-                        }
-                    },
-                    plugins: {
+    <script>
+        const graphData = {{ graph_data | tojson }};
+        const chartCanvas = document.getElementById('turnout-chart').getContext('2d');
+
+        let barChart = new Chart(chartCanvas, {
+            type: 'bar',
+            data: {
+                labels: ["Democrat", "Republican", "Green", "Libertarian", "Unaffiliated", "Other"],
+                datasets: [{
+                    label: 'Difference in Voters (2020 → 2024)',
+                    data: Array(6).fill(0),
+                    backgroundColor: [
+                        'rgba(70, 130, 180, 0.7)',   // Democrat
+                        'rgba(220, 100, 100, 0.7)',  // Republican
+                        'rgba(120, 200, 120, 0.7)',  // Green
+                        'rgba(240, 200, 130, 0.7)',  // Libertarian
+                        'rgba(180, 180, 180, 0.7)',  // Unaffiliated
+                        'rgba(255, 170, 100, 0.7)'   // Other
+                    ],
+                    borderColor: [
+                        'rgba(70, 130, 180, 1)',
+                        'rgba(220, 100, 100, 1)',
+                        'rgba(120, 200, 120, 1)',
+                        'rgba(240, 200, 130, 1)',
+                        'rgba(180, 180, 180, 1)',
+                        'rgba(255, 170, 100, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Inactive Voter Change by Party'
-                        },
-                        legend: {
-                            display: false
+                            text: 'Change in Voter Count'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Party'
                         }
                     }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
                 }
-            };
-
-            barChart = new Chart(ctx, chartConfig);
+            }
         });
 
+        function updateBarChart(county) {
+            let diffs;
+
+            if (county === 'all') {
+                diffs = graphData.reduce((totals, row) => {
+                    totals[0] += row.democrat_diff;
+                    totals[1] += row.republican_diff;
+                    totals[2] += row.green_diff;
+                    totals[3] += row.libertarian_diff;
+                    totals[4] += row.unaffiliated_diff;
+                    totals[5] += row.other_diff;
+                    return totals;
+                }, Array(6).fill(0));
+            } else {
+                const countyData = graphData.find(row => row.county === county);
+                if (!countyData) return;
+                diffs = [
+                    countyData.democrat_diff,
+                    countyData.republican_diff,
+                    countyData.green_diff,
+                    countyData.libertarian_diff,
+                    countyData.unaffiliated_diff,
+                    countyData.other_diff
+                ];
+            }
+
+            barChart.data.datasets[0].data = diffs;
+            barChart.update();
+        }
     </script>
 </body>
 

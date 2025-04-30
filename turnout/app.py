@@ -42,23 +42,6 @@ class EligibleInactive(Model):
         database = db
         primary_key = False
 
-class EligibleInactiveCalculations(Model):
-    county = CharField(column_name='County')
-    democrat_diff = IntegerField(column_name='Democrat_Diff')
-    republican_diff = IntegerField(column_name='Republican_Diff')
-    bread_and_roses_diff = IntegerField(column_name='Bread_and_Roses_Diff')
-    green_diff = IntegerField(column_name='Green_Diff')
-    libertarian_diff = IntegerField(column_name='Libertarian_Diff')
-    working_class_party_diff = IntegerField(column_name='Working_Class_Party_Diff')
-    no_labels_maryland_diff = IntegerField(column_name='No_Labels_Maryland_Diff')
-    other_diff = IntegerField(column_name='Other_Diff')
-    unaffiliated_diff = IntegerField(column_name='Unaffiliated_Diff')
-
-    class Meta:
-        table_name = "eligible_inactive_calculations"
-        database = db
-        primary_key = False
-
 class EligibleInactiveDifferences(Model):
     county = CharField(column_name='county')
     democrat_diff = IntegerField(column_name='democrat_diff')
@@ -88,6 +71,20 @@ class EligibleActive(Model):
 
     class Meta:
         table_name = "eligible_active"
+        database = db
+        primary_key = False
+
+class EligibleActiveDifferences(Model):
+    county = CharField(column_name='County')
+    democrat_diff = IntegerField(column_name='democrat_diff')
+    republican_diff = IntegerField(column_name='republican_diff')
+    green_diff = IntegerField(column_name='green_diff')
+    libertarian_diff = IntegerField(column_name='libertarian_diff')
+    unaffiliated_diff = IntegerField(column_name='unaffiliated_diff')
+    other_diff = IntegerField(column_name='other_diff')
+    
+    class Meta:
+        table_name = "activity_differences"
         database = db
         primary_key = False
 
@@ -139,9 +136,23 @@ def eligible_inactive():
 def eligible_active():
     template = 'eligible_active.html'
     
-    object_list = EligibleActive.select()
-    
-    return render_template(template, object_list=object_list)
+    object_list = EligibleActiveDifferences.select()
+
+    graph_query = EligibleActiveDifferences.select()
+    graph_data = [
+        {
+            "county": row.county,
+            "democrat_diff": row.democrat_diff,
+            "republican_diff": row.republican_diff,
+            "green_diff": row.green_diff,
+            "libertarian_diff": row.libertarian_diff,
+            "unaffiliated_diff": row.unaffiliated_diff,
+            "other_diff": row.other_diff
+        }
+        for row in graph_query
+    ]
+
+    return render_template(template, object_list=object_list, graph_data=graph_data)
 
 if __name__ == '__main__':
     # Fire up the Flask test server

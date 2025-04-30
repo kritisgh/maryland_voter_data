@@ -1,9 +1,8 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: Poppins, sans-serif;
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
-    text-align: center;
     overflow-y: auto;
   }
 /* 1) Change the container to a row flexbox */
@@ -12,7 +11,6 @@ body {
   flex-direction: row;       /* side by side instead of stacked */
   align-items: flex-start;   /* top‑align the two panels */
   justify-content: space-between;
-  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -49,8 +47,12 @@ body {
     min-height: auto;
   }
 }
-
-  /* Force the iframe to match the container height */
+.bigmap iframe {
+  width: 100%;
+  height: 750px !important;
+  margin: 10;
+  border: none;
+}
   .map iframe {
     width: 100%;
     height: 480px !important;
@@ -71,7 +73,6 @@ body {
   /* Center the SVG element inside the chart placeholder */
   #tooltipChart svg {
     display: block;
-    margin: 0 auto;
   }
   /* D3 chart text labels styling */
   .bar text {
@@ -101,3 +102,49 @@ body {
   .site-nav a:hover {
     color: #007bff;
   }
+  :root {
+    --gap: 8px;            /* space between buttons */
+    --radius: 6px;         /* border-radius */
+  }
+  
+  .segment-control {
+    position: relative;
+    display: flex;
+    gap: var(--gap);       /* ← margin between segments */
+    width: 500px;          /* or 100% / max-width as you like */
+    border: 1px solid #ccc;
+    border-radius: var(--radius);
+    overflow: hidden;
+    user-select: none;
+  }
+  
+  .segment {
+    flex: 1;
+    padding: 8px 0;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    z-index: 1;
+    transition: color 0.3s;
+  }
+  
+  .segment.active {
+    color: #fff;
+  }
+  
+  .segment-slider {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0;
+    /* subtract total gap width (2 gaps for 3 items) from 100% */
+    width: calc((100% - (var(--gap) * 2)) / 3);
+    background-color: steelblue;          /* default blue */
+    border-radius: var(--radius);
+    transition:
+      transform 0.3s ease,
+      background-color 0.3s ease;
+    z-index: 0;
+  }
+  
+  
