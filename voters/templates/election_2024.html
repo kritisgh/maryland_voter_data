@@ -11,11 +11,95 @@
     <script src="static/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+      
+    <script src="//static.dwcdn.net/js/events.js"></script>
+    <script type="text/javascript">
+      // Global variable: default party selection for the map.
+      let chartId = 'YcZmw';
+    </script>
+    <style>
+      
+    </style>
+  </head>
+  <body>
+    <h1>Who Votes in Maryland?</h1><br>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('election_2024') }}">2024 Election</a></li>
+        <li><a href="{{ url_for('gender') }}">By Gender and Age</a></li>
+      </ul>
+    </nav>
+    <h2 style = "text-align: left;text-decoration: underline;"></h2>
+    <div class="container">
+      <div class="map" id="map">
+        <iframe title="Maryland Counties Map" id="datawrapper-chart-YcZmw" src="https://datawrapper.dwcdn.net/YcZmw/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
+        <div class="segment-control">
+          <div class="segment-slider"></div>
+          <button class="segment active" data-val="YcZmw">Democrats</button>
+          <button class="segment"      data-val="xElgG">Republicans</button>
+          <button class="segment"      data-val="nuu3A">Unaffiliated</button>
+        </div>
+      </div>
+      <div class="tooltip" id="tooltip">
+        <div id="tooltipDropdown" class="no-selection">     
+          <div id="statewideSummary" style="margin-bottom:10px; font-size:1.2em;"></div> 
+          <!-- 2) header (map hover county name + turnout) -->
+          <div id="tooltipHeader">
+            <p>Hover over a county on the map to see details here, or use the dropdown below!</p>
+          </div>
+          <select id="county-dropdown" style="width: auto;">
+            <option value="">-- Select a County --</option>
+            {% for county in counties %}
+              <option value="{{ county }}">{{ county }}</option>
+            {% endfor %}
+          </select>
+      
+          <div id="tooltipText" style="margin: 10px 0; font-size: 0.9em;"></div>
+      
+          <!-- 5) comparison label + range bar (hidden until selection) -->
+          <p id="compLabel" style="display:none; margin-top:8px;">
+            Comparison to Statewide Average:
+          </p>
+          <div id="tooltipRange" style="display:none; margin-top:4px;"></div>
+              </div>
+      </div>      
+      
+    </div>
+    
     <script>
-      // Your Flask→JS data:
+      // grab once
+const dropdown      = document.getElementById('county-dropdown');
+const tooltipHeader = document.getElementById('tooltipHeader');
+const countyPrompt  = document.getElementById('countyPrompt');
+const tooltipBox    = document.getElementById('tooltipDropdown');
+
+// move the dropdown up next to the header
+function swapDropdownIntoHeader() {
+  // only if it isn't already there
+  if (tooltipHeader.nextElementSibling !== dropdown) {
+    // hide the “Select a County” prompt
+    countyPrompt.style.display = 'none';
+    // move <select> right after the header
+    tooltipHeader.parentNode.insertBefore(dropdown, tooltipHeader.nextSibling);
+  }
+}
+
+// move the dropdown back below the prompt
+function resetDropdownPosition() {
+  // only if it isn't already in place
+  if (countyPrompt.nextElementSibling !== dropdown) {
+    // put <select> right after the prompt
+    tooltipBox.insertBefore(dropdown, countyPrompt.nextSibling);
+    // show the prompt again
+    countyPrompt.style.display = '';
+  }
+}
+
       const partyAverages = {{ partyAverages|tojson }};
       const partyRanges   = {{ partyRanges|tojson }};
       const statewideAverages = {{ statewideAverages|tojson }};
+// compute statewide total by summing every county’s total
 
       // map Datawrapper chartId → party code
       const chartIdToParty = {
@@ -37,60 +121,24 @@
         REP: 'Republicans',
         UNA: 'Unaffiliated'
       };
-    </script>    
-    <script src="//static.dwcdn.net/js/events.js"></script>
-    <script type="text/javascript">
-      // Global variable: default party selection for the map.
-      let chartId = 'YcZmw';
-    </script>
-    <style>
-      
-    </style>
-  </head>
-  <body>
-    <h1>Who Votes in Maryland?</h1><br>
-    <nav class="site-nav">
-      <ul>
-        <li><a href="{{ url_for('index') }}">Home</a></li>
-        <li><a href="{{ url_for('election_2024') }}">2024 Election</a></li>
-        <li><a href="{{ url_for('gender') }}">By Gender and Age</a></li>
-        <li><a href="{{ url_for('nonvoters') }}">Non-Voters</a></li>
-      </ul>
-    </nav>
-    <h2 style = "text-align: left;text-decoration: underline;"></h2>
-    <div class="container">
-      <div class="map" id="map">
-        <iframe title="Maryland Counties Map" id="datawrapper-chart-YcZmw" src="https://datawrapper.dwcdn.net/YcZmw/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
-        <div class="segment-control">
-          <div class="segment-slider"></div>
-          <button class="segment active" data-val="YcZmw">Democrats</button>
-          <button class="segment"      data-val="xElgG">Republicans</button>
-          <button class="segment"      data-val="nuu3A">Unaffiliated</button>
-        </div>
-      </div>
-      <!-- Integrated tooltip: this will expand to show county info plus the chart -->
-      <div class="tooltip" id="tooltip">
-        <!-- 1) Header area we’ll overwrite on hover or select -->
-        <div id="tooltipHeader">
-          <p>Hover over a county on the map to see details here, or use the county dropdown below!</p>
-        </div>
-        <div id="tooltipDropdown">
-          <p>Select a County</p>
-          <select id="county-dropdown">
-            <option value="">-- Select County --</option>
-            {% for county in counties %}
-              <option value="{{ county }}">{{ county }}</option>
-            {% endfor %}
-          </select>
-          <div id="tooltipText" style="margin: 10px 0; font-size: 0.9em;"></div>
-          <p>Statewide Average:</p>
-          <div id="tooltipRange" style="margin-top:20px;"></div>
-        </div>
-      </div>
-      
-    </div>
-    
-    <script>
+      const statewideTotal = Object.values(countyTotals).reduce((sum, v) => sum + v, 0);
+
+      // updates the #statewideSummary text for the active party
+      function updateStatewideSummary() {
+        const party = chartIdToParty[chartId];
+        const name  = partyFullNames[party];
+        const total = statewideTotal.toLocaleString();
+        const pct   = (statewideAverages[party] || 0).toFixed(1);
+
+        document.getElementById('statewideSummary').innerHTML =
+          `<b><u>${total}</u></b> people voted in Maryland in 2024.<br>` +
+          `Of these 2024 voters, <b><u>${pct}%</u></b> were registered ${name}.`;
+      }
+
+      // on initial load:
+      updateStatewideSummary();
+      // — show the Democrats‐party summary in the #tooltipText area, hide comparison
+
       // Global variables to track current county and debounce.
       let currentCounty = "";
       let lastCounty = "";
@@ -131,6 +179,8 @@
   debounceTimeout = setTimeout(() => {
     // 1) text paragraph
     const fmt = formatCountyName(newCounty);
+    tooltipDropdown.classList.add('selection');
+    tooltipDropdown.classList.remove('no-selection');
     const total = countyTotals[newCounty] || 0;
     const party = chartIdToParty[chartId];
     const name  = partyFullNames[party] || party;
@@ -144,7 +194,7 @@
 
     // decide comparison
     const diff      = countyPctNum - statePctNum;
-    const threshold = 5;  // ±5% → “about the same”
+    const threshold = 2.5;  // ±2.5% → “about the same”
     let compPhrase;
     if (Math.abs(diff) <= threshold)       compPhrase = 'about the same as';
     else if (diff > threshold)             compPhrase = 'more than';
@@ -152,12 +202,13 @@
     document
       .getElementById('tooltipText')
       .innerHTML = 
-        `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2024. `
+        `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2024.<br><br>`
       + `Of these 2024 voters, <b><u>${countyPct}%</u></b> were registered ${name}. `  
       + `This is <b><u>${compPhrase}</u></b> the statewide average of 2024 voters who were registered ${name}, which was <b><u>${statePct}%</u></b>.`;
 
-    // 2) range bar + marker
-    // 3) age‐bracket chart
+      document.getElementById('compLabel').style.display   = 'block';
+      document.getElementById('tooltipRange').style.display = 'block';
+
     updateChart(newCounty);
   }, 0);
 });
@@ -174,6 +225,14 @@ document.getElementById('county-dropdown')
     document.getElementById('tooltipHeader').innerHTML = `<h3 style = margin-block-start: 1em;>${formatCountyName(selected)}</h3>`;
     // new text paragraph:
     const fmt = formatCountyName(selected);
+    if (!selected) {
+      tooltipDropdown.classList.remove('selection');
+      tooltipDropdown.classList.add('no-selection');    
+      return;
+    }
+    // else (a county was picked):
+    tooltipDropdown.classList.replace('no-selection','selection');
+
     const total = countyTotals[selected] || 0;
     const party = chartIdToParty[chartId];
     const name  = partyFullNames[party] || party;
@@ -182,7 +241,7 @@ document.getElementById('county-dropdown')
     const countyPct = countyPctNum.toFixed(1);
     const statePct  = statePctNum.toFixed(1);
     const diff      = countyPctNum - statePctNum;
-    const threshold = 1;
+    const threshold = 2.5;
     let compPhrase;
     if (Math.abs(diff) <= threshold)       compPhrase = 'about the same as';
     else if (diff > threshold)             compPhrase = 'more than';
@@ -190,11 +249,12 @@ document.getElementById('county-dropdown')
     document
       .getElementById('tooltipText')
       .innerHTML = 
-        `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2024. `
+        `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2024.<br><br>`
       + `Of these 2024 voters, <b><u>${countyPct}%</u></b> were registered ${name}. `  
       + `This is <b><u>${compPhrase}</u></b> the statewide average of 2024 voters who were registered ${name}, which was <b><u>${statePct}%</u></b>.`;
 
-    // Fetch & draw
+      document.getElementById('compLabel').style.display   = 'block';
+      document.getElementById('tooltipRange').style.display = 'block';
     drawSingleRange(selected);
     updateChart(selected);
   });
@@ -429,15 +489,30 @@ buttons.forEach((btn, idx) => {
     buttons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    // 2) slide the highlight:  idx×100% + idx×gap pixels
+    // 2) slide the highlight
     slider.style.transform =
       `translateX(calc(${idx * 100}% + ${idx * gap}px))`;
 
     // 3) change background color per party
     slider.style.backgroundColor = partyColors2[btn.dataset.val];
 
-    // 4) call your existing function
+    // 4) switch the map & reset tooltip summary
     switchVis(btn.dataset.val);
+    chartId = btn.dataset.val;
+    updateStatewideSummary();
+
+    // 5) hide any old comparison
+    document.getElementById('compLabel').style.display   = 'none';
+    document.getElementById('tooltipRange').style.display = 'none';
+
+    // ─── NEW: if a county is already in the dropdown, re-trigger its change handler ─────────
+    const dropdown = document.getElementById('county-dropdown');
+    const selected = dropdown.value;
+    if (selected) {
+      // this will update your tooltipText, show the compLabel/Range,
+      // and call drawSingleRange & updateChart under the new chartId
+      dropdown.dispatchEvent(new Event('change'));
+    }
   });
 });
 

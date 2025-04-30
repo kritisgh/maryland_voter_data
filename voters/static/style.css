@@ -146,5 +146,48 @@ body {
       background-color 0.3s ease;
     z-index: 0;
   }
-  
-  
+  /* make header+dropdown a flex row */
+.header-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* Tooltip grid: default = dropdown below header */
+#tooltipDropdown {
+  display: grid;
+  row-gap: 8px;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "statewideSummary"
+    "header"
+    "prompt"
+    "dropdown"
+    "text"
+    "compLabel"
+    "tooltipRange"
+    "tooltipChart";
+}
+#tooltipDropdown #statewideSummary  { grid-area: statewideSummary; }
+#tooltipDropdown #tooltipHeader   { grid-area: header; }
+#tooltipDropdown #countyPrompt    { grid-area: prompt; }
+#tooltipDropdown #county-dropdown { grid-area: dropdown; }
+#tooltipDropdown #tooltipText     { grid-area: text; }
+#tooltipDropdown #compLabel       { grid-area: compLabel; }
+#tooltipDropdown #tooltipRange    { grid-area: tooltipRange; }
+#tooltipDropdown #tooltipChart    { grid-area: tooltipChart; }
+
+/* When a county is selected, switch to two columns: header + dropdown side by side */
+#tooltipDropdown.selection {
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+   "statewideSummary statewideSummary"
+    "header dropdown"
+    "text text"
+    "compLabel compLabel"
+    "tooltipRange tooltipRange"
+    "tooltipChart tooltipChart";
+}
+/* hide the below-header prompt once “.selection” is on */
+#tooltipDropdown.selection #countyPrompt {
+  display: none;
+}
