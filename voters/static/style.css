@@ -47,8 +47,12 @@ body {
     min-height: auto;
   }
 }
-
-  /* Force the iframe to match the container height */
+.bigmap iframe {
+  width: 100%;
+  height: 750px !important;
+  margin: 10;
+  border: none;
+}
   .map iframe {
     width: 100%;
     height: 480px !important;
