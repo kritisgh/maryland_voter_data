@@ -43,12 +43,12 @@ class EligibleInactive(Model):
 
 class EligibleInactiveDifferences(Model):
     county = CharField(column_name='county')
-    democrat_diff = IntegerField(column_name='democrat_diff')
-    republican_diff = IntegerField(column_name='republican_diff')
-    green_diff = IntegerField(column_name='green_diff', null=True)
-    libertarian_diff = IntegerField(column_name='libertarian_diff')
-    unaffiliated_diff = IntegerField(column_name='unaffiliated_diff')
-    other_diff = IntegerField(column_name='other_diff')
+    democrat_diff = DoubleField(column_name='democrat_diff')
+    republican_diff = DoubleField(column_name='republican_diff')
+    green_diff = DoubleField(column_name='green_diff', null=True)
+    libertarian_diff = DoubleField(column_name='libertarian_diff')
+    unaffiliated_diff = DoubleField(column_name='unaffiliated_diff')
+    other_diff = DoubleField(column_name='other_diff')
     
     class Meta:
         table_name = "inactivity_differences"
