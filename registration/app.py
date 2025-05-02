@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template
-from flourish_id import flourish_id
+from flourish_id import flourish_ids
 from peewee import *
 app = Flask(__name__)
 
@@ -27,23 +27,23 @@ def index():
 @app.route('/county/<slug>')
 def county_detail(slug):
     county = slug
-    flourish_id = flourish_id.get(county)
-    records = Registration.select().where(Registration.county == county)
-    total_dem = Registration.select(fn.SUM(Registration.dem)).where(Registration.county == county).scalar()
-    total_rep = Registration.select(fn.SUM(Registration.rep)).where(Registration.county == county).scalar()
-    total_unaf = Registration.select(fn.SUM(Registration.unaf)).where(Registration.county == county).scalar()
-    total_other = Registration.select(fn.SUM(Registration.other)).where(Registration.county == county).scalar()
+    embed_id = flourish_ids.get(county)
+    year_summary = (
+        Registration
+        .select(
+            fn.SUM(Registration.dem).alias('dem'),
+            fn.SUM(Registration.rep).alias('rep'),
+            fn.SUM(Registration.unaf).alias('unaf'),
+            fn.SUM(Registration.other).alias('other')
+        ).where((Registration.county == county) & (Registration.year == 2024)).dicts().get())
+    historical_records = (Registration.select().where(Registration.county == county).order_by(Registration.year.desc(), Registration.month.desc()))
     counties = Registration.select(Registration.county).distinct().order_by(Registration.county)
     return render_template(
         "county_detail.html",
         county=county,
-        flourish_id=flourish_id,
-        records=records,
-        records_count=records.count(),
-        total_dem=total_dem,
-        total_rep=total_rep,
-        total_unaf=total_unaf,
-        total_other=total_other,
+        flourish_id=embed_id,
+        year_summary=year_summary,
+        records=historical_records,
         counties=counties
     )
 

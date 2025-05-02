@@ -1,4 +1,4 @@
-flourish_id = {
+flourish_ids = {
     "ALLEGANY": "22726229",
     "ANNE ARUNDEL": "22726663",
     "BALTIMORE CITY": "22726830",
