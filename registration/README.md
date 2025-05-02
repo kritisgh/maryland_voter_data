@@ -1,7 +1,7 @@
 
 5/2/2025
 
-Dabeluchukwu Okigbo: I have made the summaries a bit more simple. There a graphs still being completed so they are not all done!
+Dabeluchukwu Okigbo: I have made the summaries a bit more simple. There a graphs still being completed so i'll be done with the summaries as soon as they are!
 
 2025-04-25
 
