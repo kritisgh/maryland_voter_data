@@ -1,3 +1,8 @@
+
+5/2/2025
+
+Dabeluchukwu Okigbo: I have made the summaries a bit more simple. There a graphs still being completed so they are not all done!
+
 2025-04-25
 
 Olivia: I made new graphs this week focusing on how Democratic and Republican registration changed after the election. In total, I have five graphs for this one topic: two line charts for <a href="https://www.datawrapper.de/_/HfdGg/">Democrat</a> and <a href= "https://www.datawrapper.de/_/cNllC/">Republican</a> registration numbers in the immediate months leading up to the election and following November 2024, a <a href="https://www.datawrapper.de/_/ymiFl/">bar chart</a> showing differences in total registration amounts by party in November 2024 compared to February 2025, and <a href="https://www.datawrapper.de/_/5zOiJ/">another</a> bar chart showing the difference in percent change by party before and after the election. 
