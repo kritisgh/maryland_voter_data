@@ -1,0 +1,1032 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css" />
+    <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Overpass', sans-serif;
+            color: #333;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .controls-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        
+        .county-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        select, button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
+            background-color: white;
+        }
+        
+        button {
+            cursor: pointer;
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #3a5a8a;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            background-color: #f5f5f5;
+            margin-right: 5px;
+        }
+        
+        .tab.active {
+            background-color: white;
+            border-color: #ddd;
+            border-bottom-color: white;
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .chart-container {
+            height: 400px;
+            margin-bottom: 30px;
+        }
+        
+        .data-tables {
+            margin-top: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table th {
+            background-color: #f2f2f2;
+        }
+        
+        .comparison-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .comparison-county {
+            flex: 1;
+            min-width: 300px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+        
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+        
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+        
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+        
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+            .sidenav a {font-size: 18px;}
+        }
+        
+        .county-header {
+            background-color: #4a6fa5;
+            color: white;
+            padding: 10px 15px;
+            margin-top: 0;
+            border-radius: 4px;
+        }
+        
+        .dataTables_wrapper {
+            margin-bottom: 30px;
+        }
+        
+        .data-card {
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .stat-title {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .stat-card.democrat { border-top: 4px solid rgba(70, 130, 180, 0.7); }
+        .stat-card.republican { border-top: 4px solid rgba(220, 100, 100, 0.7); }
+        .stat-card.unaffiliated { border-top: 4px solid rgba(180, 180, 180, 0.7); }
+        .stat-card.total { border-top: 4px solid #333; }
+    </style>
+    <title>Maryland Voter Turnout Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Home</a>
+        <a href="official-turnout">Official Maryland Turnout</a>
+        <a href="eligible-active">Eligible Active Voters</a>
+        <a href="eligible-inactive">Eligible Inactive Voters</a>
+        <a href="county-dashboard" class="active">County Dashboard</a>
+    </div>
+
+    <div class="dashboard-container">
+        <h1>Maryland Voter Turnout Dashboard</h1>
+
+        <div class="controls-container">
+            <div class="county-controls">
+                <div class="filter-group">
+                    <label for="primary-county-select"><strong>Primary County:</strong></label>
+                    <select id="primary-county-select">
+                        <option value="">Select County</option>
+                    </select>
+                </div>
+                
+                <div id="comparison-controls" style="display: none;">
+                    <div class="filter-group">
+                        <label for="comparison-county-select"><strong>Compare With:</strong></label>
+                        <select id="comparison-county-select">
+                            <option value="">Select County</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="enable-comparison-btn">Enable Comparison</button>
+                <button id="disable-comparison-btn" style="display: none;">Disable Comparison</button>
+            </div>
+        </div>
+
+        <div id="single-county-view">
+            <h2 id="county-name-header" class="county-header">Select a county to view data</h2>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="overview">Overview</div>
+                <div class="tab" data-tab="official-turnout">Official Turnout</div>
+                <div class="tab" data-tab="active-voters">Active Voters</div>
+                <div class="tab" data-tab="inactive-voters">Inactive Voters</div>
+            </div>
+            
+            <div id="overview" class="tab-content active">
+                <div class="summary-stats">
+                    <div class="stat-card total">
+                        <div class="stat-title">Total Turnout Change (2020 → 2024)</div>
+                        <div id="total-turnout-change" class="stat-value">-</div>
+                    </div>
+                    <div class="stat-card democrat">
+                        <div class="stat-title">Democrat Turnout Change</div>
+                        <div id="democrat-turnout-change" class="stat-value">-</div>
+                    </div>
+                    <div class="stat-card republican">
+                        <div class="stat-title">Republican Turnout Change</div>
+                        <div id="republican-turnout-change" class="stat-value">-</div>
+                    </div>
+                    <div class="stat-card unaffiliated">
+                        <div class="stat-title">Unaffiliated Turnout Change</div>
+                        <div id="unaffiliated-turnout-change" class="stat-value">-</div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Turnout Change By Party (2020 → 2024)</h3>
+                    <canvas id="overview-chart"></canvas>
+                </div>
+            </div>
+            
+            <div id="official-turnout" class="tab-content">
+                <div class="data-card">
+                    <h3>Official Turnout Data</h3>
+                    <div class="chart-container">
+                        <canvas id="official-turnout-chart"></canvas>
+                    </div>
+                    
+                    <div class="data-tables">
+                        <table id="official-turnout-table" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Party</th>
+                                    <th>Change (2020 → 2024)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Democrat</td><td id="official-democrat">-</td></tr>
+                                <tr><td>Republican</td><td id="official-republican">-</td></tr>
+                                <tr><td>Green</td><td id="official-green">-</td></tr>
+                                <tr><td>Libertarian</td><td id="official-libertarian">-</td></tr>
+                                <tr><td>Unaffiliated</td><td id="official-unaffiliated">-</td></tr>
+                                <tr><td>Other</td><td id="official-other">-</td></tr>
+                                <tr><td>Statewide</td><td id="official-statewide">-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="active-voters" class="tab-content">
+                <div class="data-card">
+                    <h3>Eligible Active Voters</h3>
+                    <div class="chart-container">
+                        <canvas id="active-voters-chart"></canvas>
+                    </div>
+                    
+                    <div class="data-tables">
+                        <table id="active-voters-table" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Party</th>
+                                    <th>Change (2020 → 2024)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Democrat</td><td id="active-democrat">-</td></tr>
+                                <tr><td>Republican</td><td id="active-republican">-</td></tr>
+                                <tr><td>Green</td><td id="active-green">-</td></tr>
+                                <tr><td>Libertarian</td><td id="active-libertarian">-</td></tr>
+                                <tr><td>Unaffiliated</td><td id="active-unaffiliated">-</td></tr>
+                                <tr><td>Other</td><td id="active-other">-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="inactive-voters" class="tab-content">
+                <div class="data-card">
+                    <h3>Eligible Inactive Voters</h3>
+                    <div class="chart-container">
+                        <canvas id="inactive-voters-chart"></canvas>
+                    </div>
+                    
+                    <div class="data-tables">
+                        <table id="inactive-voters-table" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Party</th>
+                                    <th>Change (2020 → 2024)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Democrat</td><td id="inactive-democrat">-</td></tr>
+                                <tr><td>Republican</td><td id="inactive-republican">-</td></tr>
+                                <tr><td>Green</td><td id="inactive-green">-</td></tr>
+                                <tr><td>Libertarian</td><td id="inactive-libertarian">-</td></tr>
+                                <tr><td>Unaffiliated</td><td id="inactive-unaffiliated">-</td></tr>
+                                <tr><td>Other</td><td id="inactive-other">-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="comparison-view" style="display: none;">
+            <h2>County Comparison</h2>
+            
+            <div class="comparison-container">
+                <div class="comparison-county">
+                    <h3 id="county1-name" class="county-header">County 1</h3>
+                    <div class="chart-container">
+                        <canvas id="county1-chart"></canvas>
+                    </div>
+                    
+                    <div class="data-tables">
+                        <table class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Democrat</th>
+                                    <th>Republican</th>
+                                    <th>Unaffiliated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Official Turnout</td>
+                                    <td id="county1-official-democrat">-</td>
+                                    <td id="county1-official-republican">-</td>
+                                    <td id="county1-official-unaffiliated">-</td>
+                                </tr>
+                                <tr>
+                                    <td>Active Voters</td>
+                                    <td id="county1-active-democrat">-</td>
+                                    <td id="county1-active-republican">-</td>
+                                    <td id="county1-active-unaffiliated">-</td>
+                                </tr>
+                                <tr>
+                                    <td>Inactive Voters</td>
+                                    <td id="county1-inactive-democrat">-</td>
+                                    <td id="county1-inactive-republican">-</td>
+                                    <td id="county1-inactive-unaffiliated">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="comparison-county">
+                    <h3 id="county2-name" class="county-header">County 2</h3>
+                    <div class="chart-container">
+                        <canvas id="county2-chart"></canvas>
+                    </div>
+                    
+                    <div class="data-tables">
+                        <table class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Democrat</th>
+                                    <th>Republican</th>
+                                    <th>Unaffiliated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Official Turnout</td>
+                                    <td id="county2-official-democrat">-</td>
+                                    <td id="county2-official-republican">-</td>
+                                    <td id="county2-official-unaffiliated">-</td>
+                                </tr>
+                                <tr>
+                                    <td>Active Voters</td>
+                                    <td id="county2-active-democrat">-</td>
+                                    <td id="county2-active-republican">-</td>
+                                    <td id="county2-active-unaffiliated">-</td>
+                                </tr>
+                                <tr>
+                                    <td>Inactive Voters</td>
+                                    <td id="county2-inactive-democrat">-</td>
+                                    <td id="county2-inactive-republican">-</td>
+                                    <td id="county2-inactive-unaffiliated">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+        
+        // Common chart colors
+        const chartColors = {
+            democrat: 'rgba(70, 130, 180, 0.7)',    // steel blue
+            republican: 'rgba(220, 100, 100, 0.7)', // soft red
+            green: 'rgba(120, 200, 120, 0.7)',      // leafy green
+            libertarian: 'rgba(240, 200, 130, 0.7)',// warm gold
+            unaffiliated: 'rgba(180, 180, 180, 0.7)',// medium gray
+            other: 'rgba(255, 170, 100, 0.7)',      // pumpkin orange
+            statewide: 'rgba(100, 100, 100, 0.7)'   // dark gray
+        };
+        
+        const chartBorders = {
+            democrat: 'rgba(70, 130, 180, 1)',
+            republican: 'rgba(220, 100, 100, 1)',
+            green: 'rgba(120, 200, 120, 1)',
+            libertarian: 'rgba(240, 200, 130, 1)',
+            unaffiliated: 'rgba(180, 180, 180, 1)',
+            other: 'rgba(255, 170, 100, 1)',
+            statewide: 'rgba(100, 100, 100, 1)'
+        };
+        
+        // Global chart objects
+        let overviewChart, officialChart, activeChart, inactiveChart;
+        let county1Chart, county2Chart;
+        
+        // Global data stores
+        let officialTurnoutData = [];
+        let activeVotersData = [];
+        let inactiveVotersData = [];
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab content
+                    const tabContents = document.querySelectorAll('.tab-content');
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Show relevant tab content
+                    const tabName = this.getAttribute('data-tab');
+                    document.getElementById(tabName).classList.add('active');
+                });
+            });
+            
+            // Enable/disable comparison buttons
+            document.getElementById('enable-comparison-btn').addEventListener('click', function() {
+                document.getElementById('comparison-controls').style.display = 'block';
+                this.style.display = 'none';
+                document.getElementById('disable-comparison-btn').style.display = 'inline-block';
+            });
+            
+            document.getElementById('disable-comparison-btn').addEventListener('click', function() {
+                document.getElementById('comparison-controls').style.display = 'none';
+                this.style.display = 'none';
+                document.getElementById('enable-comparison-btn').style.display = 'inline-block';
+                document.getElementById('single-county-view').style.display = 'block';
+                document.getElementById('comparison-view').style.display = 'none';
+                document.getElementById('comparison-county-select').value = '';
+            });
+            
+            // Initialize charts
+            initializeCharts();
+            
+            // Fetch data 
+            fetchAllData().then(() => {
+                // Populate county dropdowns
+                populateCountyDropdowns();
+                
+                // Add event listeners for county selection
+                document.getElementById('primary-county-select').addEventListener('change', function() {
+                    const selectedCounty = this.value;
+                    if (selectedCounty) {
+                        updateSingleCountyView(selectedCounty);
+                    }
+                });
+                
+                document.getElementById('comparison-county-select').addEventListener('change', function() {
+                    const primaryCounty = document.getElementById('primary-county-select').value;
+                    const comparisonCounty = this.value;
+                    
+                    if (primaryCounty && comparisonCounty) {
+                        document.getElementById('single-county-view').style.display = 'none';
+                        document.getElementById('comparison-view').style.display = 'block';
+                        updateComparisonView(primaryCounty, comparisonCounty);
+                    } else if (primaryCounty) {
+                        document.getElementById('single-county-view').style.display = 'block';
+                        document.getElementById('comparison-view').style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        function initializeCharts() {
+            // Initialize overview chart
+            overviewChart = new Chart(document.getElementById('overview-chart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Democrat', 'Republican', 'Green', 'Libertarian', 'Unaffiliated', 'Other', 'Statewide'],
+                    datasets: [{
+                        label: 'Change in Voter Count (2020 → 2024)',
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        backgroundColor: [
+                            chartColors.democrat,
+                            chartColors.republican,
+                            chartColors.green,
+                            chartColors.libertarian,
+                            chartColors.unaffiliated,
+                            chartColors.other,
+                            chartColors.statewide
+                        ],
+                        borderColor: [
+                            chartBorders.democrat,
+                            chartBorders.republican,
+                            chartBorders.green,
+                            chartBorders.libertarian,
+                            chartBorders.unaffiliated,
+                            chartBorders.other,
+                            chartBorders.statewide
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Change in Voter Count'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Party'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Initialize official turnout chart
+            officialChart = new Chart(document.getElementById('official-turnout-chart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Democrat', 'Republican', 'Green', 'Libertarian', 'Unaffiliated', 'Other', 'Statewide'],
+                    datasets: [{
+                        label: 'Official Turnout Change (2020 → 2024)',
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        backgroundColor: [
+                            chartColors.democrat,
+                            chartColors.republican,
+                            chartColors.green,
+                            chartColors.libertarian,
+                            chartColors.unaffiliated,
+                            chartColors.other,
+                            chartColors.statewide
+                        ],
+                        borderColor: [
+                            chartBorders.democrat,
+                            chartBorders.republican,
+                            chartBorders.green,
+                            chartBorders.libertarian,
+                            chartBorders.unaffiliated,
+                            chartBorders.other,
+                            chartBorders.statewide
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Initialize active voters chart
+            activeChart = new Chart(document.getElementById('active-voters-chart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Democrat', 'Republican', 'Green', 'Libertarian', 'Unaffiliated', 'Other'],
+                    datasets: [{
+                        label: 'Active Voters Change (2020 → 2024)',
+                        data: [0, 0, 0, 0, 0, 0],
+                        backgroundColor: [
+                            chartColors.democrat,
+                            chartColors.republican,
+                            chartColors.green,
+                            chartColors.libertarian,
+                            chartColors.unaffiliated,
+                            chartColors.other
+                        ],
+                        borderColor: [
+                            chartBorders.democrat,
+                            chartBorders.republican,
+                            chartBorders.green,
+                            chartBorders.libertarian,
+                            chartBorders.unaffiliated,
+                            chartBorders.other
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Initialize inactive voters chart
+            inactiveChart = new Chart(document.getElementById('inactive-voters-chart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Democrat', 'Republican', 'Green', 'Libertarian', 'Unaffiliated', 'Other'],
+                    datasets: [{
+                        label: 'Inactive Voters Change (2020 → 2024)',
+                        data: [0, 0, 0, 0, 0, 0],
+                        backgroundColor: [
+                            chartColors.democrat,
+                            chartColors.republican,
+                            chartColors.green,
+                            chartColors.libertarian,
+                            chartColors.unaffiliated,
+                            chartColors.other
+                        ],
+                        borderColor: [
+                            chartBorders.democrat,
+                            chartBorders.republican,
+                            chartBorders.green,
+                            chartBorders.libertarian,
+                            chartBorders.unaffiliated,
+                            chartBorders.other
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Initialize comparison charts
+            county1Chart = new Chart(document.getElementById('county1-chart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Official Turnout', 'Active Voters', 'Inactive Voters'],
+                    datasets: [
+                        {
+                            label: 'Democrat',
+                            data: [0, 0, 0],
+                            backgroundColor: chartColors.democrat,
+                            borderColor: chartBorders.democrat,
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Republican',
+                            data: [0, 0, 0],
+                            backgroundColor: chartColors.republican,
+                            borderColor: chartBorders.republican,
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Unaffiliated',
+                            data: [0, 0, 0],
+                            backgroundColor: chartColors.unaffiliated,
+                            borderColor: chartBorders.unaffiliated,
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            county2Chart = new Chart(document.getElementById('county2-chart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Official Turnout', 'Active Voters', 'Inactive Voters'],
+                    datasets: [
+                        {
+                            label: 'Democrat',
+                            data: [0, 0, 0],
+                            backgroundColor: chartColors.democrat,
+                            borderColor: chartBorders.democrat,
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Republican',
+                            data: [0, 0, 0],
+                            backgroundColor: chartColors.republican,
+                            borderColor: chartBorders.republican,
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Unaffiliated',
+                            data: [0, 0, 0],
+                            backgroundColor: chartColors.unaffiliated,
+                            borderColor: chartBorders.unaffiliated,
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        async function fetchAllData() {
+            const [officialData, activeData, inactiveData] = await Promise.all([
+                fetchOfficialTurnoutData(),
+                fetchEligibleActiveData(),
+                fetchEligibleInactiveData()
+            ]);
+            
+            officialTurnoutData = officialData;
+            activeVotersData = activeData;
+            inactiveVotersData = inactiveData;
+        }
+        
+        async function fetchOfficialTurnoutData() {
+            // In a real application, this would be an API call
+            // For this demo, we'll simulate the data fetch
+            return new Promise(resolve => {
+                fetch('/official-turnout')
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const rows = doc.querySelectorAll('#voter-data tbody tr');
+                        
+                        const data = [];
+                        rows.forEach(row => {
+                            const cells = row.querySelectorAll('td');
+                            data.push({
+                                county: cells[0].textContent.trim(),
+                                statewide_diff: parseInt(cells[1].textContent.replace(/,/g, '')) || 0,
+                                democrat_diff: parseInt(cells[2].textContent.replace(/,/g, '')) || 0,
+                                republican_diff: parseInt(cells[3].textContent.replace(/,/g, '')) || 0,
+                                green_diff: parseInt(cells[4].textContent.replace(/,/g, '')) || 0,
+                                libertarian_diff: parseInt(cells[5].textContent.replace(/,/g, '')) || 0,
+                                unaffiliated_diff: parseInt(cells[6].textContent.replace(/,/g, '')) || 0,
+                                other_diff: parseInt(cells[7].textContent.replace(/,/g, '')) || 0
+                            });
+                        });
+                        
+                        resolve(data);
+                    });
+            });
+        }
+        
+        async function fetchEligibleActiveData() {
+            return new Promise(resolve => {
+                fetch('/eligible-active')
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const rows = doc.querySelectorAll('#voter-data tbody tr');
+                        
+                        const data = [];
+                        rows.forEach(row => {
+                            const cells = row.querySelectorAll('td');
+                            data.push({
+                                county: cells[0].textContent.trim(),
+                                democrat_diff: parseInt(cells[1].textContent.replace(/,/g, '')) || 0,
+                                republican_diff: parseInt(cells[2].textContent.replace(/,/g, '')) || 0,
+                                green_diff: parseInt(cells[3].textContent.replace(/,/g, '')) || 0,
+                                libertarian_diff: parseInt(cells[4].textContent.replace(/,/g, '')) || 0,
+                                unaffiliated_diff: parseInt(cells[5].textContent.replace(/,/g, '')) || 0,
+                                other_diff: parseInt(cells[6].textContent.replace(/,/g, '')) || 0
+                            });
+                        });
+                        
+                        resolve(data);
+                    });
+            });
+        }
+        
+        async function fetchEligibleInactiveData() {
+            return new Promise(resolve => {
+                fetch('/eligible-inactive')
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const rows = doc.querySelectorAll('#voter-data tbody tr');
+                        
+                        const data = [];
+                        rows.forEach(row => {
+                            const cells = row.querySelectorAll('td');
+                            data.push({
+                                county: cells[0].textContent.trim(),
+                                democrat_diff: parseInt(cells[1].textContent.replace(/,/g, '')) || 0,
+                                republican_diff: parseInt(cells[2].textContent.replace(/,/g, '')) || 0,
+                                green_diff: parseInt(cells[3].textContent.replace(/,/g, '')) || 0,
+                                libertarian_diff: parseInt(cells[4].textContent.replace(/,/g, '')) || 0,
+                                unaffiliated_diff: parseInt(cells[5].textContent.replace(/,/g, '')) || 0,
+                                other_diff: parseInt(cells[6].textContent.replace(/,/g, '')) || 0
+                            });
+                        });
+                        
+                        resolve(data);
+                    });
+            });
+        }
+        
+        function populateCountyDropdowns() {
+            const counties = officialTurnoutData.map(item => item.county);
+            const primarySelect = document.getElementById('primary-county-select');
+            const comparisonSelect = document.getElementById('comparison-county-select');
+            
+            counties.sort().forEach(county => {
+                const option1 = document.createElement('option');
+                option1.value = county;
+                option1.textContent = county;
+                primarySelect.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = county;
+                option2.textContent = county;
+                comparisonSelect.appendChild(option2);
+            });
+        }
+        
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        
+        function updateSingleCountyView(county) {
+            // Update header
+            document.getElementById('county-name-header').textContent = county;
+            
+            // Find county data
+            const officialData = officialTurnoutData.find(item => item.county === county) || {};
+            const activeData = activeVotersData.find(item => item.county === county) || {};
+            const inactiveData = inactiveVotersData.find(item => item.county === county) || {};
+            
+            // Update overview stats
+            document.getElementById('total-turnout-change').textContent = formatNumber(officialData.statewide_diff || 0);
+            document.getElementById('democrat-turnout-change').textContent = formatNumber(officialData.democrat_diff || 0);
+            document.getElementById('republican-turnout-change').textContent = formatNumber(officialData.republican_diff || 0);
+            document.getElementById('unaffiliated-turnout-change').textContent = formatNumber(officialData.unaffiliated_diff || 0);
+            
+            // Update overview chart
+            overviewChart.data.datasets[0].data = [
+                officialData.democrat_diff || 0, 
+                officialData.republican_diff || 0, 
+                officialData.green_diff || 0, 
+                officialData.libertarian_diff || 0, 
+                officialData.unaffiliated_diff || 0, 
+                officialData.other_diff || 0,
+                officialData.statewide_diff || 0
+            ];
+            overviewChart.update();
+            
+            // Update official turnout tab
+            document.getElementById('official-democrat').textContent = formatNumber(officialData.democrat_diff || 0);
+            document.getElementById('official-republican').textContent = formatNumber(officialData.republican_diff || 0);
+            document.getElementById('official-green').textContent = formatNumber(officialData.green_diff || 0);
+            document.getElementById('official-libertarian').textContent = formatNumber(officialData.libertarian_diff || 0);
+            document.getElementById('official-unaffiliated').textContent = formatNumber(officialData.unaffiliated_diff || 0);
+            document.getElementById('official-other').textContent = formatNumber(officialData.other_diff || 0);
+            document.getElementById('official-statewide').textContent = formatNumber(officialData.statewide_diff || 0);
+            
+            officialChart.data.datasets[0].data = [
+                officialData.democrat_diff || 0, 
+                officialData.republican_diff || 0, 
+                officialData.green_diff || 0, 
+                officialData.libertarian_diff || 0, 
+                officialData.unaffiliated_diff || 0, 
+                officialData.other_diff || 0,
+                officialData.statewide_diff || 0
+            ];
+            officialChart.update();
+            
+            // Update active voters tab
+            document.getElementById('active-democrat').textContent = formatNumber(activeData.democrat_diff || 0);
+            document.getElementById('active-republican').textContent = formatNumber(activeData.republican_diff || 0);
+            document.getElementById('active-green').textContent = formatNumber(activeData.green_diff || 0);
+            document.getElementById('active-libertarian').textContent = formatNumber(activeData.libertarian_diff || 0);
+            document.getElementByI
