@@ -1,6 +1,8 @@
 
 5/2/2025
 
+Olivia: I've updated all my graphs to be in CNS style and made a <a href="https://www.datawrapper.de/_/v2XIM/">new graphic</a> for the center page that will replace the map.  
+
 Dabeluchukwu Okigbo: I have made the summaries a bit more simple. There a graphs still being completed so i'll be done with the summaries as soon as they are!
 
 Anthony: I have updated the HTML pages to have each county have a filterable table of the voter registration data, and embedded main flourish visualizations for each county, and a short paragraph that summarizes the data for 2024. The current design of the site is simple and minimal at least for now until we add more information and visualizations, which I am currently working on adding like information about inactive voters and more analysis.
