@@ -92,6 +92,71 @@ def index():
     template = 'index.html'
     return render_template(template)
 
+@app.route("/county")
+def county_dashboard():
+    """
+    Unified dashboard showing all voter data by county with comparison functionality.
+    This combines the data from official turnout, eligible active, and eligible inactive views.
+    """
+    template = 'county.html'
+    
+    # Get data from all three models for our unified dashboard
+    official_query = CountyTurnout.select()
+    active_query = EligibleActiveDifferences.select()
+    inactive_query = EligibleInactiveDifferences.select()
+    
+    # For the JavaScript graphs, let's convert the data to JSON
+    official_data = [
+        {
+            "county": row.county,
+            "democrat_diff": row.democrat_diff,
+            "republican_diff": row.republican_diff,
+            "green_diff": row.green_diff,
+            "libertarian_diff": row.libertarian_diff,
+            "unaffiliated_diff": row.unaffiliated_diff,
+            "other_diff": row.other_diff,
+            "statewide_diff": row.statewide_diff
+        }
+        for row in official_query
+    ]
+    
+    active_data = [
+        {
+            "county": row.county,
+            "democrat_diff": row.democrat_diff,
+            "republican_diff": row.republican_diff,
+            "green_diff": row.green_diff,
+            "libertarian_diff": row.libertarian_diff,
+            "unaffiliated_diff": row.unaffiliated_diff,
+            "other_diff": row.other_diff
+        }
+        for row in active_query
+    ]
+    
+    inactive_data = [
+        {
+            "county": row.county,
+            "democrat_diff": row.democrat_diff,
+            "republican_diff": row.republican_diff,
+            "green_diff": row.green_diff,
+            "libertarian_diff": row.libertarian_diff,
+            "unaffiliated_diff": row.unaffiliated_diff,
+            "other_diff": row.other_diff
+        }
+        for row in inactive_query
+    ]
+    
+    # Get unique counties for the dropdown
+    counties = sorted(list(set(row.county for row in official_query)))
+    
+    return render_template(
+        template,
+        official_data=official_data,
+        active_data=active_data,
+        inactive_data=inactive_data,
+        counties=counties
+    )
+
 @app.route("/official-turnout")
 def official_turnout():
     object_list = CountyTurnout.select()
