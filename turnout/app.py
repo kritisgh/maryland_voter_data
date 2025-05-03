@@ -170,7 +170,6 @@ def county_dashboard():
                     "other_diff": random.randint(-100, 100)
                 })
         
-        
         return render_template(
             template,
             official_data=official_data,

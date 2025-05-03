@@ -628,9 +628,8 @@
     </div>
 
     <script>
-        // Complete JavaScript implementation for Maryland Voter Turnout Dashboard
         document.addEventListener('DOMContentLoaded', function () {
-            console.log("Initializing dashboard with complete implementation");
+            console.log("Initializing dashboard");
 
             // Define chartColors and chartBorders globally for consistent styling
             const chartColors = {
@@ -654,67 +653,82 @@
             };
 
             // Hardcoded counties from Maryland
-            const hardcodedCounties = [
-                'Allegany', 'Anne Arundel', 'Baltimore City', 'Baltimore County',
-                'Calvert', 'Caroline', 'Carroll', 'Cecil', 'Charles', 'Dorchester',
-                'Frederick', 'Garrett', 'Harford', 'Howard', 'Kent', 'Montgomery',
-                "Prince George's", "Queen Anne's", "Saint Mary's", 'Somerset',
-                'Talbot', 'Washington', 'Wicomico', 'Worcester'
-            ];
+            // const hardcodedCounties = [
+            //     'Allegany', 'Anne Arundel', 'Baltimore City', 'Baltimore County',
+            //     'Calvert', 'Caroline', 'Carroll', 'Cecil', 'Charles', 'Dorchester',
+            //     'Frederick', 'Garrett', 'Harford', 'Howard', 'Kent', 'Montgomery',
+            //     "Prince George's", "Queen Anne's", "Saint Mary's", 'Somerset',
+            //     'Talbot', 'Washington', 'Wicomico', 'Worcester'
+            // ];
 
-            console.log("Using hardcoded counties:", hardcodedCounties);
 
             // Generate mock data for each county
-            const mockData = {
-                officialTurnoutData: [],
-                activeVotersData: [],
-                inactiveVotersData: [],
-                counties: hardcodedCounties
-            };
+            // const mockData = {
+            //     officialTurnoutData: [],
+            //     activeVotersData: [],
+            //     inactiveVotersData: [],
+            //     counties: hardcodedCounties
+            // };
 
-            hardcodedCounties.forEach(county => {
-                // Generate mock official turnout data
-                mockData.officialTurnoutData.push({
-                    county: county,
-                    democrat_diff: parseFloat((Math.random() * 6 - 3).toFixed(1)),
-                    republican_diff: parseFloat((Math.random() * 6 - 2).toFixed(1)),
-                    green_diff: parseFloat((Math.random() * 0.4 - 0.2).toFixed(1)),
-                    libertarian_diff: parseFloat((Math.random() * 0.4 - 0.2).toFixed(1)),
-                    unaffiliated_diff: parseFloat((Math.random() * 2 - 0.5).toFixed(1)),
-                    other_diff: parseFloat((Math.random() * 0.4 - 0.1).toFixed(1)),
-                    statewide_diff: parseFloat((Math.random() * 2 - 0.5).toFixed(1))
-                });
+            // hardcodedCounties.forEach(county => {
+            //     // Generate mock official turnout data
+            //     mockData.officialTurnoutData.push({
+            //         county: county,
+            //         democrat_diff: parseFloat((Math.random() * 6 - 3).toFixed(1)),
+            //         republican_diff: parseFloat((Math.random() * 6 - 2).toFixed(1)),
+            //         green_diff: parseFloat((Math.random() * 0.4 - 0.2).toFixed(1)),
+            //         libertarian_diff: parseFloat((Math.random() * 0.4 - 0.2).toFixed(1)),
+            //         unaffiliated_diff: parseFloat((Math.random() * 2 - 0.5).toFixed(1)),
+            //         other_diff: parseFloat((Math.random() * 0.4 - 0.1).toFixed(1)),
+            //         statewide_diff: parseFloat((Math.random() * 2 - 0.5).toFixed(1))
+            //     });
 
-                // Generate mock active voters data
-                mockData.activeVotersData.push({
-                    county: county,
-                    democrat_diff: Math.round(Math.random() * 2000 - 1000),
-                    republican_diff: Math.round(Math.random() * 2000 - 800),
-                    green_diff: Math.round(Math.random() * 200 - 100),
-                    libertarian_diff: Math.round(Math.random() * 200 - 100),
-                    unaffiliated_diff: Math.round(Math.random() * 1000 - 300),
-                    other_diff: Math.round(Math.random() * 200 - 50)
-                });
+            //     // Generate mock active voters data
+            //     mockData.activeVotersData.push({
+            //         county: county,
+            //         democrat_diff: Math.round(Math.random() * 2000 - 1000),
+            //         republican_diff: Math.round(Math.random() * 2000 - 800),
+            //         green_diff: Math.round(Math.random() * 200 - 100),
+            //         libertarian_diff: Math.round(Math.random() * 200 - 100),
+            //         unaffiliated_diff: Math.round(Math.random() * 1000 - 300),
+            //         other_diff: Math.round(Math.random() * 200 - 50)
+            //     });
 
-                // Generate mock inactive voters data
-                mockData.inactiveVotersData.push({
-                    county: county,
-                    democrat_diff: Math.round(Math.random() * 1000 - 500),
-                    republican_diff: Math.round(Math.random() * 1000 - 500),
-                    green_diff: Math.round(Math.random() * 100 - 50),
-                    libertarian_diff: Math.round(Math.random() * 100 - 50),
-                    unaffiliated_diff: Math.round(Math.random() * 500 - 250),
-                    other_diff: Math.round(Math.random() * 100 - 50)
-                });
-            });
+            //     // Generate mock inactive voters data
+            //     mockData.inactiveVotersData.push({
+            //         county: county,
+            //         democrat_diff: Math.round(Math.random() * 1000 - 500),
+            //         republican_diff: Math.round(Math.random() * 1000 - 500),
+            //         green_diff: Math.round(Math.random() * 100 - 50),
+            //         libertarian_diff: Math.round(Math.random() * 100 - 50),
+            //         unaffiliated_diff: Math.round(Math.random() * 500 - 250),
+            //         other_diff: Math.round(Math.random() * 100 - 50)
+            //     });
+            // });
 
             console.log("Generated mock data for all counties");
 
             // Make data globally available
-            window.officialTurnoutData = mockData.officialTurnoutData;
-            window.activeVotersData = mockData.activeVotersData;
-            window.inactiveVotersData = mockData.inactiveVotersData;
-            window.counties = mockData.counties;
+            // window.officialTurnoutData = mockData.officialTurnoutData;
+            // window.activeVotersData = mockData.activeVotersData;
+            // window.inactiveVotersData = mockData.inactiveVotersData;
+            // window.counties = mockData.counties;
+
+            const flaskDataElement = document.getElementById('flask-data');
+            console.log("Flask Data Element:", flaskDataElement.dataset);
+
+            window.officialTurnoutData = JSON.parse(flaskDataElement.dataset.official);
+            window.activeVotersData = JSON.parse(flaskDataElement.dataset.active);
+            window.inactiveVotersData = JSON.parse(flaskDataElement.dataset.inactive);
+            window.counties = JSON.parse(flaskDataElement.dataset.counties);
+
+            const hardcodedCounties = window.counties;
+            console.log("Using counties from Flask:", hardcodedCounties);
+
+            window.officialTurnoutData = JSON.parse(flaskDataElement.dataset.official);
+            window.activeVotersData = JSON.parse(flaskDataElement.dataset.active);
+            window.inactiveVotersData = JSON.parse(flaskDataElement.dataset.inactive);
+            window.counties = JSON.parse(flaskDataElement.dataset.counties);
 
             // Helper function to format numbers
             window.formatNumber = function (num) {
@@ -777,35 +791,7 @@
                 updateOfficialTurnoutChart(officialData);
                 updateActiveVotersChart(activeData);
                 updateInactiveVotersChart(inactiveData);
-
-                // Also update the "Other" category details if they exist
-                if (document.getElementById('other-total-value')) {
-                    enhanceUpdateSingleCountyView(county);
-                }
             }
-
-            window.enhanceUpdateSingleCountyView = function (county) {
-                // Get data for the selected county
-                const officialData = window.officialTurnoutData.find(item => item.county === county) || {};
-                const activeData = window.activeVotersData.find(item => item.county === county) || {};
-                const inactiveData = window.inactiveVotersData.find(item => item.county === county) || {};
-
-                // Calculate derived metrics for "Other" category
-                // These are mock calculations - replace with actual formulas if you have them
-                const otherTotalValue = Math.round(Math.random() * 5000 + 1000);
-                const otherTotalPercent = (Math.random() * 2 + 0.5).toFixed(2) + '%';
-                const otherPercentAll = (Math.random() * 1 + 0.2).toFixed(2) + '%';
-
-                // Update the table cells
-                document.getElementById('other-total-value').textContent = otherTotalValue.toLocaleString();
-                document.getElementById('other-total-percent').textContent = otherTotalPercent;
-                document.getElementById('other-total-change').textContent = formatNumber(officialData.other_diff);
-                document.getElementById('other-percent-all').textContent = otherPercentAll;
-                document.getElementById('other-percent-change').textContent = (Math.random() > 0.5 ? '+' : '-') + (Math.random() * 0.2).toFixed(2) + '%';
-
-                // Update the charts
-                updateOtherBreakdownCharts(county, otherTotalValue);
-            };
 
             // Function to update the comparison view
             window.updateComparisonView = function (county1, county2) {
@@ -911,108 +897,6 @@
                                     display: true,
                                     text: 'Percentage Change'
                                 }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Function to update breakdown charts for the "Other" category
-            function updateOtherBreakdownCharts(county, totalValue) {
-                // For demonstration, creating a mock breakdown of the "Other" category
-                // This would be replaced with actual data in a real implementation
-                const breakdownData = [
-                    { name: 'Working Class', value: Math.round(totalValue * 0.45) },
-                    { name: 'Constitution', value: Math.round(totalValue * 0.25) },
-                    { name: 'Reform', value: Math.round(totalValue * 0.15) },
-                    { name: 'Others', value: Math.round(totalValue * 0.15) }
-                ];
-
-                // Colors for the charts
-                const chartColors = [
-                    'rgba(138, 43, 226, 0.7)', // purple
-                    'rgba(255, 140, 0, 0.7)',  // dark orange
-                    'rgba(0, 128, 128, 0.7)',  // teal
-                    'rgba(169, 169, 169, 0.7)' // dark gray
-                ];
-
-                const chartBorders = [
-                    'rgba(138, 43, 226, 1)',
-                    'rgba(255, 140, 0, 1)',
-                    'rgba(0, 128, 128, 1)',
-                    'rgba(169, 169, 169, 1)'
-                ];
-
-                // Update bar chart
-                const barCtx = document.getElementById('other-breakdown-chart').getContext('2d');
-
-                // Destroy existing chart if it exists
-                if (window.otherBreakdownChart) {
-                    window.otherBreakdownChart.destroy();
-                }
-
-                window.otherBreakdownChart = new Chart(barCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: breakdownData.map(item => item.name),
-                        datasets: [{
-                            label: 'Voter Count',
-                            data: breakdownData.map(item => item.value),
-                            backgroundColor: chartColors,
-                            borderColor: chartBorders,
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: `Breakdown of "Other" Category for ${county} County`
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Number of Voters'
-                                }
-                            }
-                        }
-                    }
-                });
-
-                // Update pie chart
-                const pieCtx = document.getElementById('other-pie-chart').getContext('2d');
-
-                // Destroy existing chart if it exists
-                if (window.otherPieChart) {
-                    window.otherPieChart.destroy();
-                }
-
-                window.otherPieChart = new Chart(pieCtx, {
-                    type: 'pie',
-                    data: {
-                        labels: breakdownData.map(item => item.name),
-                        datasets: [{
-                            data: breakdownData.map(item => item.value),
-                            backgroundColor: chartColors,
-                            borderColor: chartBorders,
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: `Proportion of "Other" Category for ${county} County`
-                            },
-                            legend: {
-                                position: 'right'
                             }
                         }
                     }
@@ -1411,90 +1295,10 @@
                 });
             });
 
-            // Function to add the Other category detail section
-            window.addOtherCategoryDetail = function () {
-                // Create container for detailed "Other" category information
-                const otherDetailContainer = document.createElement('div');
-                otherDetailContainer.id = 'other-detail-container';
-                otherDetailContainer.className = 'data-card';
-                otherDetailContainer.style.marginTop = '30px';
-
-                otherDetailContainer.innerHTML = `
-                    <div class="other-header" style="display: flex; justify-content: space-between; align-items: center;">
-                        <h3>Other Category Details</h3>
-                        <div class="toggle-container">
-                            <label for="other-display-toggle">Show pie chart</label>
-                            <input type="checkbox" id="other-display-toggle" />
-                        </div>
-                    </div>
-                    
-                    <div id="other-bar-container" class="chart-container">
-                        <canvas id="other-breakdown-chart"></canvas>
-                    </div>
-                    
-                    <div id="other-pie-container" class="chart-container" style="display: none;">
-                        <canvas id="other-pie-chart"></canvas>
-                    </div>
-                    
-                    <div class="data-tables">
-                        <table id="other-detail-table" class="display" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Category</th>
-                                    <th>Value</th>
-                                    <th>% of Total Voters</th>
-                                    <th>Change from 2020</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Other Category Total</td>
-                                    <td id="other-total-value">-</td>
-                                    <td id="other-total-percent">-</td>
-                                    <td id="other-total-change">-</td>
-                                </tr>
-                                <tr>
-                                    <td>Other as % of All Voters</td>
-                                    <td>-</td>
-                                    <td id="other-percent-all">-</td>
-                                    <td id="other-percent-change">-</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-
-                // Find the official-turnout tab content and append this new container
-                const officialTurnoutTab = document.getElementById('official-turnout');
-                officialTurnoutTab.appendChild(otherDetailContainer);
-
-                // Add event listener to toggle between bar and pie charts
-                const toggle = document.getElementById('other-display-toggle');
-                toggle.addEventListener('change', function () {
-                    if (this.checked) {
-                        document.getElementById('other-bar-container').style.display = 'none';
-                        document.getElementById('other-pie-container').style.display = 'block';
-                    } else {
-                        document.getElementById('other-bar-container').style.display = 'block';
-                        document.getElementById('other-pie-container').style.display = 'none';
-                    }
-                });
-            };
+            // REMOVED: The function that adds the Other category detail section
+            // REMOVED: The setTimeout call to initialize the Other category enhancement
 
             console.log("Dashboard initialization complete");
-
-            // Initialize the enhancement when the document is fully loaded
-            setTimeout(function () {
-                addOtherCategoryDetail();
-
-                // If a county is already selected, update the view
-                const selectedCounty = document.getElementById('primary-county-select').value;
-                if (selectedCounty) {
-                    enhanceUpdateSingleCountyView(selectedCounty);
-                }
-
-                console.log("Other category enhancement initialized");
-            }, 1000);
         });
     </script>
 </body>
