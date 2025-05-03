@@ -23,24 +23,6 @@ class CountyTurnout(Model):
         database = db
         primary_key = False
 
-class EligibleInactive(Model):
-    county = CharField(column_name='County')
-    democrat_inactive = IntegerField(column_name='Democrat')
-    republican_inactive = IntegerField(column_name='Republican')
-    bread_and_roses_inactive = IntegerField(column_name='Bread and Roses')
-    green_inactive = IntegerField(column_name='Green')
-    libertarian_inactive = IntegerField(column_name='Libertarian')
-    working_class_inactive = IntegerField(column_name='Working Class Party')
-    other_inactive = IntegerField(column_name='Other')
-    unaffiliated_inactive = IntegerField(column_name='Unaffiliated')
-    no_labels_inactive = IntegerField(column_name='No Labels Maryland')
-    year = IntegerField(column_name='Year')
-
-    class Meta:
-        table_name = "eligible_inactive"
-        database = db
-        primary_key = False
-
 class EligibleInactiveDifferences(Model):
     county = CharField(column_name='county')
     democrat_diff = DoubleField(column_name='democrat_diff')
@@ -55,23 +37,6 @@ class EligibleInactiveDifferences(Model):
         database = db
         primary_key = False
 
-class EligibleActive(Model):
-    county = CharField(column_name='County')
-    democrat_active = IntegerField(column_name='Democrat')
-    republican_active = IntegerField(column_name='Republican')
-    bread_and_roses_active = IntegerField(column_name='Bread and Roses')
-    green_active = IntegerField(column_name='Green')
-    libertarian_active = IntegerField(column_name='Libertarian')
-    working_class_active = IntegerField(column_name='Working Class Party')
-    other_active = IntegerField(column_name='Other')
-    unaffiliated_active = IntegerField(column_name='Unaffiliated')
-    no_labels_active = IntegerField(column_name='No Labels Maryland')
-    year = IntegerField(column_name='Year')
-
-    class Meta:
-        table_name = "eligible_active"
-        database = db
-        primary_key = False
 
 class EligibleActiveDifferences(Model):
     county = CharField(column_name='County')
