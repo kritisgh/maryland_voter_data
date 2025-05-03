@@ -963,108 +963,108 @@
 
         function populateCountyDropdowns() {
             // We can use the counties list passed from Flask
-            const counties = {{ counties | tojson
-        }};
+            const counties = {{ counties | tojson }};
 
-        const primarySelect = document.getElementById('primary-county-select');
-        const comparisonSelect = document.getElementById('comparison-county-select');
+            const primarySelect = document.getElementById('primary-county-select');
+            const comparisonSelect = document.getElementById('comparison-county-select');
 
-        counties.forEach(county => {
-            const option1 = document.createElement('option');
-            option1.value = county;
-            option1.textContent = county;
-            primarySelect.appendChild(option1);
+            counties.forEach(county => {
+                const option1 = document.createElement('option');
+                option1.value = county;
+                option1.textContent = county;
+                primarySelect.appendChild(option1);
 
-            const option2 = document.createElement('option');
-            option2.value = county;
-            option2.textContent = county;
-            comparisonSelect.appendChild(option2);
+                const option2 = document.createElement('option');
+                option2.value = county;
+                option2.textContent = county;
+                comparisonSelect.appendChild(option2);
+            });
         }
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-            function formatNumber(num) {
-                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            }
+        function updateSingleCountyView(county){
+            // Update header
+            document.getElementById('county-name-header').textContent = county;
 
-        function updateSingleCountyView(county) {
-                // Update header
-                document.getElementById('county-name-header').textContent = county;
+            // Find county data
+            const officialData = officialTurnoutData.find(item => item.county === county) || {};
+            const activeData = activeVotersData.find(item => item.county === county) || {};
+            const inactiveData = inactiveVotersData.find(item => item.county === county) || {};
 
-                // Find county data
-                const officialData = officialTurnoutData.find(item => item.county === county) || {};
-                const activeData = activeVotersData.find(item => item.county === county) || {};
-                const inactiveData = inactiveVotersData.find(item => item.county === county) || {};
+            // Update overview stats
+            document.getElementById('total-turnout-change').textContent = formatNumber(officialData.statewide_diff || 0);
+            document.getElementById('democrat-turnout-change').textContent = formatNumber(officialData.democrat_diff || 0);
+            document.getElementById('republican-turnout-change').textContent = formatNumber(officialData.republican_diff || 0);
+            document.getElementById('unaffiliated-turnout-change').textContent = formatNumber(officialData.unaffiliated_diff || 0);
 
-                // Update overview stats
-                document.getElementById('total-turnout-change').textContent = formatNumber(officialData.statewide_diff || 0);
-                document.getElementById('democrat-turnout-change').textContent = formatNumber(officialData.democrat_diff || 0);
-                document.getElementById('republican-turnout-change').textContent = formatNumber(officialData.republican_diff || 0);
-                document.getElementById('unaffiliated-turnout-change').textContent = formatNumber(officialData.unaffiliated_diff || 0);
+            // Update overview chart
+            overviewChart.data.datasets[0].data = [
+                officialData.democrat_diff || 0,
+                officialData.republican_diff || 0,
+                officialData.green_diff || 0,
+                officialData.libertarian_diff || 0,
+                officialData.unaffiliated_diff || 0,
+                officialData.other_diff || 0,
+                officialData.statewide_diff || 0
+            ];
+            overviewChart.update();
 
-                // Update overview chart
-                overviewChart.data.datasets[0].data = [
-                    officialData.democrat_diff || 0,
-                    officialData.republican_diff || 0,
-                    officialData.green_diff || 0,
-                    officialData.libertarian_diff || 0,
-                    officialData.unaffiliated_diff || 0,
-                    officialData.other_diff || 0,
-                    officialData.statewide_diff || 0
-                ];
-                overviewChart.update();
+            // Update official turnout tab
+            document.getElementById('official-democrat').textContent = formatNumber(officialData.democrat_diff || 0);
+            document.getElementById('official-republican').textContent = formatNumber(officialData.republican_diff || 0);
+            document.getElementById('official-green').textContent = formatNumber(officialData.green_diff || 0);
+            document.getElementById('official-libertarian').textContent = formatNumber(officialData.libertarian_diff || 0);
+            document.getElementById('official-unaffiliated').textContent = formatNumber(officialData.unaffiliated_diff || 0);
+            document.getElementById('official-other').textContent = formatNumber(officialData.other_diff || 0);
+            document.getElementById('official-statewide').textContent = formatNumber(officialData.statewide_diff || 0);
 
-                // Update official turnout tab
-                document.getElementById('official-democrat').textContent = formatNumber(officialData.democrat_diff || 0);
-                document.getElementById('official-republican').textContent = formatNumber(officialData.republican_diff || 0);
-                document.getElementById('official-green').textContent = formatNumber(officialData.green_diff || 0);
-                document.getElementById('official-libertarian').textContent = formatNumber(officialData.libertarian_diff || 0);
-                document.getElementById('official-unaffiliated').textContent = formatNumber(officialData.unaffiliated_diff || 0);
-                document.getElementById('official-other').textContent = formatNumber(officialData.other_diff || 0);
-                document.getElementById('official-statewide').textContent = formatNumber(officialData.statewide_diff || 0);
+            officialChart.data.datasets[0].data = [
+                officialData.democrat_diff || 0,
+                officialData.republican_diff || 0,
+                officialData.green_diff || 0,
+                officialData.libertarian_diff || 0,
+                officialData.unaffiliated_diff || 0,
+                officialData.other_diff || 0,
+                officialData.statewide_diff || 0
+            ];
+            officialChart.update();
 
-                officialChart.data.datasets[0].data = [
-                    officialData.democrat_diff || 0,
-                    officialData.republican_diff || 0,
-                    officialData.green_diff || 0,
-                    officialData.libertarian_diff || 0,
-                    officialData.unaffiliated_diff || 0,
-                    officialData.other_diff || 0,
-                    officialData.statewide_diff || 0
-                ];
-                officialChart.update();
+            // Update active voters tab
+            document.getElementById('active-democrat').textContent = formatNumber(activeData.democrat_diff || 0);
+            document.getElementById('active-republican').textContent = formatNumber(activeData.republican_diff || 0);
+            document.getElementById('active-green').textContent = formatNumber(activeData.green_diff || 0);
+            document.getElementById('active-libertarian').textContent = formatNumber(activeData.libertarian_diff || 0);
+            document.getElementById('active-unaffiliated').textContent = formatNumber(activeData.unaffiliated_diff || 0);
+            document.getElementById('active-other').textContent = formatNumber(activeData.other_diff || 0);
 
-                // Update active voters tab
-                document.getElementById('active-democrat').textContent = formatNumber(activeData.democrat_diff || 0);
-                document.getElementById('active-republican').textContent = formatNumber(activeData.republican_diff || 0);
-                document.getElementById('active-green').textContent = formatNumber(activeData.green_diff || 0);
-                document.getElementById('active-libertarian').textContent = formatNumber(activeData.libertarian_diff || 0);
-                document.getElementById('active-unaffiliated').textContent = formatNumber(activeData.unaffiliated_diff || 0);
-                document.getElementById('active-other').textContent = formatNumber(activeData.other_diff || 0);
+            activeChart.data.datasets[0].data = [
+                activeData.democrat_diff || 0,
+                activeData.republican_diff || 0,
+                activeData.green_diff || 0,
+                activeData.libertarian_diff || 0,
+                activeData.unaffiliated_diff || 0,
+                activeData.other_diff || 0
+            ];
+            activeChart.update();
 
-                activeChart.data.datasets[0].data = [
-                    activeData.democrat_diff || 0,
-                    activeData.republican_diff || 0,
-                    activeData.green_diff || 0,
-                    activeData.libertarian_diff || 0,
-                    activeData.unaffiliated_diff || 0,
-                    activeData.other_diff || 0
-                ];
-                activeChart.update();
+            // Update inactive voters tab
+            document.getElementById('inactive-democrat').textContent = formatNumber(inactiveData.democrat_diff || 0);
+            document.getElementById('inactive-republican').textContent = formatNumber(inactiveData.republican_diff || 0);
+            document.getElementById('inactive-green').textContent = formatNumber(inactiveData.green_diff || 0);
+            document.getElementById('inactive-libertarian').textContent = formatNumber(inactiveData.libertarian_diff || 0);
+            document.getElementById('inactive-unaffiliated').textContent = formatNumber(inactiveData.unaffiliated_diff || 0);
+            document.getElementById('inactive-other').textContent = formatNumber(inactiveData.other_diff || 0);
 
-                // Update inactive voters tab
-                document.getElementById('inactive-democrat').textContent = formatNumber(inactiveData.democrat_diff || 0);
-                document.getElementById('inactive-republican').textContent = formatNumber(inactiveData.republican_diff || 0);
-                document.getElementById('inactive-green').textContent = formatNumber(inactiveData.green_diff || 0);
-                document.getElementById('inactive-libertarian').textContent = formatNumber(inactiveData.libertarian_diff || 0);
-                document.getElementById('inactive-unaffiliated').textContent = formatNumber(inactiveData.unaffiliated_diff || 0);
-                document.getElementById('inactive-other').textContent = formatNumber(inactiveData.other_diff || 0);
-
-                inactiveChart.data.datasets[0].data = [
-                    inactiveData.democrat_diff || 0,
-                    inactiveData.republican_diff || 0,
-                    inactiveData.green_diff || 0,
-                    inactiveData.libertarian_diff || 0,
-                    inactiveData.unaffiliated_diff || 0,
-                    inactiveData.other_diff || 0
-                ];
-                inactiveChart.update();
+            inactiveChart.data.datasets[0].data = [
+                inactiveData.democrat_diff || 0,
+                inactiveData.republican_diff || 0,
+                inactiveData.green_diff || 0,
+                inactiveData.libertarian_diff || 0,
+                inactiveData.unaffiliated_diff || 0,
+                inactiveData.other_diff || 0
+            ];
+            inactiveChart.update();
+        }
