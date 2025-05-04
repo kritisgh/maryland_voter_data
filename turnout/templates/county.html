@@ -7,27 +7,47 @@
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* CNS Style Guide Colors */
+        :root {
+            /* Main Graphics Colors */
+            --cns-blue: #1979b9;
+            --cns-orange: #faa916;
+            --cns-red: #c71e1d;
+
+            /* Secondary/Accent Colors */
+            --cns-purple: #80217f;
+            --cns-bright-orange: #de5826;
+            --cns-teal: #2ec4b6;
+            --cns-green: #8fd694;
+
+            /* Website Colors */
+            --cns-yellow: #fbd603;
+            --cns-maroon: #990000;
+            --cns-black: #0a0a0a;
+            --cns-gray: #666666;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--cns-black);
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
-        }
-
-        h1,
-        h2,
-        h3 {
-            font-family: 'Overpass', sans-serif;
-            color: #333;
+            background-color: #FAF9F6;
         }
 
         h1 {
-            text-align: center;
-            color: #333;
+            font-family: 'Source Serif Pro', serif;
+            color: var(--cns-blue);
             margin-bottom: 30px;
             font-size: 2.5em;
+            text-align: center;
+        }
+
+        h2,
+        h3 {
+            font-family: 'Source Serif Pro', serif;
+            color: var(--cns-black);
         }
 
         .dashboard-container {
@@ -64,8 +84,7 @@
             gap: 10px;
         }
 
-        select,
-        button {
+        select {
             padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -75,14 +94,18 @@
 
         button {
             cursor: pointer;
-            background-color: #4a6fa5;
+            background-color: var(--cns-blue);
             color: white;
             border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Poppins', sans-serif;
             transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #3a5a8a;
+            background-color: var(--cns-yellow);
+            color: var(--cns-black);
         }
 
         .tabs {
@@ -99,6 +122,7 @@
             border-radius: 4px 4px 0 0;
             background-color: #f5f5f5;
             margin-right: 5px;
+            font-family: 'Poppins', sans-serif;
         }
 
         .tab.active {
@@ -130,6 +154,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            background-color: white;
         }
 
         table th,
@@ -137,6 +162,7 @@
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            font-family: 'Poppins', sans-serif;
         }
 
         table th {
@@ -165,7 +191,7 @@
             z-index: 1;
             top: 0;
             left: 0;
-            background-color: #111;
+            background-color: var(--cns-blue);
             overflow-x: hidden;
             transition: 0.5s;
             padding-top: 60px;
@@ -174,14 +200,15 @@
         .sidenav a {
             padding: 8px 8px 8px 32px;
             text-decoration: none;
+            font-family: 'Poppins', sans-serif;
             font-size: 18px;
-            color: #818181;
+            color: white;
             display: block;
             transition: 0.3s;
         }
 
         .sidenav a:hover {
-            color: #f1f1f1;
+            color: var(--cns-yellow);
         }
 
         .sidenav .closebtn {
@@ -203,11 +230,12 @@
         }
 
         .county-header {
-            background-color: #4a6fa5;
+            background-color: var(--cns-blue);
             color: white;
             padding: 10px 15px;
             margin-top: 0;
             border-radius: 4px;
+            font-family: 'Source Serif Pro', serif;
         }
 
         .dataTables_wrapper {
@@ -243,77 +271,77 @@
             font-size: 0.9em;
             color: #666;
             margin-bottom: 5px;
+            font-family: 'Poppins', sans-serif;
         }
 
         .stat-value {
             font-size: 1.8em;
             font-weight: 600;
             color: #333;
+            font-family: 'Poppins', sans-serif;
         }
 
         .stat-card.democrat {
-            border-top: 4px solid rgba(70, 130, 180, 0.7);
+            border-top: 4px solid var(--cns-blue);
         }
 
         .stat-card.republican {
-            border-top: 4px solid rgba(220, 100, 100, 0.7);
+            border-top: 4px solid var(--cns-red);
         }
 
         .stat-card.unaffiliated {
-            border-top: 4px solid rgba(180, 180, 180, 0.7);
+            border-top: 4px solid var(--cns-gray);
         }
 
         .stat-card.total {
-            border-top: 4px solid #333;
+            border-top: 4px solid var(--cns-black);
         }
 
-        /* Custom styling for the toggle switch */
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        /* Chart notes and sources style - CNS guidelines */
+        .chart-footer {
+            margin-top: 10px;
+            font-family: 'Poppins', sans-serif;
         }
 
-        #other-display-toggle {
-            position: relative;
-            width: 40px;
-            height: 20px;
-            -webkit-appearance: none;
-            appearance: none;
-            background-color: #ccc;
-            border-radius: 20px;
-            outline: none;
-            cursor: pointer;
-            transition: 0.3s;
+        .chart-note {
+            font-style: italic;
+            font-size: 0.9em;
+            color: #666;
         }
 
-        #other-display-toggle:checked {
-            background-color: #4a6fa5;
+        .chart-source {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 0.9em;
+            margin-top: 5px;
         }
 
-        #other-display-toggle:before {
-            content: "";
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            top: 1px;
-            left: 1px;
-            background-color: white;
-            transition: 0.3s;
+        .chart-byline {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9em;
+            margin-top: 3px;
         }
 
-        #other-display-toggle:checked:before {
-            left: 21px;
+        .chart-title {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            color: var(--cns-black);
+        }
+
+        .chart-chatter {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            margin-bottom: 15px;
+            color: #555;
         }
     </style>
     <title>Maryland Voter Turnout Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
         rel="stylesheet">
 </head>
 
@@ -326,7 +354,7 @@
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Home</a>
+        <a href="/">Home</a>
         <a href="official-turnout">Official Maryland Turnout</a>
         <a href="eligible-active">Eligible Active Voters</a>
         <a href="eligible-inactive">Eligible Inactive Voters</a>
@@ -391,17 +419,33 @@
                     </div>
                 </div>
 
-                <div class="chart-container">
-                    <h3>Turnout Change By Party (2020 → 2024)</h3>
-                    <canvas id="overview-chart"></canvas>
+                <div class="data-card">
+                    <div class="chart-title">Turnout change by party in Maryland</div>
+                    <div class="chart-chatter">Percentage point difference in voter turnout between 2020 and 2024
+                        elections across parties.</div>
+                    <div class="chart-container">
+                        <canvas id="overview-chart"></canvas>
+                    </div>
+                    <div class="chart-footer">
+                        <div class="chart-source">Source: Maryland State Board of Elections</div>
+                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland</div>
+                    </div>
                 </div>
             </div>
 
             <div id="official-turnout" class="tab-content">
                 <div class="data-card">
-                    <h3>Official Turnout Data</h3>
+                    <div class="chart-title">Official turnout data by party</div>
+                    <div class="chart-chatter">Percentage change in official voter turnout across parties from 2020 to
+                        2024.</div>
                     <div class="chart-container">
                         <canvas id="official-turnout-chart"></canvas>
+                    </div>
+                    <div class="chart-footer">
+                        <div class="chart-note">Note: Percentages represent change in turnout rate, not raw voter
+                            numbers.</div>
+                        <div class="chart-source">Source: Maryland State Board of Elections</div>
+                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland</div>
                     </div>
 
                     <div class="data-tables">
@@ -449,9 +493,15 @@
 
             <div id="active-voters" class="tab-content">
                 <div class="data-card">
-                    <h3>Eligible Active Voters</h3>
+                    <div class="chart-title">Change in eligible active voters</div>
+                    <div class="chart-chatter">Numeric change in eligible active voters by party affiliation from 2020
+                        to 2024.</div>
                     <div class="chart-container">
                         <canvas id="active-voters-chart"></canvas>
+                    </div>
+                    <div class="chart-footer">
+                        <div class="chart-source">Source: Maryland State Board of Elections</div>
+                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland</div>
                     </div>
 
                     <div class="data-tables">
@@ -495,9 +545,17 @@
 
             <div id="inactive-voters" class="tab-content">
                 <div class="data-card">
-                    <h3>Eligible Inactive Voters</h3>
+                    <div class="chart-title">Change in eligible inactive voters</div>
+                    <div class="chart-chatter">Numeric change in eligible inactive voters by party affiliation from 2020
+                        to 2024.</div>
                     <div class="chart-container">
                         <canvas id="inactive-voters-chart"></canvas>
+                    </div>
+                    <div class="chart-footer">
+                        <div class="chart-note">Note: Inactive voters are still eligible but have not responded to
+                            address verification.</div>
+                        <div class="chart-source">Source: Maryland State Board of Elections</div>
+                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland</div>
                     </div>
 
                     <div class="data-tables">
@@ -549,6 +607,9 @@
                     <div class="chart-container">
                         <canvas id="county1-chart"></canvas>
                     </div>
+                    <div class="chart-footer">
+                        <div class="chart-source">Source: Maryland State Board of Elections</div>
+                    </div>
 
                     <div class="data-tables">
                         <table class="display" style="width:100%">
@@ -588,6 +649,9 @@
                     <h3 id="county2-name" class="county-header">County 2</h3>
                     <div class="chart-container">
                         <canvas id="county2-chart"></canvas>
+                    </div>
+                    <div class="chart-footer">
+                        <div class="chart-source">Source: Maryland State Board of Elections</div>
                     </div>
 
                     <div class="data-tables">
@@ -631,99 +695,29 @@
         document.addEventListener('DOMContentLoaded', function () {
             console.log("Initializing dashboard");
 
-            // Define chartColors and chartBorders globally for consistent styling
+            // Define chartColors and chartBorders using CNS color palette
             const chartColors = {
-                democrat: 'rgba(70, 130, 180, 0.7)',    // steel blue
-                republican: 'rgba(220, 100, 100, 0.7)', // soft red
-                green: 'rgba(120, 200, 120, 0.7)',      // leafy green
-                libertarian: 'rgba(240, 200, 130, 0.7)',// warm gold
-                unaffiliated: 'rgba(180, 180, 180, 0.7)',// medium gray
-                other: 'rgba(255, 170, 100, 0.7)',      // pumpkin orange
-                statewide: 'rgba(100, 100, 100, 0.7)'   // dark gray
+                democrat: 'rgba(25, 121, 185, 0.7)',     // CNS blue
+                republican: 'rgba(199, 30, 29, 0.7)',    // CNS red
+                green: 'rgba(143, 214, 148, 0.7)',       // CNS green
+                libertarian: 'rgba(250, 169, 22, 0.7)',  // CNS orange
+                unaffiliated: 'rgba(102, 102, 102, 0.7)',// CNS gray
+                other: 'rgba(128, 33, 127, 0.7)',        // CNS purple
+                statewide: 'rgba(10, 10, 10, 0.7)'       // CNS black
             };
 
             const chartBorders = {
-                democrat: 'rgba(70, 130, 180, 1)',
-                republican: 'rgba(220, 100, 100, 1)',
-                green: 'rgba(120, 200, 120, 1)',
-                libertarian: 'rgba(240, 200, 130, 1)',
-                unaffiliated: 'rgba(180, 180, 180, 1)',
-                other: 'rgba(255, 170, 100, 1)',
-                statewide: 'rgba(100, 100, 100, 1)'
+                democrat: 'rgba(25, 121, 185, 1)',     // CNS blue
+                republican: 'rgba(199, 30, 29, 1)',    // CNS red
+                green: 'rgba(143, 214, 148, 1)',       // CNS green
+                libertarian: 'rgba(250, 169, 22, 1)',  // CNS orange
+                unaffiliated: 'rgba(102, 102, 102, 1)',// CNS gray
+                other: 'rgba(128, 33, 127, 1)',        // CNS purple
+                statewide: 'rgba(10, 10, 10, 1)'       // CNS black
             };
-
-            // Hardcoded counties from Maryland
-            // const hardcodedCounties = [
-            //     'Allegany', 'Anne Arundel', 'Baltimore City', 'Baltimore County',
-            //     'Calvert', 'Caroline', 'Carroll', 'Cecil', 'Charles', 'Dorchester',
-            //     'Frederick', 'Garrett', 'Harford', 'Howard', 'Kent', 'Montgomery',
-            //     "Prince George's", "Queen Anne's", "Saint Mary's", 'Somerset',
-            //     'Talbot', 'Washington', 'Wicomico', 'Worcester'
-            // ];
-
-
-            // Generate mock data for each county
-            // const mockData = {
-            //     officialTurnoutData: [],
-            //     activeVotersData: [],
-            //     inactiveVotersData: [],
-            //     counties: hardcodedCounties
-            // };
-
-            // hardcodedCounties.forEach(county => {
-            //     // Generate mock official turnout data
-            //     mockData.officialTurnoutData.push({
-            //         county: county,
-            //         democrat_diff: parseFloat((Math.random() * 6 - 3).toFixed(1)),
-            //         republican_diff: parseFloat((Math.random() * 6 - 2).toFixed(1)),
-            //         green_diff: parseFloat((Math.random() * 0.4 - 0.2).toFixed(1)),
-            //         libertarian_diff: parseFloat((Math.random() * 0.4 - 0.2).toFixed(1)),
-            //         unaffiliated_diff: parseFloat((Math.random() * 2 - 0.5).toFixed(1)),
-            //         other_diff: parseFloat((Math.random() * 0.4 - 0.1).toFixed(1)),
-            //         statewide_diff: parseFloat((Math.random() * 2 - 0.5).toFixed(1))
-            //     });
-
-            //     // Generate mock active voters data
-            //     mockData.activeVotersData.push({
-            //         county: county,
-            //         democrat_diff: Math.round(Math.random() * 2000 - 1000),
-            //         republican_diff: Math.round(Math.random() * 2000 - 800),
-            //         green_diff: Math.round(Math.random() * 200 - 100),
-            //         libertarian_diff: Math.round(Math.random() * 200 - 100),
-            //         unaffiliated_diff: Math.round(Math.random() * 1000 - 300),
-            //         other_diff: Math.round(Math.random() * 200 - 50)
-            //     });
-
-            //     // Generate mock inactive voters data
-            //     mockData.inactiveVotersData.push({
-            //         county: county,
-            //         democrat_diff: Math.round(Math.random() * 1000 - 500),
-            //         republican_diff: Math.round(Math.random() * 1000 - 500),
-            //         green_diff: Math.round(Math.random() * 100 - 50),
-            //         libertarian_diff: Math.round(Math.random() * 100 - 50),
-            //         unaffiliated_diff: Math.round(Math.random() * 500 - 250),
-            //         other_diff: Math.round(Math.random() * 100 - 50)
-            //     });
-            // });
-
-            console.log("Generated mock data for all counties");
-
-            // Make data globally available
-            // window.officialTurnoutData = mockData.officialTurnoutData;
-            // window.activeVotersData = mockData.activeVotersData;
-            // window.inactiveVotersData = mockData.inactiveVotersData;
-            // window.counties = mockData.counties;
 
             const flaskDataElement = document.getElementById('flask-data');
             console.log("Flask Data Element:", flaskDataElement.dataset);
-
-            window.officialTurnoutData = JSON.parse(flaskDataElement.dataset.official);
-            window.activeVotersData = JSON.parse(flaskDataElement.dataset.active);
-            window.inactiveVotersData = JSON.parse(flaskDataElement.dataset.inactive);
-            window.counties = JSON.parse(flaskDataElement.dataset.counties);
-
-            const hardcodedCounties = window.counties;
-            console.log("Using counties from Flask:", hardcodedCounties);
 
             window.officialTurnoutData = JSON.parse(flaskDataElement.dataset.official);
             window.activeVotersData = JSON.parse(flaskDataElement.dataset.active);
@@ -743,113 +737,87 @@
                 return num > 0 ? `+${num.toLocaleString()}` : num.toLocaleString();
             };
 
-            // Complete the updateSingleCountyView function
-            window.updateSingleCountyView = function (county) {
-                console.log("Updating view for county:", county);
-
-                // Update the county header
-                document.getElementById('county-name-header').textContent = county;
-
-                // Find data for the selected county
-                const officialData = window.officialTurnoutData.find(item => item.county === county) || {};
-                const activeData = window.activeVotersData.find(item => item.county === county) || {};
-                const inactiveData = window.inactiveVotersData.find(item => item.county === county) || {};
-
-                // Update the overview tab
-                document.getElementById('total-turnout-change').textContent = formatNumber(officialData.statewide_diff);
-                document.getElementById('democrat-turnout-change').textContent = formatNumber(officialData.democrat_diff);
-                document.getElementById('republican-turnout-change').textContent = formatNumber(officialData.republican_diff);
-                document.getElementById('unaffiliated-turnout-change').textContent = formatNumber(officialData.unaffiliated_diff);
-
-                // Update the official turnout tab
-                document.getElementById('official-democrat').textContent = formatNumber(officialData.democrat_diff);
-                document.getElementById('official-republican').textContent = formatNumber(officialData.republican_diff);
-                document.getElementById('official-green').textContent = formatNumber(officialData.green_diff);
-                document.getElementById('official-libertarian').textContent = formatNumber(officialData.libertarian_diff);
-                document.getElementById('official-unaffiliated').textContent = formatNumber(officialData.unaffiliated_diff);
-                document.getElementById('official-other').textContent = formatNumber(officialData.other_diff);
-                document.getElementById('official-statewide').textContent = formatNumber(officialData.statewide_diff);
-
-                // Update the active voters tab
-                document.getElementById('active-democrat').textContent = formatNumber(activeData.democrat_diff);
-                document.getElementById('active-republican').textContent = formatNumber(activeData.republican_diff);
-                document.getElementById('active-green').textContent = formatNumber(activeData.green_diff);
-                document.getElementById('active-libertarian').textContent = formatNumber(activeData.libertarian_diff);
-                document.getElementById('active-unaffiliated').textContent = formatNumber(activeData.unaffiliated_diff);
-                document.getElementById('active-other').textContent = formatNumber(activeData.other_diff);
-
-                // Update the inactive voters tab
-                document.getElementById('inactive-democrat').textContent = formatNumber(inactiveData.democrat_diff);
-                document.getElementById('inactive-republican').textContent = formatNumber(inactiveData.republican_diff);
-                document.getElementById('inactive-green').textContent = formatNumber(inactiveData.green_diff);
-                document.getElementById('inactive-libertarian').textContent = formatNumber(inactiveData.libertarian_diff);
-                document.getElementById('inactive-unaffiliated').textContent = formatNumber(inactiveData.unaffiliated_diff);
-                document.getElementById('inactive-other').textContent = formatNumber(inactiveData.other_diff);
-
-                // Update the charts
-                updateOverviewChart(officialData);
-                updateOfficialTurnoutChart(officialData);
-                updateActiveVotersChart(activeData);
-                updateInactiveVotersChart(inactiveData);
-            }
-
-            // Function to update the comparison view
-            window.updateComparisonView = function (county1, county2) {
-                // Show comparison view, hide single county view
-                document.getElementById('single-county-view').style.display = 'none';
-                document.getElementById('comparison-view').style.display = 'block';
-
-                // Set county names in headers
-                document.getElementById('county1-name').textContent = county1;
-                document.getElementById('county2-name').textContent = county2;
-
-                // Find data for both counties
-                const county1OfficialData = window.officialTurnoutData.find(item => item.county === county1) || {};
-                const county1ActiveData = window.activeVotersData.find(item => item.county === county1) || {};
-                const county1InactiveData = window.inactiveVotersData.find(item => item.county === county1) || {};
-
-                const county2OfficialData = window.officialTurnoutData.find(item => item.county === county2) || {};
-                const county2ActiveData = window.activeVotersData.find(item => item.county === county2) || {};
-                const county2InactiveData = window.inactiveVotersData.find(item => item.county === county2) || {};
-
-                // Update county 1 data cells
-                document.getElementById('county1-official-democrat').textContent = formatNumber(county1OfficialData.democrat_diff);
-                document.getElementById('county1-official-republican').textContent = formatNumber(county1OfficialData.republican_diff);
-                document.getElementById('county1-official-unaffiliated').textContent = formatNumber(county1OfficialData.unaffiliated_diff);
-
-                document.getElementById('county1-active-democrat').textContent = formatNumber(county1ActiveData.democrat_diff);
-                document.getElementById('county1-active-republican').textContent = formatNumber(county1ActiveData.republican_diff);
-                document.getElementById('county1-active-unaffiliated').textContent = formatNumber(county1ActiveData.unaffiliated_diff);
-
-                document.getElementById('county1-inactive-democrat').textContent = formatNumber(county1InactiveData.democrat_diff);
-                document.getElementById('county1-inactive-republican').textContent = formatNumber(county1InactiveData.republican_diff);
-                document.getElementById('county1-inactive-unaffiliated').textContent = formatNumber(county1InactiveData.unaffiliated_diff);
-
-                // Update county 2 data cells
-                document.getElementById('county2-official-democrat').textContent = formatNumber(county2OfficialData.democrat_diff);
-                document.getElementById('county2-official-republican').textContent = formatNumber(county2OfficialData.republican_diff);
-                document.getElementById('county2-official-unaffiliated').textContent = formatNumber(county2OfficialData.unaffiliated_diff);
-
-                document.getElementById('county2-active-democrat').textContent = formatNumber(county2ActiveData.democrat_diff);
-                document.getElementById('county2-active-republican').textContent = formatNumber(county2ActiveData.republican_diff);
-                document.getElementById('county2-active-unaffiliated').textContent = formatNumber(county2ActiveData.unaffiliated_diff);
-
-                document.getElementById('county2-inactive-democrat').textContent = formatNumber(county2InactiveData.democrat_diff);
-                document.getElementById('county2-inactive-republican').textContent = formatNumber(county2InactiveData.republican_diff);
-                document.getElementById('county2-inactive-unaffiliated').textContent = formatNumber(county2InactiveData.unaffiliated_diff);
-
-                // Update comparison charts
-                updateComparisonCharts(county1, county2);
+            // Helper function to safely update element text content
+            const safelyUpdateElement = (id, value) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = formatNumber(value);
+                }
             };
 
-            // Chart update functions
-            function updateOverviewChart(data) {
-                const ctx = document.getElementById('overview-chart').getContext('2d');
+            // Function to update charts
+            function updateOverviewChart(data, county) {
+                const canvasElement = document.getElementById('overview-chart');
+                if (!canvasElement) {
+                    console.error('Overview chart canvas element not found');
+                    return;
+                }
+
+                const ctx = canvasElement.getContext('2d');
+                if (!ctx) {
+                    console.error('Could not get 2D context for overview chart');
+                    return;
+                }
 
                 // Destroy existing chart if it exists
                 if (window.overviewChart) {
                     window.overviewChart.destroy();
                 }
+
+                // CNS chart styling options - based on style guide
+                const cnsChartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false, // Per Flourish guideline - no legend
+                        },
+                        title: {
+                            display: true,
+                            text: `Voter turnout change in ${county} County`,
+                            font: {
+                                family: "'Source Serif Pro', serif",
+                                size: 16
+                            },
+                            padding: {
+                                bottom: 10
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return `${context.label}: ${formatNumber(context.raw)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                drawBorder: false,
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false // Per Flourish guideline - no grid lines
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                },
+                                // Per Flourish guideline - X-Axis Labels not angled
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        }
+                    }
+                };
 
                 window.overviewChart = new Chart(ctx, {
                     type: 'bar',
@@ -887,29 +855,67 @@
                             borderWidth: 1
                         }]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Percentage Change'
-                                }
-                            }
-                        }
-                    }
+                    options: cnsChartOptions
                 });
             }
 
-            function updateOfficialTurnoutChart(data) {
-                const ctx = document.getElementById('official-turnout-chart').getContext('2d');
+            function updateOfficialTurnoutChart(data, county) {
+                const canvasElement = document.getElementById('official-turnout-chart');
+                if (!canvasElement) return;
+
+                const ctx = canvasElement.getContext('2d');
+                if (!ctx) return;
 
                 // Destroy existing chart if it exists
                 if (window.officialTurnoutChart) {
                     window.officialTurnoutChart.destroy();
                 }
+
+                // CNS chart styling options
+                const cnsChartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false, // Per Flourish guideline
+                        },
+                        title: {
+                            display: true,
+                            text: `Official turnout change in ${county} County`,
+                            font: {
+                                family: "'Source Serif Pro', serif",
+                                size: 16
+                            },
+                            padding: {
+                                bottom: 10
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                drawBorder: false,
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                },
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        }
+                    }
+                };
 
                 window.officialTurnoutChart = new Chart(ctx, {
                     type: 'bar',
@@ -947,28 +953,67 @@
                             borderWidth: 1
                         }]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Percentage Change'
-                                }
-                            }
-                        }
-                    }
+                    options: cnsChartOptions
                 });
             }
 
-            function updateActiveVotersChart(data) {
-                const ctx = document.getElementById('active-voters-chart').getContext('2d');
+            function updateActiveVotersChart(data, county) {
+                const canvasElement = document.getElementById('active-voters-chart');
+                if (!canvasElement) return;
+
+                const ctx = canvasElement.getContext('2d');
+                if (!ctx) return;
 
                 // Destroy existing chart if it exists
                 if (window.activeVotersChart) {
                     window.activeVotersChart.destroy();
                 }
+
+                // CNS chart styling options
+                const cnsChartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false, // Per Flourish guideline
+                        },
+                        title: {
+                            display: true,
+                            text: `Active voter change in ${county} County`,
+                            font: {
+                                family: "'Source Serif Pro', serif",
+                                size: 16
+                            },
+                            padding: {
+                                bottom: 10
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                drawBorder: false,
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                },
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        }
+                    }
+                };
 
                 window.activeVotersChart = new Chart(ctx, {
                     type: 'bar',
@@ -1003,28 +1048,67 @@
                             borderWidth: 1
                         }]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Change in Voter Count'
-                                }
-                            }
-                        }
-                    }
+                    options: cnsChartOptions
                 });
             }
 
-            function updateInactiveVotersChart(data) {
-                const ctx = document.getElementById('inactive-voters-chart').getContext('2d');
+            function updateInactiveVotersChart(data, county) {
+                const canvasElement = document.getElementById('inactive-voters-chart');
+                if (!canvasElement) return;
+
+                const ctx = canvasElement.getContext('2d');
+                if (!ctx) return;
 
                 // Destroy existing chart if it exists
                 if (window.inactiveVotersChart) {
                     window.inactiveVotersChart.destroy();
                 }
+
+                // CNS chart styling options
+                const cnsChartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false, // Per Flourish guideline
+                        },
+                        title: {
+                            display: true,
+                            text: `Inactive voter change in ${county} County`,
+                            font: {
+                                family: "'Source Serif Pro', serif",
+                                size: 16
+                            },
+                            padding: {
+                                bottom: 10
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                drawBorder: false,
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                },
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        }
+                    }
+                };
 
                 window.inactiveVotersChart = new Chart(ctx, {
                     type: 'bar',
@@ -1059,29 +1143,68 @@
                             borderWidth: 1
                         }]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Change in Voter Count'
-                                }
-                            }
-                        }
-                    }
+                    options: cnsChartOptions
                 });
             }
 
             function updateComparisonCharts(county1, county2) {
                 // County 1 chart
                 const county1Data = window.officialTurnoutData.find(item => item.county === county1);
-                const ctx1 = document.getElementById('county1-chart').getContext('2d');
+                const canvas1 = document.getElementById('county1-chart');
+                if (!canvas1) return;
+
+                const ctx1 = canvas1.getContext('2d');
+                if (!ctx1) return;
 
                 if (window.county1Chart) {
                     window.county1Chart.destroy();
                 }
+
+                // CNS chart styling for comparison charts
+                const cnsComparisonChartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false, // Per Flourish guideline
+                        },
+                        title: {
+                            display: true,
+                            text: `${county1} County turnout change`,
+                            font: {
+                                family: "'Source Serif Pro', serif",
+                                size: 16
+                            },
+                            padding: {
+                                bottom: 10
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                drawBorder: false,
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                },
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        }
+                    }
+                };
 
                 window.county1Chart = new Chart(ctx1, {
                     type: 'bar',
@@ -1107,25 +1230,24 @@
                             borderWidth: 1
                         }]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: `${county1} Turnout Change (2020 → 2024)`
-                            }
-                        }
-                    }
+                    options: cnsComparisonChartOptions
                 });
 
                 // County 2 chart
                 const county2Data = window.officialTurnoutData.find(item => item.county === county2);
-                const ctx2 = document.getElementById('county2-chart').getContext('2d');
+                const canvas2 = document.getElementById('county2-chart');
+                if (!canvas2) return;
+
+                const ctx2 = canvas2.getContext('2d');
+                if (!ctx2) return;
 
                 if (window.county2Chart) {
                     window.county2Chart.destroy();
                 }
+
+                // Clone the options and update the title for county2
+                const county2Options = JSON.parse(JSON.stringify(cnsComparisonChartOptions));
+                county2Options.plugins.title.text = `${county2} County turnout change`;
 
                 window.county2Chart = new Chart(ctx2, {
                     type: 'bar',
@@ -1151,18 +1273,111 @@
                             borderWidth: 1
                         }]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: `${county2} Turnout Change (2020 → 2024)`
-                            }
-                        }
-                    }
+                    options: county2Options
                 });
             }
+
+            // Complete the updateSingleCountyView function
+            window.updateSingleCountyView = function (county) {
+                console.log("Updating view for county:", county);
+
+                // Update the county header
+                const countyNameHeader = document.getElementById('county-name-header');
+                if (countyNameHeader) {
+                    countyNameHeader.textContent = county;
+                }
+
+                // Find data for the selected county
+                const officialData = window.officialTurnoutData.find(item => item.county === county) || {};
+                const activeData = window.activeVotersData.find(item => item.county === county) || {};
+                const inactiveData = window.inactiveVotersData.find(item => item.county === county) || {};
+
+                // Update overview tab elements
+                safelyUpdateElement('total-turnout-change', officialData.statewide_diff);
+                safelyUpdateElement('democrat-turnout-change', officialData.democrat_diff);
+                safelyUpdateElement('republican-turnout-change', officialData.republican_diff);
+                safelyUpdateElement('unaffiliated-turnout-change', officialData.unaffiliated_diff);
+
+                // Update official turnout tab elements
+                safelyUpdateElement('official-democrat', officialData.democrat_diff);
+                safelyUpdateElement('official-republican', officialData.republican_diff);
+                safelyUpdateElement('official-green', officialData.green_diff);
+                safelyUpdateElement('official-libertarian', officialData.libertarian_diff);
+                safelyUpdateElement('official-unaffiliated', officialData.unaffiliated_diff);
+                safelyUpdateElement('official-other', officialData.other_diff);
+                safelyUpdateElement('official-statewide', officialData.statewide_diff);
+
+                // Update active voters tab elements
+                safelyUpdateElement('active-democrat', activeData.democrat_diff);
+                safelyUpdateElement('active-republican', activeData.republican_diff);
+                safelyUpdateElement('active-green', activeData.green_diff);
+                safelyUpdateElement('active-libertarian', activeData.libertarian_diff);
+                safelyUpdateElement('active-unaffiliated', activeData.unaffiliated_diff);
+                safelyUpdateElement('active-other', activeData.other_diff);
+
+                // Update inactive voters tab elements
+                safelyUpdateElement('inactive-democrat', inactiveData.democrat_diff);
+                safelyUpdateElement('inactive-republican', inactiveData.republican_diff);
+                safelyUpdateElement('inactive-green', inactiveData.green_diff);
+                safelyUpdateElement('inactive-libertarian', inactiveData.libertarian_diff);
+                safelyUpdateElement('inactive-unaffiliated', inactiveData.unaffiliated_diff);
+                safelyUpdateElement('inactive-other', inactiveData.other_diff);
+
+                // Update the charts - safely check if canvas elements exist first
+                updateOverviewChart(officialData, county);
+                updateOfficialTurnoutChart(officialData, county);
+                updateActiveVotersChart(activeData, county);
+                updateInactiveVotersChart(inactiveData, county);
+            };
+
+            // Function to update the comparison view
+            window.updateComparisonView = function (county1, county2) {
+                // Show comparison view, hide single county view
+                document.getElementById('single-county-view').style.display = 'none';
+                document.getElementById('comparison-view').style.display = 'block';
+
+                // Set county names in headers
+                document.getElementById('county1-name').textContent = county1;
+                document.getElementById('county2-name').textContent = county2;
+
+                // Find data for both counties
+                const county1OfficialData = window.officialTurnoutData.find(item => item.county === county1) || {};
+                const county1ActiveData = window.activeVotersData.find(item => item.county === county1) || {};
+                const county1InactiveData = window.inactiveVotersData.find(item => item.county === county1) || {};
+
+                const county2OfficialData = window.officialTurnoutData.find(item => item.county === county2) || {};
+                const county2ActiveData = window.activeVotersData.find(item => item.county === county2) || {};
+                const county2InactiveData = window.inactiveVotersData.find(item => item.county === county2) || {};
+
+                // Update county 1 data cells
+                safelyUpdateElement('county1-official-democrat', county1OfficialData.democrat_diff);
+                safelyUpdateElement('county1-official-republican', county1OfficialData.republican_diff);
+                safelyUpdateElement('county1-official-unaffiliated', county1OfficialData.unaffiliated_diff);
+
+                safelyUpdateElement('county1-active-democrat', county1ActiveData.democrat_diff);
+                safelyUpdateElement('county1-active-republican', county1ActiveData.republican_diff);
+                safelyUpdateElement('county1-active-unaffiliated', county1ActiveData.unaffiliated_diff);
+
+                safelyUpdateElement('county1-inactive-democrat', county1InactiveData.democrat_diff);
+                safelyUpdateElement('county1-inactive-republican', county1InactiveData.republican_diff);
+                safelyUpdateElement('county1-inactive-unaffiliated', county1InactiveData.unaffiliated_diff);
+
+                // Update county 2 data cells
+                safelyUpdateElement('county2-official-democrat', county2OfficialData.democrat_diff);
+                safelyUpdateElement('county2-official-republican', county2OfficialData.republican_diff);
+                safelyUpdateElement('county2-official-unaffiliated', county2OfficialData.unaffiliated_diff);
+
+                safelyUpdateElement('county2-active-democrat', county2ActiveData.democrat_diff);
+                safelyUpdateElement('county2-active-republican', county2ActiveData.republican_diff);
+                safelyUpdateElement('county2-active-unaffiliated', county2ActiveData.unaffiliated_diff);
+
+                safelyUpdateElement('county2-inactive-democrat', county2InactiveData.democrat_diff);
+                safelyUpdateElement('county2-inactive-republican', county2InactiveData.republican_diff);
+                safelyUpdateElement('county2-inactive-unaffiliated', county2InactiveData.unaffiliated_diff);
+
+                // Update comparison charts
+                updateComparisonCharts(county1, county2);
+            };
 
             // Set up sidebar navigation
             window.openNav = function () {
@@ -1182,7 +1397,7 @@
             comparisonSelect.innerHTML = '<option value="">Select County</option>';
 
             // Add counties to dropdowns
-            hardcodedCounties.forEach(county => {
+            window.counties.forEach(county => {
                 const primaryOption = document.createElement('option');
                 primaryOption.value = county;
                 primaryOption.textContent = county;
@@ -1269,9 +1484,9 @@
             });
 
             // Initialize with the first county
-            if (hardcodedCounties.length > 0) {
-                primarySelect.value = hardcodedCounties[0];
-                updateSingleCountyView(hardcodedCounties[0]);
+            if (window.counties && window.counties.length > 0) {
+                primarySelect.value = window.counties[0];
+                updateSingleCountyView(window.counties[0]);
             }
 
             // Initialize DataTables
@@ -1295,10 +1510,9 @@
                 });
             });
 
-            // REMOVED: The function that adds the Other category detail section
-            // REMOVED: The setTimeout call to initialize the Other category enhancement
-
-            console.log("Dashboard initialization complete");
+            console.log("Dashboard initialization complete according to CNS style guide");
         });
     </script>
 </body>
+
+</html>
