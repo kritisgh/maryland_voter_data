@@ -278,11 +278,19 @@ def plot_gender():
         color='Gender',
         barmode='group',
         labels={'age_bracket':'Age Bracket','turnout':'Turnout %'},
-        title=f"2024 Turnout % by Age & Gender – {party_names[party]} ({county})",
-        category_orders={'Gender': ['Male','Female']},           # force Male on left
-        color_discrete_map={'Male':'steelblue','Female':'lightcoral'}
+        title=f"{party_names[party]} Turnout in 2024 - {county}",
+        category_orders={'Gender': ['Male','Female']},
+        color_discrete_map={'Male':'#1FC3AA','Female':'#DBA3FD'},
+        text='turnout',                 # still want the number
+        custom_data=['Gender']          # shove Gender into customdata for the template
     )
-    fig.update_layout(xaxis_tickangle=-45)
+
+    fig.update_traces(
+        texttemplate='%{customdata[0]}: <br>%{text:.2f}%',  # “Male: 45.23%” / “Female: 51.12%”
+        textposition='inside',
+        textfont_color='white',
+        insidetextanchor='middle'
+    )
 
     return jsonify(json.loads(fig.to_json()))
 if __name__ == "__main__":
