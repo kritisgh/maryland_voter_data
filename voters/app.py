@@ -251,10 +251,15 @@ def county_data_2020(county):
 @app.route('/plot_gender')
 def plot_gender():
     county = request.args.get('county', 'Statewide')
+    party  = request.args.get('party', 'ALL')   
+
     if county != 'Statewide':
         dff = df_gender[df_gender['County'] == county]
     else:
         dff = df_gender
+
+    if party != 'ALL':
+        dff = dff[dff['Party'] == party]
 
     # aggregate turnout by age_bracket & Gender
     summary = (
@@ -264,7 +269,7 @@ def plot_gender():
         .reset_index()
     )
     summary['turnout'] = summary['voted_2024'] / summary['Count'] * 100
-
+    party_names = {'ALL':'All Parties','DEM':'Democrats','REP':'Republicans','UNA':'Unaffiliated'}
     # build grouped‐bar chart
     fig = px.bar(
         summary,
@@ -273,7 +278,9 @@ def plot_gender():
         color='Gender',
         barmode='group',
         labels={'age_bracket':'Age Bracket','turnout':'Turnout %'},
-        title=f'2024 Turnout % by Age & Gender ({county})'
+        title=f"2024 Turnout % by Age & Gender – {party_names[party]} ({county})",
+        category_orders={'Gender': ['Male','Female']},           # force Male on left
+        color_discrete_map={'Male':'steelblue','Female':'lightcoral'}
     )
     fig.update_layout(xaxis_tickangle=-45)
 
