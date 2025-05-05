@@ -219,6 +219,11 @@ def eligible_inactive():
     
     return render_template(template, object_list=object_list, graph_data=graph_data)
 
+@app.route("/dumbbell")
+def dumbbell_chart():
+    return render_template("dumbbell.html")
+
+
 @app.route("/eligible-active")
 def eligible_active():
     template = 'eligible_active.html'

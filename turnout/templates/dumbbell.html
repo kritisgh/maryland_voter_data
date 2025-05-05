@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Dumbbell Chart — Turnout Change 2020→2024</title>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- PapaParse -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    #controls { margin-bottom: 10px; }
+    canvas { max-width: 100%; height: 600px; }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <label for="partySelect">Select Party:</label>
+    <select id="partySelect"></select>
+  </div>
+  <canvas id="dumbbellChart"></canvas>
+
+  <script>
+    const csvFile = "{{ url_for('static', filename='official_by_party_and_county_complete.csv') }}";
+    let rawData, chartInstance;
+
+    // 1) load CSV
+    async function loadData() {
+      return new Promise(resolve => {
+        Papa.parse(csvFile, {
+          download: true,
+          header: true,
+          complete: results => resolve(results.data)
+        });
+      });
+    }
+
+    // 2) pivot 2020 vs 2024 turnout for each county+party
+    function prepareData(party) {
+      const rows = rawData.filter(r => r.Party === party);
+      const byCounty = {};
+      rows.forEach(r => {
+        const pct = parseFloat(r['Turnout Percentage']);
+        if (!byCounty[r.County]) byCounty[r.County] = {};
+        byCounty[r.County][r.Year] = pct;
+      });
+      const counties = Object.keys(byCounty)
+        .filter(c => byCounty[c]['2020'] != null && byCounty[c]['2024'] != null)
+        .sort();
+      return {
+        counties,
+        data2020: counties.map(c => byCounty[c]['2020']),
+        data2024: counties.map(c => byCounty[c]['2024'])
+      };
+    }
+
+    // 3) redraw chart: one grey line per county, connecting its two points
+    function updateChart(party) {
+      const { counties, data2020, data2024 } = prepareData(party);
+
+      // one tiny line‐dataset per county
+      const lineDatasets = counties.map((county, i) => ({
+        label: '',
+        type: 'line',
+        data: [
+          { x: data2020[i], y: county },
+          { x: data2024[i], y: county }
+        ],
+        borderColor: 'gray',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        fill: false,
+        showLine: true
+      }));
+
+      // scatter for 2020 & 2024 dots
+      const scatter2020 = counties.map((county, i) => ({ x: data2020[i], y: county }));
+      const scatter2024 = counties.map((county, i) => ({ x: data2024[i], y: county }));
+
+      chartInstance.data.labels = counties;
+      chartInstance.data.datasets = [
+        ...lineDatasets,
+        {
+          label: '2020',
+          type: 'scatter',
+          data: scatter2020,
+          backgroundColor: 'steelblue',
+          pointRadius: 6,
+          showLine: false
+        },
+        {
+          label: '2024',
+          type: 'scatter',
+          data: scatter2024,
+          backgroundColor: 'lightsteelblue',
+          pointRadius: 6,
+          showLine: false
+        }
+      ];
+      chartInstance.update();
+    }
+
+    // 4) populate party dropdown
+    function populatePartySelect(parties) {
+      const sel = document.getElementById('partySelect');
+      parties.forEach(p => sel.appendChild(new Option(p, p)));
+      sel.addEventListener('change', () => updateChart(sel.value));
+      return parties[0];
+    }
+
+    // 5) initialize
+    async function init() {
+      rawData = await loadData();
+      const parties = Array.from(new Set(rawData.map(r => r.Party))).sort();
+      const defaultParty = populatePartySelect(parties);
+
+      const ctx = document.getElementById('dumbbellChart').getContext('2d');
+      chartInstance = new Chart(ctx, {
+        data: { labels: [], datasets: [] },
+        options: {
+          indexAxis: 'y',
+          scales: {
+            x: {
+              type: 'linear',
+              beginAtZero: true,
+              max: 100,
+              title: { display: true, text: 'Turnout %' }
+            },
+            y: {
+              type: 'category',
+              offset: true,
+              title: { display: true, text: 'County' }
+            }
+          },
+          plugins: {
+            legend: {
+              labels: {
+                // only show the scatter legends
+                filter: item => ['2020','2024'].includes(item.text)
+              }
+            }
+          }
+        }
+      });
+
+      updateChart(defaultParty);
+    }
+
+    init();
+  </script>
+</body>
+</html>
