@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>{{ county }} - Voter Registration</title>
+    <!-- DataTables CSS (modern) -->
+    <link rel="stylesheet" href="//cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css"/>
 </head>
 <body>
     <h1>Voter Registration for {{ county.title() }}</h1>
@@ -26,45 +28,72 @@
     });
     </script>
 
+    {% if flourish_id %}
+    <iframe 
+        src="https://public.flourish.studio/visualisation/{{ flourish_id }}/embed"
+        style="width:100%; height:600px;"
+        frameborder="0"
+        scrolling="no">
+    </iframe>
+    {% else %}
+    <p><em>No visualization available for this county.</em></p>
+    {% endif %}
 
-    <div class="flourish-embed flourish-chart" data-src="visualisation/{{ flourish_id }}">
-        <script src="https://public.flourish.studio/resources/embed.js"></script>
-        <noscript>
-            <img src="https://public.flourish.studio/visualisation/{{ flourish_id }}/thumbnail" width="100%" alt="chart visualization" />
-        </noscript>
-    </div>
-
-    <p><strong>Total Records:</strong> {{ records_count }}</p>
-
-    <ul>
-        <li><strong>Total DEM:</strong> {{ total_dem }}</li>
-        <li><strong>Total REP:</strong> {{ total_rep }}</li>
-        <li><strong>Total UNAF:</strong> {{ total_unaf }}</li>
-        <li><strong>Total OTHER:</strong> {{ total_other }}</li>
-    </ul>
+    {% if year_summary %}
+    <p>
+        In 2024, {{ county.title() }} reported {{ "{:,}".format(year_summary.dem) }} registered Democrats,
+        {{ "{:,}".format(year_summary.rep) }} Republicans, {{ "{:,}".format(year_summary.unaf) }} unaffiliated voters,
+        and {{ "{:,}".format(year_summary.other) }} affiliated with other parties. These registration totals provide a snapshot
+        of the county’s political makeup for that year. Voter registration figures are updated throughout the year as residents
+        move, register for the first time, or change their party affiliation. This data is compiled and reported monthly by
+        the Maryland State Board of Elections.
+    </p>
+    {% else %}
+    <p><em>No data available for {{ latest_year }}.</em></p>
+    {% endif %}
 
     <h2>All Records</h2>
-    <table border="1" cellpadding="5">
-        <tr>
-            <th>Year</th>
-            <th>Month</th>
-            <th>DEM</th>
-            <th>REP</th>
-            <th>UNAF</th>
-            <th>OTHER</th>
-        </tr>
-        {% for r in records %}
-        <tr>
-            <td>{{ r.year }}</td>
-            <td>{{ r.month }}</td>
-            <td>{{ r.dem }}</td>
-            <td>{{ r.rep }}</td>
-            <td>{{ r.unaf }}</td>
-            <td>{{ r.other }}</td>
-        </tr>
-        {% endfor %}
+    <table id="registration-table">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Month</th>
+                <th>DEM</th>
+                <th>REP</th>
+                <th>UNAF</th>
+                <th>OTHER</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in records %}
+            <tr>
+                <td>{{ r.year }}</td>
+                <td>{{ r.month }}</td>
+                <td>{{ "{:,}".format(r.dem) }}</td>
+                <td>{{ "{:,}".format(r.rep) }}</td>
+                <td>{{ "{:,}".format(r.unaf) }}</td>
+                <td>{{ "{:,}".format(r.other) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
     <p><a href="{{ url_for('index') }}">← Back to index</a></p>
+    <!-- jQuery and DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
+
+    <script>
+        new DataTable('#registration-table', {
+            paging: true,
+            pageLength: 10,
+            scrollY: 400,
+            order: [[0, 'desc']],
+            language: {
+                search: "Search:",
+                lengthMenu: "Show _MENU_ entries"
+            }
+        });
+    </script>
 </body>
 </html>

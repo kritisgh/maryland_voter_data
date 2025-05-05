@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maryland 2024 Election</title>
+    <title>Maryland 2020 Election</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
@@ -15,7 +15,7 @@
     <script src="//static.dwcdn.net/js/events.js"></script>
     <script type="text/javascript">
       // Global variable: default party selection for the map.
-      let chartId = 'YcZmw';
+      let chartId = 'L9bRz';
     </script>
     <style>
       
@@ -29,17 +29,18 @@
         <li><a href="{{ url_for('election_2024') }}">2024 Election</a></li>
         <li><a href="{{ url_for('gender') }}">By Gender and Age</a></li>
         <li><a href="{{ url_for('election_2020') }}">2020 Election</a></li>
+
       </ul>
     </nav>
     <h2 style = "text-align: left;text-decoration: underline;"></h2>
     <div class="container">
       <div class="map" id="map">
-        <iframe title="Maryland Counties Map" id="datawrapper-chart-YcZmw" src="https://datawrapper.dwcdn.net/YcZmw/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
+        <iframe title="Maryland Counties Map" id="datawrapper-chart-YcZmw" src="https://datawrapper.dwcdn.net/L9bRz/1/" scrolling="no" frameborder="0" data-external="1"></iframe>
         <div class="segment-control">
           <div class="segment-slider"></div>
-          <button class="segment active" data-val="YcZmw">Democrats</button>
-          <button class="segment"      data-val="xElgG">Republicans</button>
-          <button class="segment"      data-val="nuu3A">Unaffiliated</button>
+          <button class="segment active" data-val="L9bRz">Democrats</button>
+          <button class="segment"      data-val="Ost0x">Republicans</button>
+          <button class="segment"      data-val="nPCDo">Unaffiliated</button>
         </div>
       </div>
       <div class="tooltip" id="tooltip">
@@ -114,9 +115,9 @@ function resetDropdownPosition() {
 
       // map Datawrapper chartId → party code
       const chartIdToParty = {
-        'YcZmw': 'DEM',   // Democrats map
-        'xElgG': 'REP',   // Republicans map
-        'nuu3A': 'UNA'    // Unaffiliated map
+        'L9bRz': 'DEM',   // Democrats map
+        'Ost0x': 'REP',   // Republicans map
+        'nPCDo': 'UNA'    // Unaffiliated map
       };
     
       // colors for the line+marker
@@ -142,8 +143,8 @@ function resetDropdownPosition() {
         const pct   = (statewideAverages[party] || 0).toFixed(1);
 
         document.getElementById('statewideSummary').innerHTML =
-          `<b><u>${total}</u></b> people voted in Maryland in 2024.<br>` +
-          `Of these 2024 voters, <b><u>${pct}%</u></b> were registered ${name}.`;
+          `<b><u>${total}</u></b> people voted in Maryland in 2020.<br>` +
+          `Of these 2020 voters, <b><u>${pct}%</u></b> were registered ${name}.`;
       }
 
       // on initial load:
@@ -213,9 +214,9 @@ function resetDropdownPosition() {
     document
       .getElementById('tooltipText')
       .innerHTML = 
-        `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2024.<br><br>`
-      + `Of these 2024 voters, <b><u>${countyPct}%</u></b> were registered ${name}. `  
-      + `This is <b><u>${compPhrase}</u></b> the statewide average of 2024 voters who were registered ${name}, which was <b><u>${statePct}%</u></b>.`;
+        `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2020.<br><br>`
+      + `Of these 2020 voters, <b><u>${countyPct}%</u></b> were registered ${name}. `  
+      + `This is <b><u>${compPhrase}</u></b> the statewide average of 2020 voters who were registered ${name}, which was <b><u>${statePct}%</u></b>.`;
 
       document.getElementById('compLabel').style.display   = 'block';
       document.getElementById('tooltipRange').style.display = 'block';
@@ -260,9 +261,9 @@ document.getElementById('county-dropdown')
     document
       .getElementById('tooltipText')
       .innerHTML = 
-        `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2024.<br><br>`
-      + `Of these 2024 voters, <b><u>${countyPct}%</u></b> were registered ${name}. `  
-      + `This is <b><u>${compPhrase}</u></b> the statewide average of 2024 voters who were registered ${name}, which was <b><u>${statePct}%</u></b>.`;
+        `<b><u>${total.toLocaleString()}</u></b> people voted in <b><u>${fmt}</u></b> in 2020.<br><br>`
+      + `Of these 2020 voters, <b><u>${countyPct}%</u></b> were registered ${name}. `  
+      + `This is <b><u>${compPhrase}</u></b> the statewide average of 2020 voters who were registered ${name}, which was <b><u>${statePct}%</u></b>.`;
 
       document.getElementById('compLabel').style.display   = 'block';
       document.getElementById('tooltipRange').style.display = 'block';
@@ -381,7 +382,7 @@ txt.append("tspan")
 title.append("tspan")
     .attr("x", width / 2)
     .attr("dy", "-1.8em")         // lift up 1em above y=0
-    .text("Party Affiliation of 2024 Voters by Age");
+    .text("Party Affiliation of 2020 Voters by Age");
 
 // second line
 title.append("tspan")
@@ -392,7 +393,7 @@ title.append("tspan")
       
       // updateChart fetches data for the county and calls drawChart.
       function updateChart(county) {
-        fetch('/data/' + encodeURIComponent(county))
+        fetch('/data2020/' + encodeURIComponent(county))
           .then(response => response.json())
           .then(data => drawChart(data, county))
           .catch(err => console.error(err));
@@ -471,14 +472,14 @@ title.append("tspan")
      .attr("font-size", "10px")
      .text(`${max.toFixed(1)}%`);
 
-  svg.append("text")
+    svg.append("text")
      .attr("x", x(stateAvg))
      .attr("y", yMid - tickHeight/2 - 5)
      .attr("text-anchor", "middle")
      .attr("font-size", "10px")
      .attr("font-style", "bold")
      .text(`State Avg: ${stateAvg.toFixed(1)}%`);
-     
+
   // 7) county label below its circle
   svg.append("text")
      .attr("x", x(avg)).attr("y", yMid + 25)
@@ -496,9 +497,9 @@ const gap       = 8;    // must match --gap in CSS (in px)
 
 // map your party IDs → colors
 const partyColors2 = {
-  'YcZmw': 'steelblue',   // blue
-  'xElgG': 'crimson',   // red
-  'nuu3A': 'goldenrod'    // yellow
+  'L9bRz': 'steelblue',   // blue
+  'Ost0x': 'crimson',   // red
+  'nPCDo': 'goldenrod'    // yellow
 };
 
 buttons.forEach((btn, idx) => {
@@ -523,7 +524,6 @@ buttons.forEach((btn, idx) => {
     document.getElementById('compLabel').style.display   = 'none';
     document.getElementById('tooltipRange').style.display = 'none';
 
-    // ─── NEW: if a county is already in the dropdown, re-trigger its change handler ─────────
     const dropdown = document.getElementById('county-dropdown');
     const selected = dropdown.value;
     if (selected) {

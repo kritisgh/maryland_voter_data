@@ -1,17 +1,35 @@
 import pandas as pd
 import plotly.express as px
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
+import json
 
 app = Flask(__name__)
 
 # Load the dataset.
 df = pd.read_csv("md_voter_file.txt/agg_MD_noGenderSplit_County.csv")
 df['County'] = df['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
-
-# Convert voted_2024 to numeric (this is critical if the column is read as strings)
 df['voted_2024'] = pd.to_numeric(df['voted_2024'], errors='coerce')
+df['Count']     = pd.to_numeric(df['Count'],     errors='coerce')
 
-# Remove rows missing critical data.
+df_gender = pd.read_csv('md_voter_file.txt/agg_MD_GenderSplit_County.csv')
+# turnout as a percentage of registered Count
+df_gender['turnout'] = df_gender['voted_2024'] / df_gender['Count'] * 100
+
+# list of counties for dropdown
+counties = sorted(df_gender['County'].unique())
+
+
+df2020 = pd.read_csv("md_voter_file.txt/agg_MD_noGenderSplit_County.csv")
+df2020['County'] = df2020['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
+df2020['voted_2020'] = pd.to_numeric(df2020['voted_2020'], errors='coerce')
+df2020 = df2020.dropna(subset=['County', 'age_bracket', 'Party', 'voted_2020'])
+
+turnout2020 = pd.read_csv("md_voter_file.txt/county x 100_2020.csv")
+turnout2020['County'] = turnout2020['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
+
+statewide2020 = pd.read_csv("md_voter_file.txt/statewide_2020.csv")
+statewide2020['turnout_pct'] = statewide2020['turnout'] * 100
+
 df = df.dropna(subset=['County', 'age_bracket', 'Party', 'voted_2024'])
 countyTotals = df.groupby('County')['voted_2024'].sum().to_dict()
 # Get a sorted list of unique counties for the dropdown menu.
@@ -39,7 +57,25 @@ statewide_df = pd.read_csv("md_voter_file.txt/statewide_2024.csv")
 statewide_df['turnout_pct'] = statewide_df['turnout'] * 100
 # build Party → % dict
 statewideAverages = dict(zip(statewide_df['Party'], statewide_df['turnout_pct']))
+countyTotals2020 = df2020.groupby('County')['voted_2020'].sum().to_dict()
 
+# partyAverages for 2020
+party_averages_2020 = {
+    'DEM': dict(zip(turnout2020['County'], turnout2020['DEM'])),
+    'REP': dict(zip(turnout2020['County'], turnout2020['REP'])),
+    'UNA': dict(zip(turnout2020['County'], turnout2020['UNA']))
+}
+# partyRanges for 2020
+party_ranges_2020 = {
+    p: {'min': min(vals.values()), 'max': max(vals.values())}
+    for p, vals in party_averages_2020.items()
+}
+
+# statewideAverages for 2020
+statewideAverages2020 = dict(zip(statewide2020['Party'], statewide2020['turnout_pct']))
+
+# sorted county list
+counties2020 = sorted(df2020['County'].unique())
 def get_bracket_lower(bracket):
     """
     Extract the lower bound from a given age_bracket string.
@@ -104,16 +140,23 @@ def election_2024():
         statewideAverages=statewideAverages,
         countyTotals=countyTotals
     )
+@app.route("/election_2020")
+def election_2020():
+    return render_template(
+        "election_2020.html",
+        counties=counties2020,
+        partyAverages=party_averages_2020,
+        partyRanges=party_ranges_2020,
+        statewideAverages=statewideAverages2020,
+        countyTotals=countyTotals2020
+    )
 
 @app.route('/gender')
 def gender():
-    male_graphs   = create_graphs('Male')
-    female_graphs = create_graphs('Female')
     return render_template(
         'gender.html',
-        male_graphs=male_graphs,
-        female_graphs=female_graphs
-    )
+        counties=['Statewide'] + counties)
+    
 
 @app.route("/nonvoters")
 def nonvoters():
@@ -180,6 +223,67 @@ def county_data(county):
         "other": other_pct,
         "unaffiliated": unaffiliated_pct
     })
+@app.route("/data2020/<county>")
+def county_data_2020(county):
+    sub = df2020[df2020['County']==county].copy()
+    sub['bracket_order'] = sub['age_bracket'].apply(get_bracket_lower)
+    sub = sub.sort_values("bracket_order")
+    pivot = sub.pivot_table(
+        index="age_bracket",
+        columns="Party",
+        values="voted_2020",
+        aggfunc='sum'
+    ).fillna(0)
+    pivot['total'] = pivot.sum(axis=1)
+    pivot["Dem_pct"] = pivot.get("DEM",0) / pivot['total'] * 100
+    pivot["Rep_pct"] = pivot.get("REP",0) / pivot['total'] * 100
+    pivot["Unaffiliated_pct"] = pivot.get("UNA",0) / pivot['total'] * 100
+    pivot["Oth_pct"] = pivot.get("OTH",0) / pivot['total'] * 100
+    pivot.reset_index(inplace=True)
 
+    return jsonify({
+        "ages": pivot["age_bracket"].tolist(),
+        "dem": pivot["Dem_pct"].tolist(),
+        "rep": pivot["Rep_pct"].tolist(),
+        "unaffiliated": pivot["Unaffiliated_pct"].tolist(),
+        "other": pivot["Oth_pct"].tolist()
+    })
+@app.route('/plot_gender')
+def plot_gender():
+    county = request.args.get('county', 'Statewide')
+    party  = request.args.get('party', 'ALL')   
+
+    if county != 'Statewide':
+        dff = df_gender[df_gender['County'] == county]
+    else:
+        dff = df_gender
+
+    if party != 'ALL':
+        dff = dff[dff['Party'] == party]
+
+    # aggregate turnout by age_bracket & Gender
+    summary = (
+        dff
+        .groupby(['age_bracket','Gender'])
+        .agg({'voted_2024':'sum','Count':'sum'})
+        .reset_index()
+    )
+    summary['turnout'] = summary['voted_2024'] / summary['Count'] * 100
+    party_names = {'ALL':'All Parties','DEM':'Democrats','REP':'Republicans','UNA':'Unaffiliated'}
+    # build grouped‐bar chart
+    fig = px.bar(
+        summary,
+        x='age_bracket',
+        y='turnout',
+        color='Gender',
+        barmode='group',
+        labels={'age_bracket':'Age Bracket','turnout':'Turnout %'},
+        title=f"2024 Turnout % by Age & Gender – {party_names[party]} ({county})",
+        category_orders={'Gender': ['Male','Female']},           # force Male on left
+        color_discrete_map={'Male':'steelblue','Female':'lightcoral'}
+    )
+    fig.update_layout(xaxis_tickangle=-45)
+
+    return jsonify(json.loads(fig.to_json()))
 if __name__ == "__main__":
     app.run(debug=True)

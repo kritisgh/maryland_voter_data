@@ -1,3 +1,12 @@
+
+5/2/2025
+
+Olivia: I've updated all my graphs to be in CNS style and made a <a href="https://www.datawrapper.de/_/v2XIM/">new graphic</a> for the center page that will replace the map.  
+
+Dabeluchukwu Okigbo: I have made the summaries a bit more simple. There a graphs still being completed so i'll be done with the summaries as soon as they are!
+
+Anthony: I have updated the HTML pages to have each county have a filterable table of the voter registration data, and embedded main flourish visualizations for each county, and a short paragraph that summarizes the data for 2024. The current design of the site is simple and minimal at least for now until we add more information and visualizations, which I am currently working on adding like information about inactive voters and more analysis.
+
 2025-04-25
 
 Olivia: I made new graphs this week focusing on how Democratic and Republican registration changed after the election. In total, I have five graphs for this one topic: two line charts for <a href="https://www.datawrapper.de/_/HfdGg/">Democrat</a> and <a href= "https://www.datawrapper.de/_/cNllC/">Republican</a> registration numbers in the immediate months leading up to the election and following November 2024, a <a href="https://www.datawrapper.de/_/ymiFl/">bar chart</a> showing differences in total registration amounts by party in November 2024 compared to February 2025, and <a href="https://www.datawrapper.de/_/5zOiJ/">another</a> bar chart showing the difference in percent change by party before and after the election. 
