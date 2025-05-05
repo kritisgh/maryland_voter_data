@@ -334,6 +334,38 @@
             margin-bottom: 15px;
             color: #555;
         }
+
+        .bg-red-100 {
+            background-color: rgba(254, 226, 226, 1);
+        }
+
+        .text-red-800 {
+            color: rgba(153, 27, 27, 1);
+        }
+
+        .bg-green-100 {
+            background-color: rgba(220, 252, 231, 1);
+        }
+
+        .text-green-800 {
+            color: rgba(22, 101, 52, 1);
+        }
+
+        .bg-red-100 {
+            background-color: rgba(254, 226, 226, 1);
+        }
+
+        .text-red-800 {
+            color: rgba(153, 27, 27, 1);
+        }
+
+        .bg-green-100 {
+            background-color: rgba(220, 252, 231, 1);
+        }
+
+        .text-green-800 {
+            color: rgba(22, 101, 52, 1);
+        }
     </style>
     <title>Maryland Voter Turnout Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -428,7 +460,8 @@
                     </div>
                     <div class="chart-footer">
                         <div class="chart-source">Source: Maryland State Board of Elections</div>
-                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland</div>
+                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland
+                        </div>
                     </div>
                 </div>
             </div>
@@ -445,7 +478,8 @@
                         <div class="chart-note">Note: Percentages represent change in turnout rate, not raw voter
                             numbers.</div>
                         <div class="chart-source">Source: Maryland State Board of Elections</div>
-                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland</div>
+                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland
+                        </div>
                     </div>
 
                     <div class="data-tables">
@@ -494,14 +528,16 @@
             <div id="active-voters" class="tab-content">
                 <div class="data-card">
                     <div class="chart-title">Change in eligible active voters</div>
-                    <div class="chart-chatter">Percentage change in eligible active voters by party affiliation from 2020
+                    <div class="chart-chatter">Percentage change in eligible active voters by party affiliation from
+                        2020
                         to 2024.</div>
                     <div class="chart-container">
                         <canvas id="active-voters-chart"></canvas>
                     </div>
                     <div class="chart-footer">
                         <div class="chart-source">Source: Maryland State Board of Elections</div>
-                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland</div>
+                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland
+                        </div>
                     </div>
 
                     <div class="data-tables">
@@ -546,7 +582,8 @@
             <div id="inactive-voters" class="tab-content">
                 <div class="data-card">
                     <div class="chart-title">Change in eligible inactive voters</div>
-                    <div class="chart-chatter">Percentage change in eligible inactive voters by party affiliation from 2020
+                    <div class="chart-chatter">Percentage change in eligible inactive voters by party affiliation from
+                        2020
                         to 2024.</div>
                     <div class="chart-container">
                         <canvas id="inactive-voters-chart"></canvas>
@@ -555,7 +592,8 @@
                         <div class="chart-note">Note: Inactive voters are still eligible but have not responded to
                             address verification.</div>
                         <div class="chart-source">Source: Maryland State Board of Elections</div>
-                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland</div>
+                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland
+                        </div>
                     </div>
 
                     <div class="data-tables">
@@ -728,14 +766,27 @@
             window.formatNumber = function (num) {
                 if (num === null || num === undefined) return '-';
 
-                // For percentages (small decimal numbers)
-                if (Math.abs(num) < 10 && num.toString().includes('.')) {
-                    return num > 0 ? `+${num}%` : `${num}%`;
-                }
-
-                // For larger numbers (voter counts)
-                return num > 0 ? `+${num.toLocaleString()}` : num.toLocaleString();
+                // Always format as percentage with a consistent decimal place
+                return num > 0 ? `+${num.toFixed(1)}%` : `${num.toFixed(1)}%`;
             };
+
+            window.updateTableCell = function (elementId, value) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = formatNumber(value);
+
+                    // Reset styling
+                    element.className = 'p-3 border-b';
+
+                    // Apply color styling based on value
+                    if (value > 0) {
+                        element.classList.add('bg-green-100', 'text-green-800');
+                    } else if (value < 0) {
+                        element.classList.add('bg-red-100', 'text-red-800');
+                    }
+                }
+            };
+
 
             // Helper function to safely update element text content
             const safelyUpdateElement = (id, value) => {
@@ -786,10 +837,11 @@
                         tooltip: {
                             callbacks: {
                                 label: function (context) {
-                                    return `${context.label}: ${formatNumber(context.raw)}`;
+                                    // Format tooltip values with percentage
+                                    return `${context.label}: ${context.raw > 0 ? '+' : ''}${context.raw.toFixed(1)}%`;
                                 }
                             }
-                        }
+                        },
                     },
                     scales: {
                         y: {
@@ -800,6 +852,10 @@
                             ticks: {
                                 font: {
                                     family: "'Poppins', sans-serif"
+                                },
+                                // Add percentage sign to y-axis labels
+                                callback: function (value) {
+                                    return value + '%';
                                 }
                             }
                         },
@@ -881,7 +937,7 @@
                         },
                         title: {
                             display: true,
-                            text: `Official turnout change in ${county} County`,
+                            text: `Voter turnout percentage change in ${county} County`,
                             font: {
                                 family: "'Source Serif Pro', serif",
                                 size: 16
@@ -1293,35 +1349,35 @@
                 const inactiveData = window.inactiveVotersData.find(item => item.county === county) || {};
 
                 // Update overview tab elements
-                safelyUpdateElement('total-turnout-change', officialData.statewide_diff);
-                safelyUpdateElement('democrat-turnout-change', officialData.democrat_diff);
-                safelyUpdateElement('republican-turnout-change', officialData.republican_diff);
-                safelyUpdateElement('unaffiliated-turnout-change', officialData.unaffiliated_diff);
+                updateTableCell('total-turnout-change', officialData.statewide_diff);
+                updateTableCell('democrat-turnout-change', officialData.democrat_diff);
+                updateTableCell('republican-turnout-change', officialData.republican_diff);
+                updateTableCell('unaffiliated-turnout-change', officialData.unaffiliated_diff);
 
                 // Update official turnout tab elements
-                safelyUpdateElement('official-democrat', officialData.democrat_diff);
-                safelyUpdateElement('official-republican', officialData.republican_diff);
-                safelyUpdateElement('official-green', officialData.green_diff);
-                safelyUpdateElement('official-libertarian', officialData.libertarian_diff);
-                safelyUpdateElement('official-unaffiliated', officialData.unaffiliated_diff);
-                safelyUpdateElement('official-other', officialData.other_diff);
-                safelyUpdateElement('official-statewide', officialData.statewide_diff);
+                updateTableCell('official-democrat', officialData.democrat_diff);
+                updateTableCell('official-republican', officialData.republican_diff);
+                updateTableCell('official-green', officialData.green_diff);
+                updateTableCell('official-libertarian', officialData.libertarian_diff);
+                updateTableCell('official-unaffiliated', officialData.unaffiliated_diff);
+                updateTableCell('official-other', officialData.other_diff);
+                updateTableCell('official-statewide', officialData.statewide_diff);
 
                 // Update active voters tab elements
-                safelyUpdateElement('active-democrat', activeData.democrat_diff);
-                safelyUpdateElement('active-republican', activeData.republican_diff);
-                safelyUpdateElement('active-green', activeData.green_diff);
-                safelyUpdateElement('active-libertarian', activeData.libertarian_diff);
-                safelyUpdateElement('active-unaffiliated', activeData.unaffiliated_diff);
-                safelyUpdateElement('active-other', activeData.other_diff);
+                updateTableCell('active-democrat', activeData.democrat_diff);
+                updateTableCell('active-republican', activeData.republican_diff);
+                updateTableCell('active-green', activeData.green_diff);
+                updateTableCell('active-libertarian', activeData.libertarian_diff);
+                updateTableCell('active-unaffiliated', activeData.unaffiliated_diff);
+                updateTableCell('active-other', activeData.other_diff);
 
                 // Update inactive voters tab elements
-                safelyUpdateElement('inactive-democrat', inactiveData.democrat_diff);
-                safelyUpdateElement('inactive-republican', inactiveData.republican_diff);
-                safelyUpdateElement('inactive-green', inactiveData.green_diff);
-                safelyUpdateElement('inactive-libertarian', inactiveData.libertarian_diff);
-                safelyUpdateElement('inactive-unaffiliated', inactiveData.unaffiliated_diff);
-                safelyUpdateElement('inactive-other', inactiveData.other_diff);
+                updateTableCell('inactive-democrat', inactiveData.democrat_diff);
+                updateTableCell('inactive-republican', inactiveData.republican_diff);
+                updateTableCell('inactive-green', inactiveData.green_diff);
+                updateTableCell('inactive-libertarian', inactiveData.libertarian_diff);
+                updateTableCell('inactive-unaffiliated', inactiveData.unaffiliated_diff);
+                updateTableCell('inactive-other', inactiveData.other_diff);
 
                 // Update the charts - safely check if canvas elements exist first
                 updateOverviewChart(officialData, county);
@@ -1332,6 +1388,7 @@
 
             // Function to update the comparison view
             window.updateComparisonView = function (county1, county2) {
+
                 // Show comparison view, hide single county view
                 document.getElementById('single-county-view').style.display = 'none';
                 document.getElementById('comparison-view').style.display = 'block';
@@ -1349,31 +1406,50 @@
                 const county2ActiveData = window.activeVotersData.find(item => item.county === county2) || {};
                 const county2InactiveData = window.inactiveVotersData.find(item => item.county === county2) || {};
 
+                // Helper function for comparison tables
+                const updateComparisonCell = function (elementId, value) {
+                    const element = document.getElementById(elementId);
+                    if (element) {
+                        element.textContent = formatNumber(value);
+
+                        // Reset existing classes while keeping essential styling
+                        element.className = 'p-3 border-b';
+
+                        // Add color classes based on value
+                        if (value > 0) {
+                            element.classList.add('bg-green-100', 'text-green-800');
+                        } else if (value < 0) {
+                            element.classList.add('bg-red-100', 'text-red-800');
+                        }
+                    }
+                };
+
                 // Update county 1 data cells
-                safelyUpdateElement('county1-official-democrat', county1OfficialData.democrat_diff);
-                safelyUpdateElement('county1-official-republican', county1OfficialData.republican_diff);
-                safelyUpdateElement('county1-official-unaffiliated', county1OfficialData.unaffiliated_diff);
+                updateComparisonCell('county1-official-democrat', county1OfficialData.democrat_diff);
+                updateComparisonCell('county1-official-republican', county1OfficialData.republican_diff);
+                updateComparisonCell('county1-official-unaffiliated', county1OfficialData.unaffiliated_diff);
 
-                safelyUpdateElement('county1-active-democrat', county1ActiveData.democrat_diff);
-                safelyUpdateElement('county1-active-republican', county1ActiveData.republican_diff);
-                safelyUpdateElement('county1-active-unaffiliated', county1ActiveData.unaffiliated_diff);
+                updateComparisonCell('county1-active-democrat', county1ActiveData.democrat_diff);
+                updateComparisonCell('county1-active-republican', county1ActiveData.republican_diff);
+                updateComparisonCell('county1-active-unaffiliated', county1ActiveData.unaffiliated_diff);
 
-                safelyUpdateElement('county1-inactive-democrat', county1InactiveData.democrat_diff);
-                safelyUpdateElement('county1-inactive-republican', county1InactiveData.republican_diff);
-                safelyUpdateElement('county1-inactive-unaffiliated', county1InactiveData.unaffiliated_diff);
+                updateComparisonCell('county1-inactive-democrat', county1InactiveData.democrat_diff);
+                updateComparisonCell('county1-inactive-republican', county1InactiveData.republican_diff);
+                updateComparisonCell('county1-inactive-unaffiliated', county1InactiveData.unaffiliated_diff);
 
-                // Update county 2 data cells
-                safelyUpdateElement('county2-official-democrat', county2OfficialData.democrat_diff);
-                safelyUpdateElement('county2-official-republican', county2OfficialData.republican_diff);
-                safelyUpdateElement('county2-official-unaffiliated', county2OfficialData.unaffiliated_diff);
+                // Update county 2 data cells with color coding
+                updateComparisonCell('county2-official-democrat', county2OfficialData.democrat_diff);
+                updateComparisonCell('county2-official-republican', county2OfficialData.republican_diff);
+                updateComparisonCell('county2-official-unaffiliated', county2OfficialData.unaffiliated_diff);
 
-                safelyUpdateElement('county2-active-democrat', county2ActiveData.democrat_diff);
-                safelyUpdateElement('county2-active-republican', county2ActiveData.republican_diff);
-                safelyUpdateElement('county2-active-unaffiliated', county2ActiveData.unaffiliated_diff);
+                updateComparisonCell('county2-active-democrat', county2ActiveData.democrat_diff);
+                updateComparisonCell('county2-active-republican', county2ActiveData.republican_diff);
+                updateComparisonCell('county2-active-unaffiliated', county2ActiveData.unaffiliated_diff);
 
-                safelyUpdateElement('county2-inactive-democrat', county2InactiveData.democrat_diff);
-                safelyUpdateElement('county2-inactive-republican', county2InactiveData.republican_diff);
-                safelyUpdateElement('county2-inactive-unaffiliated', county2InactiveData.unaffiliated_diff);
+                updateComparisonCell('county2-inactive-democrat', county2InactiveData.democrat_diff);
+                updateComparisonCell('county2-inactive-republican', county2InactiveData.republican_diff);
+                updateComparisonCell('county2-inactive-unaffiliated', county2InactiveData.unaffiliated_diff);
+
 
                 // Update comparison charts
                 updateComparisonCharts(county1, county2);
