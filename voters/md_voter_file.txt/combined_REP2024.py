@@ -35,7 +35,7 @@ fig = px.bar(
     x='age_bracket',
     y='Percentage',
     color='Gender',
-    title='Male REP Voter Turnout Higher in Majority of Age Groups',
+    title='Only in 65+ Age Group Female REP Voter Turnout is Higher than Male',
     labels={'Percentage': 'Percentage of Votes', 'age_bracket': 'Age Group'},
     hover_data={
         'Percentage': ':.2f',  # Format percentage to two decimal places
