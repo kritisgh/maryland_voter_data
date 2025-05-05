@@ -47,11 +47,18 @@ body {
     min-height: auto;
   }
 }
+.bigmap {
+  display: flex;
+  justify-content: center;  /* horizontally center children */
+  align-items: center;      /* vertically center if you give .bigmap a fixed height */
+  margin: 20px auto;        /* optional vertical spacing */
+}
+
 .bigmap iframe {
-  width: 100%;
+  width: 60%;               /* whatever width you prefer */
   height: 750px !important;
-  margin: 10;
   border: none;
+  /* remove your `margin: 0 10;` here */
 }
   .map iframe {
     width: 100%;
