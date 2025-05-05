@@ -1,15 +1,23 @@
 import pandas as pd
 import plotly.express as px
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
+import json
 
 app = Flask(__name__)
 
 # Load the dataset.
 df = pd.read_csv("md_voter_file.txt/agg_MD_noGenderSplit_County.csv")
 df['County'] = df['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
-
-# Convert voted_2024 to numeric (this is critical if the column is read as strings)
 df['voted_2024'] = pd.to_numeric(df['voted_2024'], errors='coerce')
+df['Count']     = pd.to_numeric(df['Count'],     errors='coerce')
+
+df_gender = pd.read_csv('md_voter_file.txt/agg_MD_GenderSplit_County.csv')
+# turnout as a percentage of registered Count
+df_gender['turnout'] = df_gender['voted_2024'] / df_gender['Count'] * 100
+
+# list of counties for dropdown
+counties = sorted(df_gender['County'].unique())
+
 
 df2020 = pd.read_csv("md_voter_file.txt/agg_MD_noGenderSplit_County.csv")
 df2020['County'] = df2020['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
@@ -145,13 +153,10 @@ def election_2020():
 
 @app.route('/gender')
 def gender():
-    male_graphs   = create_graphs('Male')
-    female_graphs = create_graphs('Female')
     return render_template(
         'gender.html',
-        male_graphs=male_graphs,
-        female_graphs=female_graphs
-    )
+        counties=['Statewide'] + counties)
+    
 
 @app.route("/nonvoters")
 def nonvoters():
@@ -243,6 +248,35 @@ def county_data_2020(county):
         "unaffiliated": pivot["Unaffiliated_pct"].tolist(),
         "other": pivot["Oth_pct"].tolist()
     })
+@app.route('/plot_gender')
+def plot_gender():
+    county = request.args.get('county', 'Statewide')
+    if county != 'Statewide':
+        dff = df_gender[df_gender['County'] == county]
+    else:
+        dff = df_gender
 
+    # aggregate turnout by age_bracket & Gender
+    summary = (
+        dff
+        .groupby(['age_bracket','Gender'])
+        .agg({'voted_2024':'sum','Count':'sum'})
+        .reset_index()
+    )
+    summary['turnout'] = summary['voted_2024'] / summary['Count'] * 100
+
+    # build grouped‐bar chart
+    fig = px.bar(
+        summary,
+        x='age_bracket',
+        y='turnout',
+        color='Gender',
+        barmode='group',
+        labels={'age_bracket':'Age Bracket','turnout':'Turnout %'},
+        title=f'2024 Turnout % by Age & Gender ({county})'
+    )
+    fig.update_layout(xaxis_tickangle=-45)
+
+    return jsonify(json.loads(fig.to_json()))
 if __name__ == "__main__":
     app.run(debug=True)

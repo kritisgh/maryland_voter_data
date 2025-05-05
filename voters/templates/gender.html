@@ -13,127 +13,42 @@
     
   <script src="//static.dwcdn.net/js/events.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <style>
-    
-    button {
-      margin: 0.5rem;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-    }
-    /* overall 2-column layout */
-    .container {
-      display: flex;
-      gap: 2rem;
-      margin-top: 1rem;
-    }
-    /* left: graphs stack vertically */
-    .graphs-column {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    /* each hidden until button click */
-    #maleGraphs, #femaleGraphs {
-      display: none;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    /* each chart takes full width of column */
-    .graph {
-      width: 100%;
-      min-height: 300px;
-    }
-    /* right: placeholder for text/content */
-    .text-column {
-      flex: 1;
-      padding: 1rem;
-      border: 1px dashed #aaa;
-      min-height: 500px;
-    }
-    /* remove default page margins */
-    body {
-    font-family: Poppins, sans-serif;
-    }
-
-/* overall 2-column layout, items aligned to top */
-    .container {
-      display: flex;
-      gap: 2rem;
-      align-items: flex-start;
-    }
-
-    /* left: graphs get 40% of width */
-    .graphs-column {
-      flex: 0 0 40%;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    /* right: text column fills remaining space */
-    .text-column {
-      flex: 1;
-      padding: 1rem;
-      border: 1px dashed #aaa;
-      min-height: 500px;
-    }
-
-    /* hide both until a button click */
-    #maleGraphs, #femaleGraphs {
-      display: none;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    /* each chart spans 100% of its column */
-    .graph {
-      width: 100%;
-      min-height: 300px;
-    }
-
   </style>
 </head>
 <body>
-  <h3>Voter Participation by Gender and Age</h3>
-
-  <button id="maleBtn">Show Male Charts</button>
-  <button id="femaleBtn">Show Female Charts</button>
-
-  <div class="container">
-    <div class="graphs-column">
-      <div id="maleGraphs">
-        <div class="graph">{{ male_graphs['dem']   | safe }}</div>
-        <div class="graph">{{ male_graphs['rep']   | safe }}</div>
-        <div class="graph">{{ male_graphs['una']   | safe }}</div>
-      </div>
-      <div id="femaleGraphs">
-        <div class="graph">{{ female_graphs['dem'] | safe }}</div>
-        <div class="graph">{{ female_graphs['rep'] | safe }}</div>
-        <div class="graph">{{ female_graphs['una'] | safe }}</div>
-      </div>
-    </div>
-    <div class="text-column">
-      <!-- Add any explanatory text, controls, or annotations here -->
-      <h2>Notes / Commentary</h2>
-      <p>GROQ stuff here.</p>
-    </div>
+  <br>
+  <div id="controls">
+    <label for="county-select">Select County:</label>
+    <select id="county-select">
+      {% for c in counties %}
+        <option value="{{ c }}">{{ c }}</option>
+      {% endfor %}
+    </select>
   </div>
 
-  <script>
-    const maleBtn   = document.getElementById('maleBtn');
-    const femaleBtn = document.getElementById('femaleBtn');
-    const maleDiv   = document.getElementById('maleGraphs');
-    const femaleDiv = document.getElementById('femaleGraphs');
+  <div id="graph"></div>
 
-    maleBtn.addEventListener('click', () => {
-      maleDiv.style.display   = 'flex';
-      femaleDiv.style.display = 'none';
-    });
-    femaleBtn.addEventListener('click', () => {
-      femaleDiv.style.display = 'flex';
-      maleDiv.style.display   = 'none';
-    });
+  <script>
+    function updateGraph() {
+      const county = encodeURIComponent(
+        document.getElementById('county-select').value
+      );
+      fetch(`/plot_gender?county=${county}`)
+        .then(res => res.json())
+        .then(fig => {
+          Plotly.react('graph', fig.data, fig.layout);
+        });
+    }
+
+    // set up listener & initial load
+    document
+      .getElementById('county-select')
+      .addEventListener('change', updateGraph);
+
+    updateGraph();
   </script>
 </body>
 </html>
