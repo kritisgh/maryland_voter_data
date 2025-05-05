@@ -382,23 +382,13 @@
         data-active='{{ active_data | tojson }}' data-inactive='{{ inactive_data | tojson }}' style="display:none;">
     </div>
 
-
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="/">Home</a>
-        <a href="official-turnout">Official Maryland Turnout</a>
-        <a href="eligible-active">Eligible Active Voters</a>
-        <a href="eligible-inactive">Eligible Inactive Voters</a>
-        <a href="county-dashboard" class="active">County Dashboard</a>
-    </div>
-
     <div class="dashboard-container">
         <h1>Maryland Voter Turnout Dashboard</h1>
 
         <div class="controls-container">
             <div class="county-controls">
                 <div class="filter-group">
-                    <label for="primary-county-select"><strong>Primary County:</strong></label>
+                    <label for="primary-county-select"><strong>County:</strong></label>
                     <select id="primary-county-select">
                         <option value="">Select County</option>
                     </select>
@@ -428,6 +418,7 @@
                 <div class="tab" data-tab="official-turnout">Official Turnout</div>
                 <div class="tab" data-tab="active-voters">Active Voters</div>
                 <div class="tab" data-tab="inactive-voters">Inactive Voters</div>
+                <div class="tab" data-tab="voter-registration">Registration Check</div>
             </div>
 
             <div id="overview" class="tab-content active">
@@ -525,13 +516,21 @@
             </div>
 
             <div id="active-voters" class="tab-content">
-                <div class="data-card bg-gray-50 p-4 mb-4 border-l-4 border-blue-600" style="background-color: #e9f2fb;">
+                <div class="data-card bg-gray-50 p-4 mb-4 border-l-4 border-blue-600"
+                    style="background-color: #e9f2fb;">
                     <h3 class="font-semibold mb-2">What are "Eligible Active Voters"?</h3>
-                    <p>Eligible active voters are registered voters whose registration is fully up-to-date with the election board. 
-                       These voters receive regular election materials and have no issues with their registration status. 
-                       Active status is the normal status for most registered voters.</p>
-                    <p class="mt-2">The metrics shown here track the percentage change in the number of active registered voters 
-                       by party affiliation between the 2020 and 2024 elections.</p>
+                    <p>Eligible active voters are registered voters whose registration is fully up-to-date with the
+                        election board.
+                        These voters receive regular election materials and have no issues with their registration
+                        status.
+                        Active status is the normal status for most registered voters.</p>
+                    <p class="mt-2">The metrics shown here track the percentage change in the number of active
+                        registered voters
+                        by party affiliation between the 2020 and 2024 elections.</p>
+
+                    <p class="mt-2">Learn more about Maryland voter eligibility here: <a
+                            href="https://elections.maryland.gov/voter_registration/">MD Board of Elections</a></p>
+                            <p class="mt-2">Want to check your registration and eligibility status? Use the <a href="#" class="text-blue-600 font-medium" onclick="document.querySelector('.tab[data-tab=\'voter-registration\']').click(); return false;">Voter Registration Check</a> to verify your information with the Maryland State Board of Elections.</p>
                 </div>
                 <div class="data-card">
                     <div class="chart-title">Change in eligible active voters</div>
@@ -587,13 +586,22 @@
             </div>
 
             <div id="inactive-voters" class="tab-content">
-                <div class="data-card bg-gray-50 p-4 mb-4 border-l-4 border-blue-600" style="background-color: #e9f2fb;">
+                <div class="data-card bg-gray-50 p-4 mb-4 border-l-4 border-blue-600"
+                    style="background-color: #e9f2fb;">
                     <h3 class="font-semibold mb-2">What are "Eligible Inactive Voters"?</h3>
-                    <p>Eligible inactive voters are registered voters who remain eligible to vote but have been placed on inactive status. 
-                       This typically occurs when a voter fails to respond to address verification mailings from the election board or when 
-                       mail sent to the voter is returned as undeliverable. Inactive voters can still vote at their polling place, but may need to 
-                       update their information. Their inactive status generally indicates potential issues with their voter registration information.</p>
-                    <p class="mt-2">If an inactive voter does not vote in two consecutive federal general elections, they may be removed from the voter rolls entirely.</p>
+                    <p>Eligible inactive voters are registered voters who remain eligible to vote but have been placed
+                        on inactive status.
+                        This typically occurs when a voter fails to respond to address verification mailings from the
+                        election board or when
+                        mail sent to the voter is returned as undeliverable. Inactive voters can still vote at their
+                        polling place, but may need to
+                        update their information. Their inactive status generally indicates potential issues with their
+                        voter registration information.</p>
+                    <p class="mt-2">If an inactive voter does not vote in two consecutive federal general elections,
+                        they may be removed from the voter rolls entirely.</p>
+                    <p class="mt-2">Learn more about Maryland voter eligibility here: <a
+                            href="https://elections.maryland.gov/voter_registration/">MD Board of Elections</a></p>
+                            <p class="mt-2">Want to check your registration and eligibility status? Use the <a href="#" class="text-blue-600 font-medium" onclick="document.querySelector('.tab[data-tab=\'voter-registration\']').click(); return false;">Voter Registration Check</a> to verify your information with the Maryland State Board of Elections.</p>
                 </div>
 
                 <div class="data-card">
@@ -648,6 +656,37 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+
+            <div id="voter-registration" class="tab-content">
+                <!-- Add a voter registration section with distinctive styling -->
+                <div class="data-card p-4 mb-4" style="background-color: #f0f7ff; border: 2px solid var(--cns-blue);">
+                    <h2 class="text-xl font-semibold mb-3" style="color: var(--cns-blue);">Check Your Voter Registration
+                        Status</h2>
+
+                    <p class="mb-4">Not sure if you're registered to vote in Maryland? You can quickly check your voter
+                        registration status using the official Maryland State Board of Elections voter lookup tool.</p>
+
+                    <p class="mb-4">The lookup tool allows you to:</p>
+                    <ul class="list-disc pl-8 mb-4">
+                        <li>Verify if you're registered to vote</li>
+                        <li>Confirm your registration address</li>
+                        <li>Check your party affiliation</li>
+                        <li>Find your polling place</li>
+                        <li>View your sample ballot</li>
+                        <li>Track the status of your mail-in or provisional ballot</li>
+                    </ul>
+
+                    <div class="text-center mt-6 mb-2">
+                        <a href="https://voterservices.elections.maryland.gov/VoterSearch" target="_blank"
+                            style="background-color: var(--cns-blue); color: white; padding: 12px 24px; border-radius: 4px; text-decoration: none; font-weight: 600; display: inline-block;">
+                            Check Your Registration Status
+                        </a>
+                    </div>
+
+                    <p class="mt-4 text-sm italic">This service is provided by the Maryland State Board of Elections.
+                        You will be redirected to their official website.</p>
                 </div>
             </div>
         </div>
