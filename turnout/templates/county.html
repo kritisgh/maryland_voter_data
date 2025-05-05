@@ -382,7 +382,6 @@
         data-active='{{ active_data | tojson }}' data-inactive='{{ inactive_data | tojson }}' style="display:none;">
     </div>
 
-    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -526,6 +525,14 @@
             </div>
 
             <div id="active-voters" class="tab-content">
+                <div class="data-card bg-gray-50 p-4 mb-4 border-l-4 border-blue-600" style="background-color: #e9f2fb;">
+                    <h3 class="font-semibold mb-2">What are "Eligible Active Voters"?</h3>
+                    <p>Eligible active voters are registered voters whose registration is fully up-to-date with the election board. 
+                       These voters receive regular election materials and have no issues with their registration status. 
+                       Active status is the normal status for most registered voters.</p>
+                    <p class="mt-2">The metrics shown here track the percentage change in the number of active registered voters 
+                       by party affiliation between the 2020 and 2024 elections.</p>
+                </div>
                 <div class="data-card">
                     <div class="chart-title">Change in eligible active voters</div>
                     <div class="chart-chatter">Percentage change in eligible active voters by party affiliation from
@@ -580,6 +587,15 @@
             </div>
 
             <div id="inactive-voters" class="tab-content">
+                <div class="data-card bg-gray-50 p-4 mb-4 border-l-4 border-blue-600" style="background-color: #e9f2fb;">
+                    <h3 class="font-semibold mb-2">What are "Eligible Inactive Voters"?</h3>
+                    <p>Eligible inactive voters are registered voters who remain eligible to vote but have been placed on inactive status. 
+                       This typically occurs when a voter fails to respond to address verification mailings from the election board or when 
+                       mail sent to the voter is returned as undeliverable. Inactive voters can still vote at their polling place, but may need to 
+                       update their information. Their inactive status generally indicates potential issues with their voter registration information.</p>
+                    <p class="mt-2">If an inactive voter does not vote in two consecutive federal general elections, they may be removed from the voter rolls entirely.</p>
+                </div>
+
                 <div class="data-card">
                     <div class="chart-title">Change in eligible inactive voters</div>
                     <div class="chart-chatter">Percentage change in eligible inactive voters by party affiliation from
