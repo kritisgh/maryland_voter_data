@@ -251,8 +251,9 @@ def county_data_2020(county):
 @app.route('/plot_gender')
 def plot_gender():
     county = request.args.get('county', 'Statewide')
-    party  = request.args.get('party', 'ALL')   
+    party  = request.args.get('party', 'ALL')
 
+    # --- your existing filtering & summary code unchanged ---
     if county != 'Statewide':
         dff = df_gender[df_gender['County'] == county]
     else:
@@ -261,7 +262,6 @@ def plot_gender():
     if party != 'ALL':
         dff = dff[dff['Party'] == party]
 
-    # aggregate turnout by age_bracket & Gender
     summary = (
         dff
         .groupby(['age_bracket','Gender'])
@@ -269,8 +269,23 @@ def plot_gender():
         .reset_index()
     )
     summary['turnout'] = summary['voted_2024'] / summary['Count'] * 100
-    party_names = {'ALL':'All Parties','DEM':'Democrats','REP':'Republicans','UNA':'Unaffiliated'}
-    # build grouped‐bar chart
+
+    party_names = {
+        'ALL': 'All Parties',
+        'DEM': 'Democrats',
+        'REP': 'Republicans',
+        'UNA': 'Unaffiliated'
+    }
+
+    # 1) Define your custom statewide titles
+    statewide_titles = {
+        'ALL': 'Statewide Female Voter Turnout is Higher than Male Turnout in 2024',
+        'DEM': 'Female Democratic Voter Turnout is Significantly Higher Compared to Male Turnout Among all Age Groups in 2024',
+        'REP': 'Male Republican Voter Turnout is Higher than Female Turnout in Majority of Age Groups in 2024',
+        'UNA': 'TBD'
+    }
+
+    # 2) Build the bar chart (we’ll override the title just below)
     fig = px.bar(
         summary,
         x='age_bracket',
@@ -278,12 +293,40 @@ def plot_gender():
         color='Gender',
         barmode='group',
         labels={'age_bracket':'Age Bracket','turnout':'Turnout %'},
-        title=f"2024 Turnout % by Age & Gender – {party_names[party]} ({county})",
-        category_orders={'Gender': ['Male','Female']},           # force Male on left
-        color_discrete_map={'Male':'steelblue','Female':'lightcoral'}
+        # you can leave title blank here since we'll set it explicitly
+        title='',
+        category_orders={'Gender': ['Male','Female']},
+        color_discrete_map={'Male':'#1FC3AA','Female':'#DBA3FD'},
+        text='turnout',
+        custom_data=['Gender']
     )
-    fig.update_layout(xaxis_tickangle=-45)
+    fig.update_traces(
+        texttemplate='%{customdata[0]}: <br>%{text:.2f}%',
+        textposition='inside',
+        textfont_color='white',
+        insidetextanchor='middle'
+    )
 
+    # 3) Override the title based on county vs statewide
+    if county == 'Statewide':
+        # use one of your four special statewide titles
+        fig.update_layout(
+            title=statewide_titles[party]
+        )
+    else:
+        # append " County" to every county except Baltimore City & Baltimore County
+        if county not in ['Baltimore County', 'Baltimore City'] \
+           and not county.endswith('County'):
+            display_name = f"{county} County"
+        else:
+            display_name = county
+
+        fig.update_layout(
+            title=f"{party_names[party]} Turnout in 2024 – {display_name}"
+        )
+
+    # 4) Return as before
     return jsonify(json.loads(fig.to_json()))
+
 if __name__ == "__main__":
     app.run(debug=True)
