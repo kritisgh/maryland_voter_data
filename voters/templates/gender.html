@@ -19,37 +19,119 @@
   </style>
 </head>
 <body>
-  <br>
-  <div id="controls">
-    <label for="county-select">Select County:</label>
-    <select id="county-select">
-      {% for c in counties %}
-        <option value="{{ c }}">{{ c }}</option>
-      {% endfor %}
-    </select>
+  <div style="margin:2rem;">
+    <h2>Voter Demographics by Gender and Age - 2024 Election</h2>
+
+    <div class="controls-wrapper"
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 auto 1.5rem;">
+      <!-- Party Slider -->
+      <div class="segment-control"
+      style="
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+        padding: 4px;
+        border-radius: 8px;
+        background: #eee;
+      ">
+      <div class="segment-slider"
+             style="
+               position: absolute;
+               top: 4px;
+               left: 4px;
+               height: calc(100% - 8px);
+               border-radius: 6px;
+               transition: all .3s;
+             "></div>
+        <button class="segment active" data-val="ALL" style="z-index:1; border:none;
+                background:none; cursor:pointer;">All Parties</button>
+        <button class="segment"        data-val="DEM" style="z-index:1; border:none;
+                background:none; cursor:pointer;">Democrats</button>
+        <button class="segment"        data-val="REP" style="z-index:1; border:none;
+                background:none; cursor:pointer;">Republicans</button>
+        <button class="segment"        data-val="UNA" style="z-index:1; border:none;
+                background:none; cursor:pointer;">Unaffiliated</button>
+      </div>
+
+      <!-- County Dropdown -->
+      <div id="controls" style= "display: flex;            /* make this a flex box too */
+         align-items: center;      /* center label + select */
+         margin: 0;">
+        <label for="county-select"style="margin-right: 0.5rem;">Select County:</label>
+        <select id="county-select" style= "display: flex;            /* make this a flex box too */
+        align-items: center;      /* center label + select */
+        margin: 0;" >
+          {% for c in counties %}
+            <option value="{{ c }}">{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <!-- ─── Plotly Graph ───────── -->
+    <div id="gender-graph"></div>
   </div>
 
-  <div id="graph"></div>
-
   <script>
+    const buttons = document.querySelectorAll('.segment-control .segment');
+    const slider  = document.querySelector('.segment-control .segment-slider');
+    const gap     = 4;  // must match the CSS gap
+
+    // map party codes to slider colors
+    const partyColors = {
+      'ALL': '#555555',    // dark gray
+      'DEM': '#0072CE',    // blue
+      'REP': '#E11931',    // red
+      'UNA': '#F2C100'     // yellow
+    };
+
+    let currentParty = 'ALL';
+
+    // position & color the slider under the given button
+    function moveSlider(btn) {
+      const rect = btn.getBoundingClientRect();
+      const parentRect = btn.parentElement.getBoundingClientRect();
+      const left = rect.left - parentRect.left;
+      slider.style.left = `${left}px`;
+      slider.style.width = `${rect.width}px`;
+      slider.style.background = partyColors[btn.dataset.val];
+    }
+
+    // handle click on each segment
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentParty = btn.dataset.val;
+        moveSlider(btn);
+        updateGraph();
+      });
+    });
+
+    // initial slider placement
+    moveSlider(document.querySelector('.segment-control .active'));
+
     function updateGraph() {
       const county = encodeURIComponent(
         document.getElementById('county-select').value
       );
-      fetch(`/plot_gender?county=${county}`)
+      fetch(`/plot_gender?county=${county}&party=${currentParty}`)
         .then(res => res.json())
         .then(fig => {
-          Plotly.react('graph', fig.data, fig.layout);
+          Plotly.react('gender-graph', fig.data, fig.layout);
         });
     }
 
-    // set up listener & initial load
-    document
-      .getElementById('county-select')
-      .addEventListener('change', updateGraph);
+    // redraw when county changes
+    document.getElementById('county-select')
+            .addEventListener('change', updateGraph);
 
+    // initial draw
     updateGraph();
   </script>
-</body>
-</html>
 {% endblock %}
