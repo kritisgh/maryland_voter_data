@@ -7,27 +7,53 @@
     <title>Registration</title>
 </head>
 <body>
-    <h1>Maryland Voter Registration Dashboard</h1>
-    <iframe title="Which parts of Maryland had the highest amount of registered voters per 100,000 residents in 2024?" aria-label="Map" id="datawrapper-chart-xWkpQ" src="https://datawrapper.dwcdn.net/xWkpQ/3/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="507" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}}))}();
-    </script>
-    <label for="county-select">Select County:</label>
-    <select id="county-select">
-        <option value="">-- Select County --</option>
-        <option value="/">Statewide</option>
-        {% for c in counties %}
-            <option value="/county/{{ c.county }}">{{ c.county }}</option>
-        {% endfor %}
-    </select>
+    <h1 class="header">Fewer Marylanders Are Registering to Vote — What About Your County?</h1>
+    <p class="header">An analysis of Maryland Board of Elections data shows that registration dropped in nearly every county between 2020 and 
+        2024. Explore statewide voter registration trends or find your county using the dropdown menu.</p>
+    <iframe title="Which parts of Maryland had the highest amount of registered voters per 100,000 residents in 2024?" 
+    aria-label="Map" id="datawrapper-chart-xWkpQ" src="https://datawrapper.dwcdn.net/xWkpQ/3/" scrolling="no" frameborder="0" 
+    style="width: 0; min-width: 100% !important; border: none;" height="507" data-external="1"></iframe>
+    <script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}}))}();</script>
+    <p>In both years, Worcester County had the highest voter registration percentage and Somerset had the lowest.</p>
+
+    <div style="margin: 1em 0;">
+        <label for="county-select" style="font-weight: bold; margin-right: 0.5em;">Select County:</label>
+        <select id="county-select">
+            <option value="">-- Select County --</option>
+            <option value="/">Statewide</option>
+            {% for c in counties %}
+                <option value="/county/{{ c.county }}">{{ c.county }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
     <p>Our site is dedicated to showing the number of Maryland voters who were registered to vote 
-        and showing how active voters are at certain times during the year. This site in particular 
-        focuses on registration during the presidential election season. Maryland has 
+        and showing how active voters are at certain times during the year.</p> 
+    <p>This site in particular focuses on registration during the presidential election season. Maryland has 
         historically been a blue state. The last time a Republican won this state in a 
         presidential election was George H.W. Bush in 1988. Baltimore was the bluest county in Maryland, 
-        with Garret County being the most red. In order to be eligible to vote in the state of Maryland, 
+        with Garret County being the most red.</p>
+    <p>In order to be eligible to vote in the state of Maryland, 
         you must be a Maryland resident. At least 16 years old to register, and turn 18 by the election. 
         You can not have been convicted of voting fraud, under guardianship for mental disability and 
-        ruled unable to vote, or be imprisoned for a felony. </p>
+        ruled unable to vote, or be imprisoned for a felony. 
+    </p>
+
+    <br>
+    <div class="chart-row">
+        <iframe title="There were 20,000 less registered Democrats in February than during this year's general election. " aria-label="Grouped Bars" id="datawrapper-chart-ymiFl" src="https://datawrapper.dwcdn.net/ymiFl/1/" scrolling="no" frameborder="0" style="width: 0; border: none;" height="338" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}}))}();</script>
+        <iframe title="The number of registered Democrats in Maryland fell by 10 times more than Republicans after the 2024 election" aria-label="Bar Chart" id="datawrapper-chart-5zOiJ" src="https://datawrapper.dwcdn.net/5zOiJ/2/" scrolling="no" frameborder="0" style="width: 0; border: none;" height="251" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}}))}();</script>
+        <p>The number of registered Democrats dropped after the 2024 general election — much more than the drop for registered 
+            Republicans. There were 20,000 less registered Democrats in February 2025 than November of 2024, meaning about a 1% 
+            decrease. But for Republicans, that figure was roughly 0.1%. </p>
+    </div>
+    <br>
+
+    <iframe title="The number of inactive voters in Maryland has increased since 2008" aria-label="Interactive line chart" id="datawrapper-chart-SpoI5" src="https://datawrapper.dwcdn.net/SpoI5/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="484" data-external="1"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(a){if(void 0!==a.data["datawrapper-height"]){var e=document.querySelectorAll("iframe");for(var t in a.data["datawrapper-height"])for(var r,i=0;r=e[i];i++)if(r.contentWindow===a.source){var d=a.data["datawrapper-height"][t]+"px";r.style.height=d}}}))}();</script>
+    <p>The number of Maryland inactive voters — defined as a registered voter who has not voted in the last two election cycles — 
+        has trended upwards since 2006. While it has consistently followed the same pattern of rising leading up to the election 
+        and dropping off after November, the months following the 2024 general election marked a peak in the total count, which 
+        could be a sign Maryland voters are becoming more politically apathetic.</p>
 
     <script>
     document.getElementById("county-select").addEventListener("change", function () {
