@@ -351,20 +351,65 @@
             color: rgba(22, 101, 52, 1);
         }
 
-        .bg-red-100 {
-            background-color: rgba(254, 226, 226, 1);
+        /* Statewide overview section styles */
+        .statewide-overview {
+            background-color: #f7f9fc;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--cns-blue);
         }
 
-        .text-red-800 {
-            color: rgba(153, 27, 27, 1);
+        .statewide-overview h2 {
+            color: var(--cns-blue);
+            margin-top: 0;
+            margin-bottom: 15px;
         }
 
-        .bg-green-100 {
-            background-color: rgba(220, 252, 231, 1);
+        .overview-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
         }
 
-        .text-green-800 {
-            color: rgba(22, 101, 52, 1);
+        .overview-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .overview-chart {
+            flex: 1;
+            min-width: 400px;
+            height: 350px;
+        }
+
+        .highlight-box {
+            background-color: #fff;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #e0e7ff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .highlight-box h3 {
+            color: var(--cns-blue);
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+
+        .county-finder {
+            background-color: #fffaeb;
+            border: 2px dashed var(--cns-orange);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .county-finder h3 {
+            color: var(--cns-black);
+            margin-top: 0;
         }
     </style>
     <title>Maryland Voter Turnout Dashboard</title>
@@ -384,6 +429,41 @@
 
     <div class="dashboard-container">
         <h1>Maryland Voter Turnout Dashboard</h1>
+
+        <!-- Statewide Overview Section -->
+        <div class="statewide-overview" id="statewide-overview">
+            <h2>Statewide Voter Turnout Trends: 2020 to 2024</h2>
+            
+            <div class="overview-content">
+                <div class="overview-text">
+                    <p>This dashboard tracks the changes in Maryland's voter turnout between the 2020 and 2024 presidential elections. In 2020, Maryland saw 75% of registered voters participate in the general election, with county-level turnout ranging from 61% to 81%. The 2024 election shows some shifts in voter participation across party lines and counties.</p>
+                    
+                    <div class="highlight-box">
+                        <h3>Key Findings</h3>
+                        <ul>
+                            <li>Overall nationwide voter turnout in 2024 (63.7%) was lower than the 2020 record (66.6%) but higher than previous presidential elections.</li>
+                            <li>Democratic and Republican voters showed different participation patterns</li>
+                            <li>Unaffiliated voter turnout fluctuated across different regions</li>
+                            <li>The 2024 election saw a more balanced mix of early, mail-in, and in-person voting compared to 2020's pandemic-driven mail-in voting surge.</li>
+                        </ul>
+                    </div>
+                    
+                </div>
+                
+                <div class="overview-chart">
+                    <canvas id="statewide-overview-chart"></canvas>
+                    <div class="chart-footer">
+                        <div class="chart-note">Note: Percentages represent change in turnout rate from 2020 to 2024.</div>
+                        <div class="chart-source">Source: Maryland State Board of Elections</div>
+                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="county-finder">
+            <h3>How did your county perform?</h3>
+            <p>Select your county below to see detailed turnout data and compare with other Maryland counties.</p>
+        </div>
 
         <div class="controls-container">
             <div class="county-controls">
@@ -410,18 +490,17 @@
             </div>
         </div>
 
-        <div id="single-county-view">
+        <div id="single-county-view" style="display: none;">
             <h2 id="county-name-header" class="county-header">Select a county to view data</h2>
 
             <div class="tabs">
-                <div class="tab active" data-tab="overview">Overview</div>
-                <div class="tab" data-tab="official-turnout">Official Turnout</div>
+                <div class="tab active" data-tab="official-turnout">Official Turnout</div>
                 <div class="tab" data-tab="active-voters">Active Voters</div>
                 <div class="tab" data-tab="inactive-voters">Inactive Voters</div>
                 <div class="tab" data-tab="voter-registration">Registration Check</div>
             </div>
 
-            <div id="overview" class="tab-content active">
+            <div id="official-turnout" class="tab-content active">
                 <div class="summary-stats">
                     <div class="stat-card total">
                         <div class="stat-title">Total Turnout Change (2020 → 2024)</div>
@@ -440,23 +519,6 @@
                         <div id="unaffiliated-turnout-change" class="stat-value">-</div>
                     </div>
                 </div>
-
-                <div class="data-card">
-                    <div class="chart-title">Turnout change by party in Maryland</div>
-                    <div class="chart-chatter">Percentage point difference in voter turnout between 2020 and 2024
-                        elections across parties.</div>
-                    <div class="chart-container">
-                        <canvas id="overview-chart"></canvas>
-                    </div>
-                    <div class="chart-footer">
-                        <div class="chart-source">Source: Maryland State Board of Elections</div>
-                        <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="official-turnout" class="tab-content">
                 <div class="data-card">
                     <div class="chart-title">Official turnout data by party</div>
                     <div class="chart-chatter">Percentage change in official voter turnout across parties from 2020 to
@@ -595,7 +657,111 @@
                         election board or when
                         mail sent to the voter is returned as undeliverable. Inactive voters can still vote at their
                         polling place, but may need to
-                        update their information. Their inactive status generally indicates potential issues with their
+                        updateComparisonView(selectedCounty, comparisonCounty);
+                    } else {
+                        // Otherwise, make sure we're in single county view
+                        document.getElementById('single-county-view').style.display = 'block';
+                        document.getElementById('comparison-view').style.display = 'none';
+                        document.getElementById('statewide-overview').style.display = 'none';
+                    }
+                }
+            });
+
+            // Comparison county selection
+            comparisonSelect.addEventListener('change', function () {
+                const selectedCounty = this.value;
+                const primaryCounty = primarySelect.value;
+
+                if (selectedCounty && primaryCounty) {
+                    updateComparisonView(primaryCounty, selectedCounty);
+                }
+            });
+
+            // Enable comparison button
+            document.getElementById('enable-comparison-btn').addEventListener('click', function () {
+                document.getElementById('comparison-controls').style.display = 'block';
+                this.style.display = 'none';
+                document.getElementById('disable-comparison-btn').style.display = 'inline-block';
+            });
+
+            // Disable comparison button
+            document.getElementById('disable-comparison-btn').addEventListener('click', function () {
+                document.getElementById('comparison-controls').style.display = 'none';
+                this.style.display = 'none';
+                document.getElementById('enable-comparison-btn').style.display = 'inline-block';
+
+                // Switch back to single county view if a county is selected
+                const selectedCounty = primarySelect.value;
+                if (selectedCounty) {
+                    document.getElementById('single-county-view').style.display = 'block';
+                    document.getElementById('comparison-view').style.display = 'none';
+                    document.getElementById('statewide-overview').style.display = 'none';
+                    updateSingleCountyView(selectedCounty);
+                } else {
+                    // Return to statewide overview if no county is selected
+                    document.getElementById('single-county-view').style.display = 'none';
+                    document.getElementById('comparison-view').style.display = 'none';
+                    document.getElementById('statewide-overview').style.display = 'block';
+                }
+
+                // Reset comparison dropdown
+                comparisonSelect.value = '';
+            });
+
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function () {
+                    // Remove active class from all tabs
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+
+                    // Hide all tab content
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+                    // Show relevant tab content
+                    const tabName = this.getAttribute('data-tab');
+                    document.getElementById(tabName).classList.add('active');
+                });
+            });
+
+            // Initialize with statewide overview
+            // Hide single county view initially
+            document.getElementById('single-county-view').style.display = 'none';
+            
+            // Show statewide overview by default
+            document.getElementById('statewide-overview').style.display = 'block';
+            
+            // Initialize the statewide overview chart
+            initStatewideTurnoutChart();
+
+            // Initialize DataTables
+            $(document).ready(function () {
+                $('#official-turnout-table').DataTable({
+                    paging: false,
+                    searching: false,
+                    info: false
+                });
+
+                $('#active-voters-table').DataTable({
+                    paging: false,
+                    searching: false,
+                    info: false
+                });
+
+                $('#inactive-voters-table').DataTable({
+                    paging: false,
+                    searching: false,
+                    info: false
+                });
+            });
+
+            console.log("Dashboard initialization complete according to CNS style guide");
+        });
+    </script>
+</body>
+
+</html> their information. Their inactive status generally indicates potential issues with their
                         voter registration information.</p>
                     <p class="mt-2">If an inactive voter does not vote in two consecutive federal general elections,
                         they may be removed from the voter rolls entirely.</p>
@@ -851,36 +1017,42 @@
                 }
             };
 
-            // Function to update charts
-            function updateOverviewChart(data, county) {
-                const canvasElement = document.getElementById('overview-chart');
-                if (!canvasElement) {
-                    console.error('Overview chart canvas element not found');
-                    return;
-                }
+            // Initialize statewide overview chart
+            function initStatewideTurnoutChart() {
+                // Calculate average statewide values from all counties
+                const calculateStateAverage = (dataArray, property) => {
+                    const sum = dataArray.reduce((acc, item) => acc + (item[property] || 0), 0);
+                    return sum / dataArray.length;
+                };
 
-                const ctx = canvasElement.getContext('2d');
-                if (!ctx) {
-                    console.error('Could not get 2D context for overview chart');
-                    return;
-                }
+                // Get statewide averages for main party affiliations
+                const stateData = {
+                    democrat_diff: calculateStateAverage(window.officialTurnoutData, 'democrat_diff'),
+                    republican_diff: calculateStateAverage(window.officialTurnoutData, 'republican_diff'),
+                    unaffiliated_diff: calculateStateAverage(window.officialTurnoutData, 'unaffiliated_diff'),
+                    green_diff: calculateStateAverage(window.officialTurnoutData, 'green_diff'),
+                    libertarian_diff: calculateStateAverage(window.officialTurnoutData, 'libertarian_diff'),
+                    other_diff: calculateStateAverage(window.officialTurnoutData, 'other_diff'),
+                    statewide_diff: calculateStateAverage(window.officialTurnoutData, 'statewide_diff')
+                };
 
-                // Destroy existing chart if it exists
-                if (window.overviewChart) {
-                    window.overviewChart.destroy();
-                }
+                const canvas = document.getElementById('statewide-overview-chart');
+                if (!canvas) return;
 
-                // CNS chart styling options - based on style guide
-                const cnsChartOptions = {
+                const ctx = canvas.getContext('2d');
+                if (!ctx) return;
+
+                // CNS chart styling for overview
+                const cnsOverviewChartOptions = {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            display: false, // Per Flourish guideline - no legend
+                            display: false,
                         },
                         title: {
                             display: true,
-                            text: `Voter turnout change in ${county} County`,
+                            text: 'Maryland Statewide Voter Turnout Change (2020 → 2024)',
                             font: {
                                 family: "'Source Serif Pro', serif",
                                 size: 16
@@ -888,41 +1060,27 @@
                             padding: {
                                 bottom: 10
                             }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    // Format tooltip values with percentage
-                                    return `${context.label}: ${context.raw > 0 ? '+' : ''}${context.raw.toFixed(1)}%`;
-                                }
-                            }
-                        },
+                        }
                     },
                     scales: {
                         y: {
-                            beginAtZero: false,
                             grid: {
                                 drawBorder: false,
                             },
                             ticks: {
                                 font: {
                                     family: "'Poppins', sans-serif"
-                                },
-                                // Add percentage sign to y-axis labels
-                                callback: function (value) {
-                                    return value + '%';
                                 }
                             }
                         },
                         x: {
                             grid: {
-                                display: false // Per Flourish guideline - no grid lines
+                                display: false
                             },
                             ticks: {
                                 font: {
                                     family: "'Poppins', sans-serif"
                                 },
-                                // Per Flourish guideline - X-Axis Labels not angled
                                 maxRotation: 0,
                                 minRotation: 0
                             }
@@ -930,43 +1088,43 @@
                     }
                 };
 
-                window.overviewChart = new Chart(ctx, {
+                window.stateOverviewChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ['Democrat', 'Republican', 'Green', 'Libertarian', 'Unaffiliated', 'Other', 'Total'],
+                        labels: ['Democrat', 'Republican', 'Unaffiliated', 'Green', 'Libertarian', 'Other', 'All Voters'],
                         datasets: [{
-                            label: 'Change in Voter Turnout % (2020 → 2024)',
+                            label: 'Average Turnout Change %',
                             data: [
-                                data.democrat_diff,
-                                data.republican_diff,
-                                data.green_diff,
-                                data.libertarian_diff,
-                                data.unaffiliated_diff,
-                                data.other_diff,
-                                data.statewide_diff
+                                stateData.democrat_diff,
+                                stateData.republican_diff,
+                                stateData.unaffiliated_diff,
+                                stateData.green_diff,
+                                stateData.libertarian_diff,
+                                stateData.other_diff,
+                                stateData.statewide_diff
                             ],
                             backgroundColor: [
                                 chartColors.democrat,
                                 chartColors.republican,
+                                chartColors.unaffiliated,
                                 chartColors.green,
                                 chartColors.libertarian,
-                                chartColors.unaffiliated,
                                 chartColors.other,
                                 chartColors.statewide
                             ],
                             borderColor: [
                                 chartBorders.democrat,
                                 chartBorders.republican,
+                                chartBorders.unaffiliated,
                                 chartBorders.green,
                                 chartBorders.libertarian,
-                                chartBorders.unaffiliated,
                                 chartBorders.other,
                                 chartBorders.statewide
                             ],
                             borderWidth: 1
                         }]
                     },
-                    options: cnsChartOptions
+                    options: cnsOverviewChartOptions
                 });
             }
 
@@ -1392,6 +1550,10 @@
             window.updateSingleCountyView = function (county) {
                 console.log("Updating view for county:", county);
 
+                // Show single county view, hide statewide overview
+                document.getElementById('statewide-overview').style.display = 'none';
+                document.getElementById('single-county-view').style.display = 'block';
+
                 // Update the county header
                 const countyNameHeader = document.getElementById('county-name-header');
                 if (countyNameHeader) {
@@ -1402,12 +1564,6 @@
                 const officialData = window.officialTurnoutData.find(item => item.county === county) || {};
                 const activeData = window.activeVotersData.find(item => item.county === county) || {};
                 const inactiveData = window.inactiveVotersData.find(item => item.county === county) || {};
-
-                // Update overview tab elements
-                updateTableCell('total-turnout-change', officialData.statewide_diff);
-                updateTableCell('democrat-turnout-change', officialData.democrat_diff);
-                updateTableCell('republican-turnout-change', officialData.republican_diff);
-                updateTableCell('unaffiliated-turnout-change', officialData.unaffiliated_diff);
 
                 // Update official turnout tab elements
                 updateTableCell('official-democrat', officialData.democrat_diff);
@@ -1435,7 +1591,6 @@
                 updateTableCell('inactive-other', inactiveData.other_diff);
 
                 // Update the charts - safely check if canvas elements exist first
-                updateOverviewChart(officialData, county);
                 updateOfficialTurnoutChart(officialData, county);
                 updateActiveVotersChart(activeData, county);
                 updateInactiveVotersChart(inactiveData, county);
@@ -1443,7 +1598,9 @@
 
             // Function to update the comparison view
             window.updateComparisonView = function (county1, county2) {
-
+                // Hide statewide overview
+                document.getElementById('statewide-overview').style.display = 'none';
+                
                 // Show comparison view, hide single county view
                 document.getElementById('single-county-view').style.display = 'none';
                 document.getElementById('comparison-view').style.display = 'block';
@@ -1556,94 +1713,7 @@
                         // Otherwise, make sure we're in single county view
                         document.getElementById('single-county-view').style.display = 'block';
                         document.getElementById('comparison-view').style.display = 'none';
+                        document.getElementById('statewide-overview').style.display = 'none';
                     }
                 }
             });
-
-            // Comparison county selection
-            comparisonSelect.addEventListener('change', function () {
-                const selectedCounty = this.value;
-                const primaryCounty = primarySelect.value;
-
-                if (selectedCounty && primaryCounty) {
-                    updateComparisonView(primaryCounty, selectedCounty);
-                }
-            });
-
-            // Enable comparison button
-            document.getElementById('enable-comparison-btn').addEventListener('click', function () {
-                document.getElementById('comparison-controls').style.display = 'block';
-                this.style.display = 'none';
-                document.getElementById('disable-comparison-btn').style.display = 'inline-block';
-            });
-
-            // Disable comparison button
-            document.getElementById('disable-comparison-btn').addEventListener('click', function () {
-                document.getElementById('comparison-controls').style.display = 'none';
-                this.style.display = 'none';
-                document.getElementById('enable-comparison-btn').style.display = 'inline-block';
-
-                // Switch back to single county view
-                document.getElementById('single-county-view').style.display = 'block';
-                document.getElementById('comparison-view').style.display = 'none';
-
-                // Reset comparison dropdown
-                comparisonSelect.value = '';
-
-                // Refresh the single county view with currently selected county
-                const selectedCounty = primarySelect.value;
-                if (selectedCounty) {
-                    updateSingleCountyView(selectedCounty);
-                }
-            });
-
-            // Tab switching
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', function () {
-                    // Remove active class from all tabs
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    // Add active class to clicked tab
-                    this.classList.add('active');
-
-                    // Hide all tab content
-                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-                    // Show relevant tab content
-                    const tabName = this.getAttribute('data-tab');
-                    document.getElementById(tabName).classList.add('active');
-                });
-            });
-
-            // Initialize with the first county
-            if (window.counties && window.counties.length > 0) {
-                primarySelect.value = window.counties[0];
-                updateSingleCountyView(window.counties[0]);
-            }
-
-            // Initialize DataTables
-            $(document).ready(function () {
-                $('#official-turnout-table').DataTable({
-                    paging: false,
-                    searching: false,
-                    info: false
-                });
-
-                $('#active-voters-table').DataTable({
-                    paging: false,
-                    searching: false,
-                    info: false
-                });
-
-                $('#inactive-voters-table').DataTable({
-                    paging: false,
-                    searching: false,
-                    info: false
-                });
-            });
-
-            console.log("Dashboard initialization complete according to CNS style guide");
-        });
-    </script>
-</body>
-
-</html>
