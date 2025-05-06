@@ -13,11 +13,11 @@ def extract_info(text):
     messages=[
         {
             "role": "system",
-            "content": "Go through this Maryland Voter Detail from the election years 2020 and 2024 text I gave you, give me very brief 1-2 random facts about each county and try to diversify the age ranges as well. These facts should be very quick digestable information for the reader to read. Please advise 'UNA' stands for unaffiliated and 'OTH' stands for other. You should sound like a news reporter when giving the results. Note that I do not want any '*' or '**' in the response."
+            "content": "Give me a statewide summary of this voter data in the year 2024 and some quick facts about the voter data in each county from the year 2024, keep it brief, around 3-4 sentences at the maximum. You are writing like a journalist this voter data."
         },
         {
             "role": "user",
-            "content": f"Give me some random quick hits for each county about this data: {text}."
+            "content": f"Give me some random quick hits for each county and give me a statewide summary of this voter data in the year 2024 from this data: {text}."
         }
     ],
     temperature=0,
