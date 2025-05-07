@@ -13,11 +13,11 @@ def extract_info(text):
     messages=[
         {
             "role": "system",
-            "content": "Give me a statewide summary of this voter data in the year 2024 and some quick facts about the voter data in each county from the year 2024, keep it brief, around 3-4 sentences at the maximum. You are writing like a journalist this voter data."
+            "content": "Give me a statewide summary of this voter data in the year 2024 and some quick facts about the voter data in each county from the year 2024, keep it brief, around 3-4 sentences at the maximum. I just want qualitative reports, no numbers at all and make sure the age ranges are diverse and don't include just older age groups. Give me one standout fact from each county such as age group behavior or voter actions. You are writing like a journalist this voter data."
         },
         {
             "role": "user",
-            "content": f"Give me some random quick hits for each county and give me a statewide summary of this voter data in the year 2024 from this data: {text}."
+            "content": f"Give me some random qualitative quick hits for each county and give me a statewide summary of this voter data in the year 2024 from this data, make sure the age ranges are diverse and don't include just older age groups. Also give me one standout fact from each county such as age group behavior or voter actions: {text}."
         }
     ],
     temperature=0,
