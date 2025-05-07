@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template
-from flourish_id import flourish_ids
+from info import flourish_ids
 from peewee import *
 app = Flask(__name__)
 
