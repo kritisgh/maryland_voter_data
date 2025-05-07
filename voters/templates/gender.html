@@ -7,6 +7,7 @@
     <noscript>
       <link rel="stylesheet" href="/static/style.css">
     </noscript> 
+  <title>Maryland 2024 Election</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
@@ -77,7 +78,7 @@
       </div>
     </div>
 
-    <!-- ─── Plotly Graph ───────── -->
+    <div id="loader" aria-label="Loading graph…"></div>  
     <div id="gender-graph"></div>
   </div>
 
@@ -85,6 +86,8 @@
     const buttons = document.querySelectorAll('.segment-control .segment');
     const slider  = document.querySelector('.segment-control .segment-slider');
     const gap     = 4;  // must match the CSS gap
+    const loader  = document.getElementById('loader');   // NEW
+    const graphDiv   = document.getElementById('gender-graph');
 
     // map party codes to slider colors
     const partyColors = {
@@ -121,16 +124,21 @@
     moveSlider(document.querySelector('.segment-control .active'));
 
     function updateGraph() {
+      const firstRender = !graphDiv.querySelector('.plotly');
+      if (firstRender) loader.style.display = 'block';
       const county = encodeURIComponent(
         document.getElementById('county-select').value
       );
       fetch(`/plot_gender?county=${county}&party=${currentParty}`)
-        .then(res => res.json())
-        .then(fig => {
-          Plotly.react('gender-graph', fig.data, fig.layout);
-        });
-    }
-
+      .then(res => res.json())
+      .then(fig => {
+        Plotly.react(graphDiv, fig.data, fig.layout);
+      })
+      .catch(err => console.error(err))
+      .finally(() => {
+        if (firstRender) loader.style.display = 'none';
+      });
+  }
     // redraw when county changes
     document.getElementById('county-select')
             .addEventListener('change', updateGraph);
