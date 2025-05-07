@@ -2,9 +2,13 @@ import pandas as pd
 import plotly.express as px
 from flask import Flask, render_template, jsonify, request
 import json
+import os, re                                   #  <-- NEW
+import plotly.io as pio                          #  <-- already have plotly.express
 
+    
 app = Flask(__name__)
-
+PLOTS_DIR = os.path.join(app.root_path, "static", "plots")
+os.makedirs(PLOTS_DIR, exist_ok=True)   
 # Load the dataset.
 df = pd.read_csv("md_voter_file.txt/agg_MD_noGenderSplit_County.csv")
 df['County'] = df['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
@@ -12,7 +16,7 @@ df['voted_2024'] = pd.to_numeric(df['voted_2024'], errors='coerce')
 df['Count']     = pd.to_numeric(df['Count'],     errors='coerce')
 
 df_gender = pd.read_csv('md_voter_file.txt/agg_MD_GenderSplit_County.csv')
-# turnout as a percentage of registered Count
+df_gender['County'] = df_gender['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
 df_gender['turnout'] = df_gender['voted_2024'] / df_gender['Count'] * 100
 
 # list of counties for dropdown
@@ -282,7 +286,7 @@ def plot_gender():
         'ALL': 'Statewide Female Voter Turnout is Higher than Male Turnout in 2024',
         'DEM': 'Female Democratic Voter Turnout is Significantly Higher Compared to Male Turnout Among all Age Groups in 2024',
         'REP': 'Male Republican Voter Turnout is Higher than Female Turnout in Majority of Age Groups in 2024',
-        'UNA': 'TBD'
+        'UNA': 'Unaffiliated '
     }
 
     # 2) Build the bar chart (we’ll override the title just below)
@@ -325,6 +329,16 @@ def plot_gender():
             title=f"{party_names[party]} Turnout in 2024 – {display_name}"
         )
 
+    # ---------- save a copy ----------
+    # build a clean file name like  "Allegany_All-Parties.png"
+    clean_county = re.sub(r"[^\w\-]", "_", county)        # keep letters, numbers, _
+    party_label  = party_names[party].replace(" ", "-")    # e.g. "All-Parties"
+    fname        = f"{clean_county}_{party_label}.png"
+    out_path     = os.path.join(PLOTS_DIR, fname)
+
+    # choose whatever size you like
+    fig.write_image(out_path, width=1200, height=700, scale=2)  # needs kaleido
+    # ----------------------------------
     # 4) Return as before
     return jsonify(json.loads(fig.to_json()))
 
