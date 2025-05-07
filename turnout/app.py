@@ -59,26 +59,13 @@ def index():
 
 @app.route("/county")
 def county_dashboard():
-    """
-    Unified dashboard showing all voter data by county with comparison functionality.
-    This combines the data from official turnout, eligible active, and eligible inactive views.
-    """
     template = 'county.html'
     
-    try:
-        print("Starting county dashboard route")
-        
-        # Get data from all three models for our unified dashboard
+    try: 
         official_query = CountyTurnout.select()
-        print(f"Official query count: {official_query.count()}")
-        
         active_query = EligibleActiveDifferences.select()
-        print(f"Active query count: {active_query.count()}")
-        
         inactive_query = EligibleInactiveDifferences.select()
-        print(f"Inactive query count: {inactive_query.count()}")
         
-        # For the JavaScript graphs, let's convert the data to JSON
         official_data = [
             {
                 "county": row.county,
@@ -119,74 +106,24 @@ def county_dashboard():
             for row in inactive_query
         ]
         
-        # Get unique counties for the dropdown
         counties = sorted(list(set(row.county for row in official_query)))
         
-        # Generate some test data if no counties were found
-        if not counties:
-            print("No counties found, generating test data")
-            counties = [
-                "Allegany", "Anne Arundel", "Baltimore City", "Baltimore County", 
-                "Calvert", "Caroline", "Carroll", "Cecil", "Charles", "Dorchester", 
-                "Frederick", "Garrett", "Harford", "Howard", "Kent", "Montgomery", 
-                "Prince Georges", "Queen Annes", "Somerset", "St. Marys", 
-                "Talbot", "Washington", "Wicomico", "Worcester"
-            ]
-            
-            # Generate placeholder data for testing
-            official_data = []
-            active_data = []
-            inactive_data = []
-            
-            for county in counties:
-                official_data.append({
-                    "county": county,
-                    "democrat_diff": round(float(random.randint(-300, 300)) / 100, 1),
-                    "republican_diff": round(float(random.randint(-300, 300)) / 100, 1),
-                    "green_diff": round(float(random.randint(-100, 100)) / 100, 1),
-                    "libertarian_diff": round(float(random.randint(-100, 100)) / 100, 1),
-                    "unaffiliated_diff": round(float(random.randint(-200, 200)) / 100, 1),
-                    "other_diff": round(float(random.randint(-100, 100)) / 100, 1),
-                    "statewide_diff": round(float(random.randint(-200, 200)) / 100, 1)
-                })
-                
-                active_data.append({
-                    "county": county,
-                    "democrat_diff": random.randint(-500, 500),
-                    "republican_diff": random.randint(-500, 500),
-                    "green_diff": random.randint(-100, 100),
-                    "libertarian_diff": random.randint(-100, 100),
-                    "unaffiliated_diff": random.randint(-300, 300),
-                    "other_diff": random.randint(-100, 100)
-                })
-                
-                inactive_data.append({
-                    "county": county,
-                    "democrat_diff": random.randint(-500, 500),
-                    "republican_diff": random.randint(-500, 500),
-                    "green_diff": random.randint(-100, 100),
-                    "libertarian_diff": random.randint(-100, 100),
-                    "unaffiliated_diff": random.randint(-300, 300),
-                    "other_diff": random.randint(-100, 100)
-                })
-        
         return render_template(
             template,
-            official_data=official_data,
-            active_data=active_data,
-            inactive_data=inactive_data,
+            officialTurnoutData=official_data,
+            activeVotersData=active_data,
+            inactiveVotersData=inactive_data,
             counties=counties
         )
+        
     except Exception as e:
         import traceback
-        print(f"Error in county_dashboard: {e}")
         print(traceback.format_exc())
-        # Return a template with error information
         return render_template(
             template,
-            official_data=[],
-            active_data=[],
-            inactive_data=[],
+            officialTurnoutData=[],
+            activeVotersData=[],
+            inactiveVotersData=[],
             counties=[]
         )
 
@@ -218,6 +155,11 @@ def eligible_inactive():
     ]
     
     return render_template(template, object_list=object_list, graph_data=graph_data)
+
+@app.route("/dumbbell")
+def dumbbell_chart():
+    return render_template("dumbbell.html")
+
 
 @app.route("/eligible-active")
 def eligible_active():
