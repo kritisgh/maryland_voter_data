@@ -16,7 +16,7 @@ df['voted_2024'] = pd.to_numeric(df['voted_2024'], errors='coerce')
 df['Count']     = pd.to_numeric(df['Count'],     errors='coerce')
 
 df_gender = pd.read_csv('md_voter_file.txt/agg_MD_GenderSplit_County.csv')
-# turnout as a percentage of registered Count
+df_gender['County'] = df_gender['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
 df_gender['turnout'] = df_gender['voted_2024'] / df_gender['Count'] * 100
 
 # list of counties for dropdown
