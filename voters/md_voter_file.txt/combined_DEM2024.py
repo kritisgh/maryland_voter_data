@@ -4,53 +4,60 @@ import plotly.express as px
 # Load the data from the CSV file
 df = pd.read_csv('agg_MD.csv')
 
-# Filter the data for Female Democrats (DEM) and Male Democrats (DEM)
-female_dem_df = df[(df['Gender'] == 'Female') & (df['Party'] == 'DEM')]
-male_dem_df = df[(df['Gender'] == 'Male') & (df['Party'] == 'DEM')]
+# Filter for Democratic voters
+dem_data = df[df['Party'] == 'DEM']
+
+# Filter for Male Democratic voters
+male_dem_data = dem_data[dem_data['Gender'] == 'Male']
+
+# Filter for Female Democratic voters
+female_dem_data = dem_data[dem_data['Gender'] == 'Female']
 
 # Group the data by age bracket and sum the counts for voted_2024
-female_age_bracket_voted_2024 = female_dem_df.groupby('age_bracket')['voted_2024'].sum().reset_index()
-male_age_bracket_voted_2024 = male_dem_df.groupby('age_bracket')['voted_2024'].sum().reset_index()
+male_grouped_df = male_dem_data.groupby('age_bracket').sum().reset_index()
+female_grouped_df = female_dem_data.groupby('age_bracket').sum().reset_index()
 
-# Add a column to identify the gender
-female_age_bracket_voted_2024['Gender'] = 'Female'
-male_age_bracket_voted_2024['Gender'] = 'Male'
-
-# Combine the data for both genders
-combined_voted_2024 = pd.concat([female_age_bracket_voted_2024, male_age_bracket_voted_2024])
-
-# Calculate total counts for each age bracket across all genders and parties for comparison
-total_counts = df.groupby('age_bracket')['Count'].sum().reset_index()
+# Calculate total counts for each age bracket across all Democratic voters
+total_counts = dem_data.groupby('age_bracket')['Count'].sum().reset_index()
 total_counts.rename(columns={'Count': 'Total'}, inplace=True)
 
-# Merge total counts with the combined DEM data
-merged_data = pd.merge(combined_voted_2024, total_counts, on='age_bracket')
+# Merge total counts with the gender-specific data
+male_merged_df = pd.merge(male_grouped_df, total_counts, on='age_bracket')
+female_merged_df = pd.merge(female_grouped_df, total_counts, on='age_bracket')
 
 # Calculate the percentage of voters who voted in 2024 relative to the total for each age bracket
-merged_data['Percentage'] = (merged_data['voted_2024'] / merged_data['Total']) * 100
+male_merged_df['Percentage'] = (male_merged_df['voted_2024'] / male_merged_df['Total']) * 100
+female_merged_df['Percentage'] = (female_merged_df['voted_2024'] / female_merged_df['Total']) * 100
+
+# Combine both Male and Female data for plotting
+combined_df = pd.concat([
+    male_merged_df.assign(Gender='Male'),
+    female_merged_df.assign(Gender='Female')
+])
 
 # Create an interactive bar chart using Plotly
 fig = px.bar(
-    merged_data,
-    x='age_bracket',
+    combined_df, 
+    x='age_bracket', 
     y='Percentage',
-    color='Gender',
-    title='Female DEM Voter Turnout Significantly Higher Versus Male Among all Age Groups',
+    color='Gender',  # Differentiate by Gender
+    title='Female Democratic Voter Turnout Significantly Higher Versus Male Among all Age Groups',
     labels={'Percentage': 'Percentage of Votes', 'age_bracket': 'Age Group'},
     hover_data={
         'Percentage': ':.2f',  # Format percentage to two decimal places
-        'voted_2024': ':.0f',  # Include total votes in hover data, formatted as integer
+        'Total': ':.0f',  # Include total count in hover data, formatted as integer
+        'voted_2024': ':.0f'  # Include the count of votes in hover data
     },
-    barmode='group',  # Group bars for comparison
-    color_discrete_map={'Female': 'pink', 'Male': 'blue'}  # Custom color palette
+    color_discrete_map={'Male': 'blue', 'Female': 'pink'}  # Set custom colors
 )
 
 # Update layout for better aesthetics
 fig.update_layout(
+    barmode='group',  # Set bars to be side by side
     xaxis_title='Age Group',
     yaxis_title='Percentage of Votes',
     xaxis_tickangle=-45
 )
 
-# Display the figure
+# Show the interactive plot
 fig.show()
