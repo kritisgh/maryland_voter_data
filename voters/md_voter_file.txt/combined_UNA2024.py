@@ -4,53 +4,63 @@ import plotly.express as px
 # Load the data from the CSV file
 df = pd.read_csv('agg_MD.csv')
 
-# Filter the data for Female Unaffiliated (UNA) and Male Unaffiliated (UNA)
-female_una_df = df[(df['Gender'] == 'Female') & (df['Party'] == 'UNA')]
-male_una_df = df[(df['Gender'] == 'Male') & (df['Party'] == 'UNA')]
+# Filter for Male UNA voters who voted in 2024
+male_una_data = df[
+    (df['Gender'] == 'Male') & 
+    (df['Party'] == 'UNA') & 
+    (df['voted_2024'] > 0)
+]
 
-# Group the data by age bracket and sum the counts for voted_2024
-female_age_bracket_voted_2024 = female_una_df.groupby('age_bracket')['voted_2024'].sum().reset_index()
-male_age_bracket_voted_2024 = male_una_df.groupby('age_bracket')['voted_2024'].sum().reset_index()
+# Filter for Female UNA voters who voted in 2024
+female_una_data = df[
+    (df['Gender'] == 'Female') & 
+    (df['Party'] == 'UNA') & 
+    (df['voted_2024'] > 0)
+]
 
-# Add a column to identify the gender
-female_age_bracket_voted_2024['Gender'] = 'Female'
-male_age_bracket_voted_2024['Gender'] = 'Male'
+# Group the data by age bracket and sum the counts for Male
+male_grouped_df = male_una_data.groupby('age_bracket').sum().reset_index()
+male_total_counts = df.groupby('age_bracket')['Count'].sum().reset_index()
+male_total_counts.rename(columns={'Count': 'Total'}, inplace=True)
+male_merged_df = pd.merge(male_grouped_df, male_total_counts, on='age_bracket')
+male_merged_df['Percentage'] = (male_merged_df['Count'] / male_merged_df['Total']) * 100
 
-# Combine the data for both genders
-combined_voted_2024 = pd.concat([female_age_bracket_voted_2024, male_age_bracket_voted_2024])
+# Group the data by age bracket and sum the counts for Female
+female_grouped_df = female_una_data.groupby('age_bracket').sum().reset_index()
+female_total_counts = df.groupby('age_bracket')['Count'].sum().reset_index()
+female_total_counts.rename(columns={'Count': 'Total'}, inplace=True)
+female_merged_df = pd.merge(female_grouped_df, female_total_counts, on='age_bracket')
+female_merged_df['Percentage'] = (female_merged_df['Count'] / female_merged_df['Total']) * 100
 
-# Calculate total counts for each age bracket across all genders and parties for comparison
-total_counts = df.groupby('age_bracket')['Count'].sum().reset_index()
-total_counts.rename(columns={'Count': 'Total'}, inplace=True)
-
-# Merge total counts with the combined UNA data
-merged_data = pd.merge(combined_voted_2024, total_counts, on='age_bracket')
-
-# Calculate the percentage of voters who voted in 2024 relative to the total for each age bracket
-merged_data['Percentage'] = (merged_data['voted_2024'] / merged_data['Total']) * 100
+# Combine both Male and Female data for plotting
+combined_df = pd.concat([
+    male_merged_df.assign(Gender='Male'),
+    female_merged_df.assign(Gender='Female')
+])
 
 # Create an interactive bar chart using Plotly
 fig = px.bar(
-    merged_data,
-    x='age_bracket',
+    combined_df, 
+    x='age_bracket', 
     y='Percentage',
-    color='Gender',
-    title='Combined Female and Male UNA Voter Participation in 2024 by Age Group',
+    color='Gender',  # Differentiate by Gender
+    title='Male Unaffiliated Voter Turnout Higher than Female throughout all Age Groups',
     labels={'Percentage': 'Percentage of Votes', 'age_bracket': 'Age Group'},
     hover_data={
         'Percentage': ':.2f',  # Format percentage to two decimal places
-        'voted_2024': ':.0f',  # Include total votes in hover data, formatted as integer
+        'Total': ':.0f',  # Include total count in hover data, formatted as integer
+        'Count': ':.0f'  # Include the count of votes in hover data
     },
-    barmode='group',  # Group bars for comparison
-    color_discrete_map={'Female': 'pink', 'Male': 'blue'}  # Custom color palette
+    color_discrete_map={'Male': 'lightblue', 'Female': 'pink'}  # Set custom colors
 )
 
 # Update layout for better aesthetics
 fig.update_layout(
+    barmode='group',  # Set bars to be side by side
     xaxis_title='Age Group',
     yaxis_title='Percentage of Votes',
     xaxis_tickangle=-45
 )
 
-# Display the figure
+# Show the interactive plot
 fig.show()
