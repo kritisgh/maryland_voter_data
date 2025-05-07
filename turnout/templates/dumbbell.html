@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +5,8 @@
   <title>Dumbbell Chart — Turnout Change 2020→2024</title>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Chart.js Annotation Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
   <!-- PapaParse -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
   <style>
@@ -25,7 +26,6 @@
     const csvFile = "{{ url_for('static', filename='official_by_party_and_county_complete.csv') }}";
     let rawData, chartInstance;
 
-    // 1) load CSV
     async function loadData() {
       return new Promise(resolve => {
         Papa.parse(csvFile, {
@@ -36,7 +36,6 @@
       });
     }
 
-    // 2) pivot 2020 vs 2024 turnout for each county+party
     function prepareData(party) {
       const rows = rawData.filter(r => r.Party === party);
       const byCounty = {};
@@ -45,24 +44,39 @@
         if (!byCounty[r.County]) byCounty[r.County] = {};
         byCounty[r.County][r.Year] = pct;
       });
-      const counties = Object.keys(byCounty)
-        .filter(c => byCounty[c]['2020'] != null && byCounty[c]['2024'] != null)
-        .sort();
+
+      const increased = [], decreased = [];
+      Object.entries(byCounty).forEach(([county, years]) => {
+        if (years['2020'] != null && years['2024'] != null) {
+          const diff = years['2024'] - years['2020'];
+          if (diff >= 0) increased.push({ county, diff });
+          else decreased.push({ county, diff });
+        }
+      });
+
+      increased.sort((a, b) => b.diff - a.diff);
+      decreased.sort((a, b) => a.diff - b.diff);
+
+      const sortedIncr = increased.map(d => d.county);
+      const sortedDecr = decreased.map(d => d.county);
+      const counties = [...sortedIncr, ...sortedDecr];
+      const data2020 = counties.map(c => byCounty[c]['2020']);
+      const data2024 = counties.map(c => byCounty[c]['2024']);
+
       return {
         counties,
-        data2020: counties.map(c => byCounty[c]['2020']),
-        data2024: counties.map(c => byCounty[c]['2024'])
+        data2020,
+        data2024,
+        dividingIndex: sortedIncr.length
       };
     }
 
-    // 3) redraw chart: one grey line per county, connecting its two points
     function updateChart(party) {
-      const { counties, data2020, data2024 } = prepareData(party);
+      const { counties, data2020, data2024, dividingIndex } = prepareData(party);
 
-      // one tiny line‐dataset per county
       const lineDatasets = counties.map((county, i) => ({
-        label: '',
         type: 'line',
+        label: '',
         data: [
           { x: data2020[i], y: county },
           { x: data2024[i], y: county }
@@ -74,11 +88,11 @@
         showLine: true
       }));
 
-      // scatter for 2020 & 2024 dots
       const scatter2020 = counties.map((county, i) => ({ x: data2020[i], y: county }));
       const scatter2024 = counties.map((county, i) => ({ x: data2024[i], y: county }));
 
       chartInstance.data.labels = counties;
+
       chartInstance.data.datasets = [
         ...lineDatasets,
         {
@@ -87,7 +101,9 @@
           data: scatter2020,
           backgroundColor: 'steelblue',
           pointRadius: 6,
-          showLine: false
+          tooltip: {
+            callbacks: { label: ctx => `2020: ${ctx.raw.x.toFixed(1)}%` }
+          }
         },
         {
           label: '2024',
@@ -95,13 +111,32 @@
           data: scatter2024,
           backgroundColor: 'lightsteelblue',
           pointRadius: 6,
-          showLine: false
+          tooltip: {
+            callbacks: { label: ctx => `2024: ${ctx.raw.x.toFixed(1)}%` }
+          }
         }
       ];
+
+      chartInstance.options.plugins.annotation = {
+        annotations: {
+          dividingLine: {
+            type: 'line',
+            scaleID: 'y',
+            value: counties[dividingIndex],
+            borderColor: 'red',
+            borderWidth: 2,
+            label: {
+              enabled: true,
+              content: 'Turnout Decreased',
+              position: 'start'
+            }
+          }
+        }
+      };
+
       chartInstance.update();
     }
 
-    // 4) populate party dropdown
     function populatePartySelect(parties) {
       const sel = document.getElementById('partySelect');
       parties.forEach(p => sel.appendChild(new Option(p, p)));
@@ -109,7 +144,6 @@
       return parties[0];
     }
 
-    // 5) initialize
     async function init() {
       rawData = await loadData();
       const parties = Array.from(new Set(rawData.map(r => r.Party))).sort();
@@ -123,7 +157,7 @@
           scales: {
             x: {
               type: 'linear',
-              beginAtZero: true,
+              min: 50,
               max: 100,
               title: { display: true, text: 'Turnout %' }
             },
@@ -136,10 +170,10 @@
           plugins: {
             legend: {
               labels: {
-                // only show the scatter legends
-                filter: item => ['2020','2024'].includes(item.text)
+                filter: item => ['2020', '2024'].includes(item.text)
               }
-            }
+            },
+            annotation: {}
           }
         }
       });

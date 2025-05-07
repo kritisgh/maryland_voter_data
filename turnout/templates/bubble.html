@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Bubble Chart — Turnout Change 2020→2024</title>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- PapaParse -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    #controls { margin-bottom: 10px; }
+    canvas { max-width: 100%; height: 600px; }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <label for="partySelect">Select Party:</label>
+    <select id="partySelect"></select>
+  </div>
+  <canvas id="dumbbellChart"></canvas>
+
+  <script>
+    const csvFile = "{{ url_for('static', filename='official_by_party_and_county_complete.csv') }}";
+    let rawData, chartInstance;
+
+    // 1) load CSV via PapaParse
+    async function loadData() {
+      return new Promise(resolve => {
+        Papa.parse(csvFile, {
+          download: true,
+          header: true,
+          complete: results => resolve(results.data)
+        });
+      });
+    }
+
+    // 2) pivot 2020 vs 2024 for a given party
+    function prepareData(party) {
+      const rows = rawData.filter(r => r.Party === party);
+      const byCounty = {};
+      rows.forEach(r => {
+        const pct = parseFloat(r['Turnout Percentage']);
+        if (!byCounty[r.County]) byCounty[r.County] = {};
+        byCounty[r.County][r.Year] = pct;
+      });
+
+      return Object.entries(byCounty)
+        .filter(([_, years]) => years['2020'] != null && years['2024'] != null)
+        .map(([county, years]) => ({
+          county,
+          v2020: years['2020'],
+          v2024: years['2024']
+        }));
+    }
+
+    // 3) draw/update bubble chart
+    function updateChart(party) {
+      const arr = prepareData(party);
+      // store county names for tooltip
+      chartInstance.counties = arr.map(d => d.county);
+
+      // x=2020, y=2024, r=|Δ|×5
+      const bubbleData = arr.map(d => {
+        const diff = d.v2024 - d.v2020;
+        return {
+          x: d.v2020,
+          y: d.v2024,
+          r: Math.abs(diff) * 5
+        };
+      });
+
+      chartInstance.data.datasets = [{
+        label: 'Turnout Δ size',
+        data: bubbleData,
+        backgroundColor: 'steelblue'
+      }];
+
+      // adjust axes to data range ±2
+      const allX = arr.map(d => d.v2020), allY = arr.map(d => d.v2024);
+      chartInstance.options.scales.x.min = Math.min(...allX) - 2;
+      chartInstance.options.scales.x.max = Math.max(...allX) + 2;
+      chartInstance.options.scales.y.min = Math.min(...allY) - 2;
+      chartInstance.options.scales.y.max = Math.max(...allY) + 2;
+
+      chartInstance.update();
+    }
+
+    // 4) populate party dropdown
+    function populatePartySelect(parties) {
+      const sel = document.getElementById('partySelect');
+      parties.forEach(p => sel.appendChild(new Option(p, p)));
+      sel.addEventListener('change', () => updateChart(sel.value));
+      return parties[0];
+    }
+
+    // 5) initialize
+    async function init() {
+      rawData = await loadData();
+      const parties = Array.from(new Set(rawData.map(r => r.Party))).sort();
+      const defaultParty = populatePartySelect(parties);
+
+      const ctx = document.getElementById('dumbbellChart').getContext('2d');
+      chartInstance = new Chart(ctx, {
+        type: 'bubble',
+        data: { datasets: [] },
+        options: {
+          scales: {
+            x: {
+              title: { display: true, text: '2020 Turnout %' },
+            },
+            y: {
+              title: { display: true, text: '2024 Turnout %' },
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: context => {
+                  const county = chartInstance.counties[context.dataIndex];
+                  const x = context.raw.x.toFixed(1);
+                  const y = context.raw.y.toFixed(1);
+                  const delta = (context.raw.y - context.raw.x).toFixed(1);
+                  return `${county}: 2020=${x}%, 2024=${y}% (Δ${delta}%)`;
+                }
+              }
+            },
+            legend: { display: false }
+          }
+        }
+      });
+
+      updateChart(defaultParty);
+    }
+
+    init();
+  </script>
+</body>
+</html>

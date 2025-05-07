@@ -160,6 +160,10 @@ def eligible_inactive():
 def dumbbell_chart():
     return render_template("dumbbell.html")
 
+@app.route("/bubble")
+def bubble_chart():
+    return render_template("bubble.html")
+
 
 @app.route("/eligible-active")
 def eligible_active():
