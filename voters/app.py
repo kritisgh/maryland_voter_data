@@ -286,7 +286,7 @@ def plot_gender():
         'ALL': 'Statewide Female Voter Turnout is Higher than Male Turnout in 2024',
         'DEM': 'Female Democratic Voter Turnout is Significantly Higher Compared to Male Turnout Among all Age Groups in 2024',
         'REP': 'Male Republican Voter Turnout is Higher than Female Turnout in Majority of Age Groups in 2024',
-        'UNA': 'Unaffiliated '
+        'UNA': 'Young Male Unaffiliated Voter Turnout Lower than Young Female Turnout'
     }
 
     # 2) Build the bar chart (we’ll override the title just below)
