@@ -28,6 +28,12 @@
             --cns-maroon: #990000;
             --cns-black: #0a0a0a;
             --cns-gray: #666666;
+
+            --alliance-strong-dem: #0571b0;
+            --alliance-moderate-dem: #6baed6;
+            --alliance-competitive: #f7f7f7;
+            --alliance-moderate-rep: #ef8a62;
+            --alliance-strong-rep: #ca0020;
         }
 
         body {
@@ -414,6 +420,26 @@
             color: var(--cns-black);
             margin-top: 0;
         }
+
+        .county-header.Strongly-Democratic {
+            background-color: var(--alliance-strong-dem);
+        }
+
+        .county-header.Moderately-Democratic {
+            background-color: var(--alliance-moderate-dem);
+        }
+
+        .county-header.Competitive {
+            background-color: var(--cns-gray);
+        }
+
+        .county-header.Moderately-Republican {
+            background-color: var(--alliance-moderate-rep);
+        }
+
+        .county-header.Strongly-Republican {
+            background-color: var(--alliance-strong-rep);
+        }
     </style>
     <title>Maryland Voter Turnout Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -428,8 +454,7 @@
 <body>
     <!-- Flask data container -->
     <div id="flask-data" data-counties='{{ counties | tojson | safe }}'
-        data-official='{{ officialTurnoutData | tojson | safe }}' 
-        data-active='{{ activeVotersData | tojson | safe }}'
+        data-official='{{ officialTurnoutData | tojson | safe }}' data-active='{{ activeVotersData | tojson | safe }}'
         data-inactive='{{ inactiveVotersData | tojson | safe }}'>
     </div>
     <div class="dashboard-container">
@@ -442,7 +467,7 @@
             <div class="overview-content">
                 <div class="overview-text">
                     <p>This dashboard tracks the changes in Maryland's voter turnout between the 2020 and 2024
-                        presidential elections. In 2020, Maryland saw 75% of registered voters participate in the
+                        presidential elections. In 2020, Maryland saw 72% of registered voters participate in the
                         general election, with county-level turnout ranging from 61% to 81%. The 2024 election shows
                         some shifts in voter participation across party lines and counties.</p>
 
@@ -464,14 +489,13 @@
                         style="background-color: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 20px;">
                         <div
                             style="font-size: 4em; font-weight: 600; color: #333; margin: 0; line-height: 1; font-family: 'Poppins', sans-serif;">
-                            75.01%</div>
+                            72.44%</div>
                         <div
                             style="text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin: 5px 0 15px 0; color: #666; font-size: 0.9em;">
-                            VOTER TURNOUT</div>
+                            VOTER TURNOUT (2024)</div>
 
-                        <p style="color: #666; font-size: 0.95em; margin-bottom: 20px;">Turnout is the total number of
-                            people who cast a ballot, as reported to each state's leading election authority, divided by
-                            the eligible voting population.</p>
+                        <p style="color: #666; font-size: 0.95em; margin-bottom: 20px;">The statewide voter turnout is
+                            calculated by the Maryland State Board of Elections (SBE).</p>
 
                         <div style="margin-top: 15px;">
                             <p style="font-size: 0.9em; color: #666; margin-bottom: 5px; letter-spacing: 0.5px;">
@@ -501,6 +525,7 @@
             <h3>How did your county perform?</h3>
             <p>Select your county below to see detailed turnout data and compare with other Maryland counties.</p>
         </div>
+        <br>
         <div class="controls-container">
             <div class="county-controls">
                 <div class="filter-group">
@@ -528,6 +553,22 @@
 
         <div id="single-county-view" style="display: none;">
             <h2 id="county-name-header" class="county-header">Select a county to view data</h2>
+            <div class="data-card" id="political-context-box"
+                style="margin-bottom: 20px; background-color: #f8f9fa; border-left: 5px solid #1979b9;">
+                <h3 style="margin-top: 0; color: #1979b9;">County Political Context</h3>
+                <p>
+                    <strong>Party Alliance:</strong> <span id="party-alliance-context">-</span>
+                </p>
+                <p>
+                    <strong>2024 Presidential Election Results:</strong>
+                    <span id="dem-percentage">-</span>% Democrat (Harris) vs
+                    <span id="rep-percentage">-</span>% Republican (Trump)
+                </p>
+                <p>
+                    <strong>Party Difference:</strong> <span id="party-difference">-</span>%
+                    (<span id="winning-party">-</span>)
+                </p>
+            </div>
 
             <div class="tabs">
                 <div class="tab active" data-tab="official-turnout">Official Turnout</div>
@@ -928,12 +969,12 @@
                     const officialStr = flaskDataElement.getAttribute('data-official');
                     const activeStr = flaskDataElement.getAttribute('data-active');
                     const inactiveStr = flaskDataElement.getAttribute('data-inactive');
-                    
+
                     if (countiesStr) counties = JSON.parse(countiesStr);
                     if (officialStr) officialTurnoutData = JSON.parse(officialStr);
                     if (activeStr) activeVotersData = JSON.parse(activeStr);
                     if (inactiveStr) inactiveVotersData = JSON.parse(inactiveStr);
-                    
+
                     console.log("Data loaded successfully. Counties:", counties.length);
                 } catch (e) {
                     console.error("Error loading data:", e);
@@ -950,21 +991,21 @@
                 defaultOption.value = "";
                 defaultOption.textContent = "Select County";
                 primarySelect.appendChild(defaultOption);
-                
+
                 // Add all counties
                 counties.forEach(county => {
                     const option = document.createElement('option');
                     option.value = county;
                     option.textContent = county;
-                    
+
                     // Set Allegany as the default selected county if it exists
                     if (county === "Allegany") {
                         option.selected = true;
                     }
-                    
+
                     primarySelect.appendChild(option);
                 });
-                
+
                 // Trigger the change event to load Allegany data on page load
                 const changeEvent = new Event('change');
                 primarySelect.dispatchEvent(changeEvent);
@@ -976,7 +1017,7 @@
                 defaultOption.value = "";
                 defaultOption.textContent = "Select County";
                 comparisonSelect.appendChild(defaultOption);
-                
+
                 // Add all counties
                 counties.forEach(county => {
                     const option = document.createElement('option');
@@ -985,10 +1026,6 @@
                     comparisonSelect.appendChild(option);
                 });
             }
-
-            // Debug: Log the dropdown contents
-            console.log("Primary dropdown options count:", primarySelect ? primarySelect.options.length : 0);
-            console.log("Comparison dropdown options count:", comparisonSelect ? comparisonSelect.options.length : 0);
 
             // Helper function to format numbers
             window.formatNumber = function (num) {
@@ -1120,25 +1157,25 @@
                 // Update the turnout percentage in the statewide overview to correctly show 75.01%
                 const statewideTurnoutDisplay = document.querySelector('.stat-card-lg div:first-child');
                 if (statewideTurnoutDisplay) {
-                    statewideTurnoutDisplay.textContent = '75.01%';
+                    statewideTurnoutDisplay.textContent = '72.44%';
                 }
 
                 // Fix the nationwide average percentage marker
                 const nationwideAvgMarker = document.querySelector('.stat-card-lg div div:first-child');
                 if (nationwideAvgMarker) {
-                    nationwideAvgMarker.textContent = '65.03%';
+                    nationwideAvgMarker.textContent = '63.7%';
                 }
 
                 // Update the position of the nationwide average marker
                 const nationwideMarkerPosition = document.querySelector('.stat-card-lg div div[style*="position: absolute; height: 100%; width: 2px;"]');
                 if (nationwideMarkerPosition) {
-                    nationwideMarkerPosition.style.left = '65.03%%';
+                    nationwideMarkerPosition.style.left = '63.7%';
                 }
 
                 // Update text for the nationwide average position
                 const nationwideTextPosition = document.querySelector('.stat-card-lg div div[style*="position: absolute; top: -20px;"]');
                 if (nationwideTextPosition) {
-                    nationwideTextPosition.style.left = '65.03%%';
+                    nationwideTextPosition.style.left = '63.7%';
                 }
             }
 
@@ -1566,6 +1603,25 @@
                 const officialData = officialTurnoutData.find(item => item.county === county) || {};
                 const activeData = activeVotersData.find(item => item.county === county) || {};
                 const inactiveData = inactiveVotersData.find(item => item.county === county) || {};
+                const partyAlliance = officialData.party_alliance || "Unknown";
+
+                const headerElement = document.getElementById('county-name-header');
+                headerElement.textContent = county + " County - " + partyAlliance;
+
+                // Remove any existing alliance classes
+                headerElement.classList.remove(
+                    'Strongly-Democratic',
+                    'Moderately-Democratic',
+                    'Competitive',
+                    'Moderately-Republican',
+                    'Strongly-Republican'
+                );
+
+                // Add a class based on the alliance
+                if (partyAlliance !== "Unknown") {
+                    const allianceClass = partyAlliance.replace(/\s+/g, '-');
+                    headerElement.classList.add(allianceClass);
+                }
 
                 // Update official turnout tab elements
                 updateTableCell('official-democrat', officialData.democrat_diff);
@@ -1624,6 +1680,33 @@
                     }
                 }
 
+                const politicsBox = document.getElementById('political-context-box');
+                if (politicsBox) {
+                    document.getElementById('party-alliance-context').textContent = partyAlliance;
+                    document.getElementById('dem-percentage').textContent = officialData.democrat ? officialData.democrat.toFixed(1) : "-";
+                    document.getElementById('rep-percentage').textContent = officialData.republican ? officialData.republican.toFixed(1) : "-";
+
+                    const partyDiff = officialData.republican_democrat_diff;
+                    const diffElement = document.getElementById('party-difference');
+                    const winningParty = document.getElementById('winning-party');
+
+                    if (diffElement && partyDiff !== undefined) {
+                        const absDiff = Math.abs(partyDiff).toFixed(1);
+                        diffElement.textContent = absDiff;
+
+                        if (partyDiff > 0) {
+                            winningParty.textContent = "Republican advantage";
+                            winningParty.style.color = "var(--cns-red)";
+                        } else if (partyDiff < 0) {
+                            winningParty.textContent = "Democratic advantage";
+                            winningParty.style.color = "var(--cns-blue)";
+                        } else {
+                            winningParty.textContent = "Even";
+                            winningParty.style.color = "var(--cns-gray)";
+                        }
+                    }
+                }
+
                 // Update active voters tab elements
                 updateTableCell('active-democrat', activeData.democrat_diff);
                 updateTableCell('active-republican', activeData.republican_diff);
@@ -1679,6 +1762,27 @@
                         }
                     }
                 };
+                // Get party alliances for both counties
+                const county1Alliance = county1OfficialData.party_alliance || "Unknown";
+                const county2Alliance = county2OfficialData.party_alliance || "Unknown";
+
+                // Update county headers with party alliance
+                const county1Header = document.getElementById('county1-name');
+                const county2Header = document.getElementById('county2-name');
+
+                // Update county 1 header
+                county1Header.textContent = `${county1} County (${county1Alliance})`;
+                county1Header.classList.remove('Strongly-Democratic', 'Moderately-Democratic', 'Competitive', 'Moderately-Republican', 'Strongly-Republican');
+                if (county1Alliance !== "Unknown") {
+                    county1Header.classList.add(county1Alliance.replace(/\s+/g, '-'));
+                }
+
+                // Update county 2 header
+                county2Header.textContent = `${county2} County (${county2Alliance})`;
+                county2Header.classList.remove('Strongly-Democratic', 'Moderately-Democratic', 'Competitive', 'Moderately-Republican', 'Strongly-Republican');
+                if (county2Alliance !== "Unknown") {
+                    county2Header.classList.add(county2Alliance.replace(/\s+/g, '-'));
+                }
 
                 // Update county 1 data cells
                 updateComparisonCell('county1-official-democrat', county1OfficialData.democrat_diff);
@@ -1796,23 +1900,23 @@
 
             // Fix the turnout statistic display in the statewide overview section
             const fixTurnoutDisplay = function () {
-                // Update the main turnout percentage to show 75.01%
+                // Update the main turnout percentage to show 72.44%
                 const turnoutValue = document.querySelector('.stat-card-lg div:first-child');
                 if (turnoutValue) {
-                    turnoutValue.textContent = '75.01%';
+                    turnoutValue.textContent = '72.44%';
                 }
 
-                // Update the nationwide average position (the red line) to 75.01%
+                // Update the nationwide average position (the red line) to 72.44%
                 const nationalAvgLine = document.querySelector('.stat-card-lg div div[style*="position: absolute; height: 100%; width: 2px;"]');
                 if (nationalAvgLine) {
-                    nationalAvgLine.style.left = '65.03%';
+                    nationalAvgLine.style.left = '63.7%';
                 }
 
                 // Update the percentage text above the line
                 const nationalAvgText = document.querySelector('.stat-card-lg div div[style*="position: absolute; top: -20px;"]');
                 if (nationalAvgText) {
-                    nationalAvgText.textContent = '65.03%';
-                    nationalAvgText.style.left = '65.03%';
+                    nationalAvgText.textContent = '63.7%';
+                    nationalAvgText.style.left = '63.7%';
                 }
             };
 
@@ -1831,85 +1935,44 @@
                 }
             };
 
+            fillNumbersIntoTable(officialTurnoutData);
+
             // Initialize DataTables
-            $(document).ready(function () {
-                try {
-                    $('#official-turnout-table').DataTable({
-                        paging: false,
-                        searching: false,
-                        info: false
-                    });
-
-                    $('#active-voters-table').DataTable({
-                        paging: false,
-                        searching: false,
-                        info: false
-                    });
-
-                    $('#inactive-voters-table').DataTable({
-                        paging: false,
-                        searching: false,
-                        info: false
-                    });
-
-                    // Fix the turnout percentage display
-                    fixTurnoutDisplay();
-
-                    // Initialize with Allegany county selected
-                    initializeWithAllegany();
-
-                } catch (e) {
-                    console.error("Error initializing DataTables:", e);
-                }
-            });
-
-            console.log("Dashboard initialization complete");
-
-            document.addEventListener("DOMContentLoaded", function () {
-                // Wait a moment to ensure the main script has initialized
-                setTimeout(function () {
-                    console.log("Running fix script");
-
-                    // 1. Fix the nationwide average scale (31%-62% to 0%-100%)
-                    const percentageRangeDisplay = document.querySelector('.stat-card-lg div[style*="display: flex; justify-content: space-between;"]');
-                    if (percentageRangeDisplay) {
-                        const spans = percentageRangeDisplay.querySelectorAll('span');
-                        if (spans.length >= 2) {
-                            spans[0].textContent = '0%';
-                            spans[1].textContent = '100%';
+            const table = $('#official-turnout-table').DataTable({
+                paging: false,
+                searching: false,
+                info: false,
+                order: [[1, 'asc']],
+                columnDefs: [
+                    {
+                        targets: 1,
+                        render: function (data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                let cleaned = data.replace('%', '').replace('+', '').trim();
+                                return parseFloat(cleaned) || 0;
+                            }
+                            return data;
                         }
                     }
-
-                    // Fix the position and text of the percentage marker
-                    const nationwideAvgMarker = document.querySelector('.stat-card-lg div div[style*="position: absolute; top: -20px;"]');
-                    if (nationwideAvgMarker) {
-                        nationwideAvgMarker.textContent = '75.01%';
-                        nationwideAvgMarker.style.left = '75.01%';
-                    }
-
-                    // Update the red line position
-                    const nationalAvgLine = document.querySelector('.stat-card-lg div div[style*="position: absolute; height: 100%; width: 2px;"]');
-                    if (nationalAvgLine) {
-                        nationalAvgLine.style.left = '75.01%';
-                    }
-
-                    // 2. Fix county selection issue by manually selecting Allegany
-                    const primarySelect = document.getElementById('primary-county-select');
-                    if (primarySelect) {
-                        // Force select Allegany if it exists
-                        const alleganyOption = Array.from(primarySelect.options).find(option => option.value === "Allegany");
-                        if (alleganyOption) {
-                            alleganyOption.selected = true;
-                            // Trigger change event to load the county data
-                            const event = new Event('change');
-                            primarySelect.dispatchEvent(event);
-                            console.log("Allegany selected and event triggered");
-                        } else {
-                            console.log("Allegany option not found");
-                        }
-                    }
-                }, 500); // Wait half a second for everything to initialize
+                ]
             });
+            fixTurnoutDisplay();
+            initializeWithAllegany();
+
+            function fillNumbersIntoTable(officialTurnoutData) {
+                document.getElementById('official-democrat').innerText = formatChange(officialTurnoutData['Democrat']);
+                document.getElementById('official-republican').innerText = formatChange(officialTurnoutData['Republican']);
+                document.getElementById('official-green').innerText = formatChange(officialTurnoutData['Green']);
+                document.getElementById('official-libertarian').innerText = formatChange(officialTurnoutData['Libertarian']);
+                document.getElementById('official-unaffiliated').innerText = formatChange(officialTurnoutData['Unaffiliated']);
+                document.getElementById('official-other').innerText = formatChange(officialTurnoutData['Other']);
+                document.getElementById('official-statewide').innerText = formatChange(officialTurnoutData['Statewide']);
+            }
+
+            function formatChange(value) {
+                if (typeof value !== 'number') return '-';
+                return (value > 0 ? '+' : '') + value.toFixed(1) + '%';
+            }
         });
     </script>
 </body>

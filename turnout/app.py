@@ -23,6 +23,25 @@ class CountyTurnout(Model):
         database = db
         primary_key = False
 
+class CountyPartyAlliance(Model):
+    county = CharField(column_name='jurisdiction')
+    harris = IntegerField(null=True)  # Democrat votes
+    trump = IntegerField(null=True)   # Republican votes
+    oliver = IntegerField(null=True)
+    stein = IntegerField(null=True)
+    kennedy = IntegerField(null=True)
+    others = IntegerField(null=True)
+    total = IntegerField(null=True)
+    republican = FloatField(null=True)  # Republican percentage
+    democrat = FloatField(null=True)    # Democrat percentage
+    republican_democrat_diff = FloatField(null=True)
+    party_alliance = CharField(column_name='party_alliance')
+    
+    class Meta:
+        table_name = "county_party"
+        database = db
+        primary_key = False
+
 class EligibleInactiveDifferences(Model):
     county = CharField(column_name='county')
     democrat_diff = DoubleField(column_name='democrat_diff')
@@ -65,6 +84,19 @@ def county_dashboard():
         official_query = CountyTurnout.select()
         active_query = EligibleActiveDifferences.select()
         inactive_query = EligibleInactiveDifferences.select()
+        party_query = CountyPartyAlliance.select()
+
+        party_alliances = {row.county: row.party_alliance for row in party_query}
+
+        election_data = {} 
+
+        election_results = {}
+        for row in party_query:
+            election_results[row.county] = {
+                "democrat": float(row.democrat),
+                "republican": float(row.republican),
+                "republican_democrat_diff": float(row.republican_democrat_diff)
+            }
         
         official_data = [
             {
@@ -75,11 +107,15 @@ def county_dashboard():
                 "libertarian_diff": row.libertarian_diff,
                 "unaffiliated_diff": row.unaffiliated_diff,
                 "other_diff": row.other_diff,
-                "statewide_diff": row.statewide_diff
+                "statewide_diff": row.statewide_diff,
+                "party_alliance": party_alliances.get(row.county, "Unknown"),
+                "democrat": election_results.get(row.county, {}).get("democrat"),
+                "republican": election_results.get(row.county, {}).get("republican"),
+                "republican_democrat_diff": election_results.get(row.county, {}).get("republican_democrat_diff")
             }
             for row in official_query
         ]
-        
+                
         active_data = [
             {
                 "county": row.county,
@@ -88,11 +124,12 @@ def county_dashboard():
                 "green_diff": row.green_diff,
                 "libertarian_diff": row.libertarian_diff,
                 "unaffiliated_diff": row.unaffiliated_diff,
-                "other_diff": row.other_diff
+                "other_diff": row.other_diff,
+                "party_alliance": party_alliances.get(row.county, "Unknown")  # Add party alliance
             }
             for row in active_query
         ]
-        
+                
         inactive_data = [
             {
                 "county": row.county,
@@ -101,7 +138,8 @@ def county_dashboard():
                 "green_diff": row.green_diff if hasattr(row, 'green_diff') else 0,
                 "libertarian_diff": row.libertarian_diff,
                 "unaffiliated_diff": row.unaffiliated_diff,
-                "other_diff": row.other_diff
+                "other_diff": row.other_diff,
+                "party_alliance": party_alliances.get(row.county, "Unknown")  # Add party alliance
             }
             for row in inactive_query
         ]
