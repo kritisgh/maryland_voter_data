@@ -475,23 +475,23 @@
 
                         <div style="margin-top: 15px;">
                             <p style="font-size: 0.9em; color: #666; margin-bottom: 5px; letter-spacing: 0.5px;">
-                                NATIONWIDE AVERAGE</p>
+                                NATIONWIDE TURNOUT</p>
                             <div
                                 style="position: relative; height: 8px; background-color: #e0e0e0; border-radius: 4px; margin: 10px 0;">
                                 <div
-                                    style="position: absolute; top: -10px; left: 47.54%; transform: translateX(-50%); font-size: 0.9em; font-weight: 600; color: #333;">
-                                    47.54%</div>
+                                    style="position: absolute; top: -20px; left: 65.3%; transform: translateX(-50%); font-size: 0.9em; font-weight: 600; color: #333;">
+                                    65.3%</div>
                                 <div
-                                    style="position: absolute; height: 100%; width: 2px; background-color: var(--cns-red); left: 47.54%; top: 0;">
+                                    style="position: absolute; height: 100%; width: 2px; background-color: var(--cns-red); left: 65.3%; top: 0;">
                                 </div>
                             </div>
                             <div
                                 style="display: flex; justify-content: space-between; font-size: 0.8em; color: #888; margin-top: 5px;">
-                                <span>31%</span>
-                                <span>62%</span>
+                                <span>0%</span>
+                                <span>100%</span>
                             </div>
-                            <p style="margin-top: 15px; color: var(--cns-red); font-size: 0.9em; font-weight: 500;">MD
-                                is scoring worse than nationwide average</p>
+                            <p style="margin-top: 15px; color: var(--cns-green); font-size: 0.9em; font-weight: 500;">MD
+                                is scoring better than nationwide average</p>
                         </div>
                     </div>
                 </div>
@@ -1126,19 +1126,19 @@
                 // Fix the nationwide average percentage marker
                 const nationwideAvgMarker = document.querySelector('.stat-card-lg div div:first-child');
                 if (nationwideAvgMarker) {
-                    nationwideAvgMarker.textContent = '75.01%';
+                    nationwideAvgMarker.textContent = '65.03%';
                 }
 
                 // Update the position of the nationwide average marker
                 const nationwideMarkerPosition = document.querySelector('.stat-card-lg div div[style*="position: absolute; height: 100%; width: 2px;"]');
                 if (nationwideMarkerPosition) {
-                    nationwideMarkerPosition.style.left = '75.01%';
+                    nationwideMarkerPosition.style.left = '65.03%%';
                 }
 
                 // Update text for the nationwide average position
-                const nationwideTextPosition = document.querySelector('.stat-card-lg div div[style*="position: absolute; top: -10px;"]');
+                const nationwideTextPosition = document.querySelector('.stat-card-lg div div[style*="position: absolute; top: -20px;"]');
                 if (nationwideTextPosition) {
-                    nationwideTextPosition.style.left = '75.01%';
+                    nationwideTextPosition.style.left = '65.03%%';
                 }
             }
 
@@ -1764,7 +1764,6 @@
                 if (selectedCounty) {
                     document.getElementById('single-county-view').style.display = 'block';
                     document.getElementById('comparison-view').style.display = 'none';
-                    document.getElementById('statewide-overview').style.display = 'none';
                     updateSingleCountyView(selectedCounty);
                 } else {
                     // Return to statewide overview if no county is selected
@@ -1806,14 +1805,14 @@
                 // Update the nationwide average position (the red line) to 75.01%
                 const nationalAvgLine = document.querySelector('.stat-card-lg div div[style*="position: absolute; height: 100%; width: 2px;"]');
                 if (nationalAvgLine) {
-                    nationalAvgLine.style.left = '75.01%';
+                    nationalAvgLine.style.left = '65.03%';
                 }
 
                 // Update the percentage text above the line
-                const nationalAvgText = document.querySelector('.stat-card-lg div div[style*="position: absolute; top: -10px;"]');
+                const nationalAvgText = document.querySelector('.stat-card-lg div div[style*="position: absolute; top: -20px;"]');
                 if (nationalAvgText) {
-                    nationalAvgText.textContent = '75.01%';
-                    nationalAvgText.style.left = '75.01%';
+                    nationalAvgText.textContent = '65.03%';
+                    nationalAvgText.style.left = '65.03%';
                 }
             };
 
@@ -1882,7 +1881,7 @@
                     }
 
                     // Fix the position and text of the percentage marker
-                    const nationwideAvgMarker = document.querySelector('.stat-card-lg div div[style*="position: absolute; top: -10px;"]');
+                    const nationwideAvgMarker = document.querySelector('.stat-card-lg div div[style*="position: absolute; top: -20px;"]');
                     if (nationwideAvgMarker) {
                         nationwideAvgMarker.textContent = '75.01%';
                         nationwideAvgMarker.style.left = '75.01%';
