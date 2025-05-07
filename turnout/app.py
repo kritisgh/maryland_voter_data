@@ -73,11 +73,6 @@ class EligibleActiveDifferences(Model):
 
 @app.route("/")
 def index():
-    template = 'index.html'
-    return render_template(template)
-
-@app.route("/county")
-def county_dashboard():
     template = 'county.html'
     
     try: 
