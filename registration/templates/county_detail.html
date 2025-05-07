@@ -9,16 +9,17 @@
     <link rel="stylesheet" href="//cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css"/>
 </head>
 <body>
-    <h1>Voter Registration for {{ county.title() }}</h1>
-
-    <label for="county-select">Select County:</label>
-    <select id="county-select">
-        <option value="">-- Select County --</option>
-        <option value="/">Statewide</option>
-        {% for c in counties %}
-            <option value="/county/{{ c.county }}">{{ c.county }}</option>
-        {% endfor %}
-    </select>
+    <h1 class="header">{{ county.lower().replace("'", "’").title().replace("’S", "’s") }} Voter Registration</h1>
+    <div class="county-select">
+        <label for="county-select">Select County:</label>
+        <select id="county-select">
+            <option value="">-- Select County --</option>
+            <option value="/">Statewide</option>
+            {% for c in counties %}
+                <option value="/county/{{ c.county }}">{{ c.county.lower().replace("'", "’").title().replace("’S", "’s") }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
     <script>
     document.getElementById("county-select").addEventListener("change", function () {
@@ -39,20 +40,59 @@
     <p><em>No visualization available for this county.</em></p>
     {% endif %}
 
-    {% if year_summary %}
+    {% if year_summary and year_2020 %}
     <p>
-        In 2024, {{ county.title() }} reported {{ "{:,}".format(year_summary.dem) }} registered Democrats,
-        {{ "{:,}".format(year_summary.rep) }} Republicans, {{ "{:,}".format(year_summary.unaf) }} unaffiliated voters,
-        and {{ "{:,}".format(year_summary.other) }} affiliated with other parties. These registration totals provide a snapshot
-        of the county’s political makeup for that year. Voter registration figures are updated throughout the year as residents
-        move, register for the first time, or change their party affiliation. This data is compiled and reported monthly by
-        the Maryland State Board of Elections.
+        Overall, voter registration in {{ county.lower().replace("'", "’").title().replace("’S", "’s") }}
+        <strong>{% if county_change > 0 %}increased by {{ county_change }}%{% elif county_change < 0 %}decreased by {{ county_change | abs }}%{% else %}remained the same{% endif %} </strong>
+        between 2020 and 2024. 
+        Statewide, registration {% if state_change > 0 %}increased by {{ state_change }}%{% elif state_change < 0 %}decreased by {{ state_change | abs }}%{% else %}remained the same{% endif %}.
     </p>
+    <p>
+        Compared to 2020, that's a 
+        <strong>{% if change.dem > 0 %}{{ change.dem }}% increase{% elif change.dem < 0 %}{{ change.dem | abs }}% decrease{% else %}no change{% endif %}</strong> in Democrats, 
+        <strong>{% if change.rep > 0 %}{{ change.rep }}% increase{% elif change.rep < 0 %}{{ change.rep | abs }}% decrease{% else %}no change{% endif %}</strong> in Republicans, 
+        <strong>{% if change.unaf > 0 %}{{ change.unaf }}% increase{% elif change.unaf < 0 %}{{ change.unaf | abs }}% decrease{% else %}no change{% endif %}</strong> in unaffiliated voters, 
+        and <strong>{% if change.other > 0 %}{{ change.other }}% increase{% elif change.other < 0 %}{{ change.other | abs }}% decrease{% else %}no change{% endif %}</strong> in other parties.
+    </p>
+    <p>
+        In 2024, {{ county.lower().replace("'", "’").title().replace("’S", "’s") }} reported {{ "{:,}".format(year_summary.dem) }} registered Democrats,
+        {{ "{:,}".format(year_summary.rep) }} Republicans, {{ "{:,}".format(year_summary.unaf) }} unaffiliated voters,
+        and {{ "{:,}".format(year_summary.other) }} affiliated with other parties.
+    </p>
+    <p>
+        Back in 2020, the numbers were {{ "{:,}".format(year_2020.dem) }} Democrats, {{ "{:,}".format(year_2020.rep) }} Republicans,
+        {{ "{:,}".format(year_2020.unaf) }} unaffiliated, and {{ "{:,}".format(year_2020.other) }} others. 
+        Comparing these figures shows how voter affiliations have changed over time.
+    </p>
+    <p>
+        These registration totals provide a snapshot of the county’s political makeup for each year. Voter registration figures are 
+        updated throughout the year as residents move, register for the first time, or change their party affiliation. This data is 
+        compiled by the Maryland State Board of Elections.
+    </p>
+    {% elif year_summary %}
+    <p><em>Data for 2024 is available, but not for 2020.</em></p>
     {% else %}
-    <p><em>No data available for {{ latest_year }}.</em></p>
+    <p><em>No data available for 2024.</em></p>
     {% endif %}
 
     <h2>All Records</h2>
+    <div style="display: inline-block;">
+        <label for="year-filter">Filter by Year:</label>
+        <select id="year-filter">
+            <option value="">All</option>
+            {% for y in records|map(attribute='year')|unique|sort(reverse=true) %}
+                <option value="{{ y }}">{{ y }}</option>
+            {% endfor %}
+        </select>
+    
+        <label for="month-filter" style="margin-left: 1em;">Filter by Month:</label>
+        <select id="month-filter">
+            <option value="">All</option>
+            {% for m in records|map(attribute='month')|unique|sort %}
+                <option value="{{ m }}">{{ m }}</option>
+            {% endfor %}
+        </select>
+    </div>
     <table id="registration-table">
         <thead>
             <tr>
@@ -89,11 +129,10 @@
             pageLength: 10,
             scrollY: 400,
             order: [[0, 'desc']],
+            searching: false, // removes global search box
             language: {
-                search: "Search:",
                 lengthMenu: "Show _MENU_ entries"
-            }
-        });
+            }});
     </script>
 </body>
 </html>
