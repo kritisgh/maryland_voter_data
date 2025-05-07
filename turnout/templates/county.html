@@ -427,11 +427,11 @@
 
 <body>
     <!-- Flask data container -->
-    <div id="flask-data" data-counties='{{ counties| tojson | safe }} }}'
-        data-official='{{ official_data| tojson | safe }} }}' data-active='{{ active_data| tojson | safe }} }}'
-        data-inactive='{{ inactive_data| tojson | safe }} }}'>
+    <div id="flask-data" data-counties='{{ counties | tojson | safe }}'
+        data-official='{{ officialTurnoutData | tojson | safe }}' 
+        data-active='{{ activeVotersData | tojson | safe }}'
+        data-inactive='{{ inactiveVotersData | tojson | safe }}'>
     </div>
-
     <div class="dashboard-container">
         <h1>Maryland Voter Turnout Dashboard</h1>
 
@@ -928,12 +928,12 @@
                     const officialStr = flaskDataElement.getAttribute('data-official');
                     const activeStr = flaskDataElement.getAttribute('data-active');
                     const inactiveStr = flaskDataElement.getAttribute('data-inactive');
-
+                    
                     if (countiesStr) counties = JSON.parse(countiesStr);
                     if (officialStr) officialTurnoutData = JSON.parse(officialStr);
                     if (activeStr) activeVotersData = JSON.parse(activeStr);
                     if (inactiveStr) inactiveVotersData = JSON.parse(inactiveStr);
-
+                    
                     console.log("Data loaded successfully. Counties:", counties.length);
                 } catch (e) {
                     console.error("Error loading data:", e);
@@ -945,24 +945,39 @@
             const comparisonSelect = document.getElementById('comparison-county-select');
 
             if (primarySelect && counties.length) {
-                primarySelect.innerHTML = '<option value="">Select County</option>';
+                // Add default option first
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.textContent = "Select County";
+                primarySelect.appendChild(defaultOption);
+                
+                // Add all counties
                 counties.forEach(county => {
-                    // Set Allegany as the default selected county
-                    const selected = county === "Allegany" ? 'selected' : '';
                     const option = document.createElement('option');
                     option.value = county;
                     option.textContent = county;
-                    if (selected) option.selected = true;
+                    
+                    // Set Allegany as the default selected county if it exists
+                    if (county === "Allegany") {
+                        option.selected = true;
+                    }
+                    
                     primarySelect.appendChild(option);
                 });
-
+                
                 // Trigger the change event to load Allegany data on page load
                 const changeEvent = new Event('change');
                 primarySelect.dispatchEvent(changeEvent);
             }
 
             if (comparisonSelect && counties.length) {
-                comparisonSelect.innerHTML = '<option value="">Select County</option>';
+                // Add default option first
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.textContent = "Select County";
+                comparisonSelect.appendChild(defaultOption);
+                
+                // Add all counties
                 counties.forEach(county => {
                     const option = document.createElement('option');
                     option.value = county;
@@ -970,6 +985,10 @@
                     comparisonSelect.appendChild(option);
                 });
             }
+
+            // Debug: Log the dropdown contents
+            console.log("Primary dropdown options count:", primarySelect ? primarySelect.options.length : 0);
+            console.log("Comparison dropdown options count:", comparisonSelect ? comparisonSelect.options.length : 0);
 
             // Helper function to format numbers
             window.formatNumber = function (num) {
@@ -1538,7 +1557,6 @@
                 console.log("Updating view for county:", county);
 
                 // Show single county view, hide statewide overview
-                document.getElementById('statewide-overview').style.display = 'none';
                 document.getElementById('single-county-view').style.display = 'block';
 
                 // Update the county header
@@ -1630,8 +1648,6 @@
 
             // Function to update the comparison view
             window.updateComparisonView = function (county1, county2) {
-                // Hide statewide overview
-                document.getElementById('statewide-overview').style.display = 'none';
 
                 // Show comparison view, hide single county view
                 document.getElementById('single-county-view').style.display = 'none';
@@ -1692,15 +1708,6 @@
 
                 // Update comparison charts
                 updateComparisonCharts(county1, county2);
-            };
-
-            // Set up sidebar navigation
-            window.openNav = function () {
-                document.getElementById("mySidenav").style.width = "250px";
-            };
-
-            window.closeNav = function () {
-                document.getElementById("mySidenav").style.width = "0";
             };
 
             // Set up event listeners
@@ -1904,3 +1911,6 @@
                     }
                 }, 500); // Wait half a second for everything to initialize
             });
+        });
+    </script>
+</body>
