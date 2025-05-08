@@ -40,6 +40,29 @@ countyTotals = df.groupby('County')['voted_2024'].sum().to_dict()
 counties = sorted(df['County'].unique())
 turnout_df = pd.read_csv("md_voter_file.txt/county x 100.csv")
 turnout_df['County'] = turnout_df['County'].str.replace("Saint Mary's", "St. Mary's", regex=False)
+df_summary = (
+    pd.read_csv("groq.csv")          # ⇠ the spreadsheet you uploaded
+        .rename(columns=str.strip)   # be forgiving about headers
+)
+df_summary['County'] = (
+    df_summary['County']
+        .str.replace("Saint Mary's", "St. Mary's", regex=False)
+)
+# Make look-ups cheap:
+def canonical(name: str) -> str:
+    name = name.replace("Saint Mary's", "St. Mary's").strip()
+    if name.lower().endswith(' county'):
+        name = name[:-7]          # drop the suffix
+    return name
+
+summary_map = dict(zip(
+    df_summary['County'].map(canonical),
+    df_summary['description']
+))
+
+summary_map['Statewide'] = summary_map.get('Statewide') or next(
+    (v for k, v in summary_map.items() if k.lower() == 'statewide'), ''
+)
 
 party_averages = {
     'DEM': dict(zip(turnout_df['County'], turnout_df['DEM'])),
@@ -341,6 +364,10 @@ def plot_gender():
     # ----------------------------------
     # 4) Return as before
     return jsonify(json.loads(fig.to_json()))
+
+@app.route('/summary/<path:place>')
+def summary(place):
+    return jsonify({'text': summary_map.get(canonical(place), '')})
 
 if __name__ == "__main__":
     app.run(debug=True)

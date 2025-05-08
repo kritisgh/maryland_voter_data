@@ -80,6 +80,8 @@
 
     <div id="loader" aria-label="Loading graph…"></div>  
     <div id="gender-graph"></div>
+    <h3> What can we learn from this data? We asked a large language model to help us with some insights - here's what it found:</h3>
+    <div id="summary-text" style="margin-top:1rem; margin-bottom:1rem;line-height:1.4;"></div>
   </div>
 
   <script>
@@ -88,7 +90,8 @@
     const gap     = 4;  // must match the CSS gap
     const loader  = document.getElementById('loader');   // NEW
     const graphDiv   = document.getElementById('gender-graph');
-
+    const summaryBox  = document.getElementById('summary-text');
+    let currentCounty = document.getElementById('county-select').value;  
     // map party codes to slider colors
     const partyColors = {
       'ALL': '#555555',    // dark gray
@@ -123,12 +126,49 @@
     // initial slider placement
     moveSlider(document.querySelector('.segment-control .active'));
 
+    function formatSummary(raw) {
+  return raw
+    .trim()
+    .split(/\r?\n\r?\n/)            // each blank line → new section
+    .map(block => {
+      const [header, ...lines] = block.split(/\r?\n/);
+      const body = lines.join(' ');
+      return `<p><strong><u>${header}</u></strong><br>${body}</p>`;
+    })
+    .join('');
+}
+
+function updateSummary(place) {
+  summaryBox.style.display = 'none';          // hide while loading
+  fetch(`/summary/${encodeURIComponent(place)}`)
+    .then(r => r.json())
+    .then(d => {
+      if (place === 'Statewide') {
+        /* Fancy markup only for Statewide */
+        summaryBox.style.whiteSpace = 'normal';     // ignore \n for this case
+        summaryBox.innerHTML = formatSummary(d.text);
+      } else {
+        /* Plain text (preserve new-lines) for every county */
+        summaryBox.style.whiteSpace = 'pre-line';
+        summaryBox.textContent = d.text;
+      }
+    })
+    .catch(console.error)
+    .finally(() => { summaryBox.style.display = 'block'; });
+}
+
+
     function updateGraph() {
       const firstRender = !graphDiv.querySelector('.plotly');
       if (firstRender) loader.style.display = 'block';
-      const county = encodeURIComponent(
+      const county = 
         document.getElementById('county-select').value
-      );
+      ;
+        // Only pull new narrative when the county actually changes
+      if (county !== currentCounty){
+        currentCounty = county;
+        updateSummary(county);
+      }
       fetch(`/plot_gender?county=${county}&party=${currentParty}`)
       .then(res => res.json())
       .then(fig => {
@@ -143,7 +183,7 @@
     document.getElementById('county-select')
             .addEventListener('change', updateGraph);
 
-    // initial draw
-    updateGraph();
+      updateSummary(currentCounty);
+      updateGraph();
   </script>
 {% endblock %}
