@@ -43,12 +43,11 @@
                     <div class="highlight-box">
                         <h3>Key Findings</h3>
                         <ul>
-                            <li>Overall nationwide voter turnout in 2024 (63.7%) was lower than the 2020 record (66.6%)
-                                but higher than previous presidential elections.</li>
-                            <li>Democratic and Republican voters showed different participation patterns</li>
-                            <li>Unaffiliated voter turnout fluctuated across different regions</li>
-                            <li>The 2024 election saw a more balanced mix of early, mail-in, and in-person voting
-                                compared to 2020's pandemic-driven mail-in voting surge.</li>
+                            <li>Overall statwide voter turnout in 2024 (72.44%) was <strong>lower than the 2020 record</strong> (74.63%)
+                                but both were <strong>higher than the nationwide voter turnout</strong>.</li>
+                            <li>Despite being a blue state, <strong>Democrats lost about 2% of its 2020 voter turnout</strong> during the 20204 Presdential Election while <strong>Republicans saw a marginal increase in turnout.</strong></li>
+                            <li>Rural and Republican-leaning counties (e.g., Allegany) show a <strong>decline in active Democratic registration</strong> and an <strong>increase in active Republican registration.</strong></li>
+                            <li>All counties show an <strong>increase in unaffiliated active voters.</strong></li>
                         </ul>
                     </div>
                 </div>
@@ -64,7 +63,7 @@
                             VOTER TURNOUT (2024)</div>
 
                         <p style="color: #666; font-size: 0.95em; margin-bottom: 20px;">The statewide voter turnout is
-                            calculated by the Maryland State Board of Elections (SBE).</p>
+                            calculated by the <strong><a href="https://elections.maryland.gov/press_room/2024_stats/PG24/Official%20by%20Party%20and%20County.pdf">Maryland State Board of Elections (SBE)</a></strong>.</p>
 
                         <div style="margin-top: 15px;">
                             <p style="font-size: 0.9em; color: #666; margin-bottom: 5px; letter-spacing: 0.5px;">
@@ -500,6 +499,15 @@
         </div>
     </div>
 
+    <div class="dashboard-footer" style="text-align: center; margin-top: 30px; margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #eee; background-color: #f7f9fc; padding: 15px; border-radius: 0 0 8px 8px;">
+        <p style="font-family: 'Poppins', sans-serif; color: #666; font-size: 0.9em; margin: 0;">
+            Created by <strong>Marco Villalta, Kriti Singh, Natalie Weger, and Reem Saleh</strong> | <em>Philip Merrill College of Journalism, University of Maryland</em>
+        </p>
+        <p style="font-family: 'Poppins', sans-serif; color: #888; font-size: 0.8em; margin-top: 5px;">
+            Data sourced from Maryland State Board of Elections | Spring 2025
+        </p>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             console.log("Initializing dashboard");
@@ -555,10 +563,14 @@
             const comparisonSelect = document.getElementById('comparison-county-select');
 
             if (primarySelect && counties.length) {
-                // Add default option first
+                // Clear existing options first
+                primarySelect.innerHTML = '';
+
+                // Add default option
                 const defaultOption = document.createElement('option');
                 defaultOption.value = "";
                 defaultOption.textContent = "Select County";
+                defaultOption.selected = true; // Make this selected by default
                 primarySelect.appendChild(defaultOption);
 
                 // Add all counties
@@ -566,28 +578,22 @@
                     const option = document.createElement('option');
                     option.value = county;
                     option.textContent = county;
-
-                    // Set Allegany as the default selected county if it exists
-                    if (county === "Allegany") {
-                        option.selected = true;
-                    }
-
                     primarySelect.appendChild(option);
                 });
-
-                // Trigger the change event to load Allegany data on page load
-                const changeEvent = new Event('change');
-                primarySelect.dispatchEvent(changeEvent);
             }
 
             if (comparisonSelect && counties.length) {
-                // Add default option first
-                const defaultOption = document.createElement('option');
-                defaultOption.value = "";
-                defaultOption.textContent = "Select County";
-                comparisonSelect.appendChild(defaultOption);
+                // Clear existing options first
+                comparisonSelect.innerHTML = '';
 
-                // Add all counties
+                // Add a "None" option
+                const noneOption = document.createElement('option');
+                noneOption.value = "";
+                noneOption.textContent = "None";
+                noneOption.selected = true;
+                comparisonSelect.appendChild(noneOption);
+
+                // Add counties
                 counties.forEach(county => {
                     const option = document.createElement('option');
                     option.value = county;
@@ -1589,21 +1595,6 @@
                 if (nationalAvgText) {
                     nationalAvgText.textContent = '63.7%';
                     nationalAvgText.style.left = '63.7%';
-                }
-            };
-
-            // Initialize with selected county view for Allegany
-            const initializeWithAllegany = function () {
-                // First check if Allegany county exists in the data
-                if (counties.includes("Allegany")) {
-                    // Select Allegany in the dropdown if not already selected
-                    if (primarySelect.value !== "Allegany") {
-                        primarySelect.value = "Allegany";
-                    }
-
-                    // Trigger change event to load the data
-                    const changeEvent = new Event('change');
-                    primarySelect.dispatchEvent(changeEvent);
                 }
             };
 
