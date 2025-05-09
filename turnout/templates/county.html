@@ -27,7 +27,7 @@
         data-inactive='{{ inactiveVotersData | tojson | safe }}'>
     </div>
     <div class="dashboard-container">
-        <h1>Maryland Voter Turnout Dashboard</h1>
+        <h1 style="color: black;">Is Maryland Becoming Less Blue? See How Maryland's 2024 Voter Turnout Shifted Across Party Lines Within Your County</h1>
 
         <!-- Statewide Overview Section -->
         <div class="statewide-overview" id="statewide-overview">
@@ -48,6 +48,7 @@
                             <li>Despite being a blue state, <strong>Democrats lost about 2% of its 2020 voter turnout</strong> during the 20204 Presdential Election while <strong>Republicans saw a marginal increase in turnout.</strong></li>
                             <li>Rural and Republican-leaning counties (e.g., Allegany) show a <strong>decline in active Democratic registration</strong> and an <strong>increase in active Republican registration.</strong></li>
                             <li>All counties show an <strong>increase in unaffiliated active voters.</strong></li>
+                            <li>Statewide turnout decreased across Maryland <strong>except Cecil, Washington, Allegany and Calvert.</strong> <a href="/bubble" target="_blank">Bubble Chart</a> visualization.</li>
                         </ul>
                     </div>
                 </div>
@@ -83,7 +84,7 @@
                                 <span>100%</span>
                             </div>
                             <p style="margin-top: 15px; color: var(--cns-green); font-size: 0.9em; font-weight: 500;">MD
-                                is scoring better than nationwide average</p>
+                                is scoring better than nationwide turnout</p>
                         </div>
                     </div>
                 </div>
@@ -738,19 +739,19 @@
                 // Fix the nationwide average percentage marker
                 const nationwideAvgMarker = document.querySelector('.stat-card-lg div div:first-child');
                 if (nationwideAvgMarker) {
-                    nationwideAvgMarker.textContent = '63.7%';
+                    nationwideAvgMarker.textContent = '65.3%';
                 }
 
                 // Update the position of the nationwide average marker
                 const nationwideMarkerPosition = document.querySelector('.stat-card-lg div div[style*="position: absolute; height: 100%; width: 2px;"]');
                 if (nationwideMarkerPosition) {
-                    nationwideMarkerPosition.style.left = '63.7%';
+                    nationwideMarkerPosition.style.left = '65.3%';
                 }
 
                 // Update text for the nationwide average position
                 const nationwideTextPosition = document.querySelector('.stat-card-lg div div[style*="position: absolute; top: -20px;"]');
                 if (nationwideTextPosition) {
-                    nationwideTextPosition.style.left = '63.7%';
+                    nationwideTextPosition.style.left = '65.3%';
                 }
             }
 
@@ -1587,14 +1588,14 @@
                 // Update the nationwide average position (the red line) to 72.44%
                 const nationalAvgLine = document.querySelector('.stat-card-lg div div[style*="position: absolute; height: 100%; width: 2px;"]');
                 if (nationalAvgLine) {
-                    nationalAvgLine.style.left = '63.7%';
+                    nationalAvgLine.style.left = '65.3%';
                 }
 
                 // Update the percentage text above the line
                 const nationalAvgText = document.querySelector('.stat-card-lg div div[style*="position: absolute; top: -20px;"]');
                 if (nationalAvgText) {
-                    nationalAvgText.textContent = '63.7%';
-                    nationalAvgText.style.left = '63.7%';
+                    nationalAvgText.textContent = '65.3%';
+                    nationalAvgText.style.left = '65.3%';
                 }
             };
 
