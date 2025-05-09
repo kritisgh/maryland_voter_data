@@ -11,13 +11,15 @@
     body { font-family: sans-serif; padding: 20px; }
     #controls { margin-bottom: 10px; display: flex; align-items: center; gap: 1em; }
     canvas { max-width: 100%; height: 600px; }
-    #headline { margin-bottom: 1em; }
+    #headline { margin-bottom: 0.2em; }
+    #subHeadline { margin-top: 0; margin-bottom: 1em; color: #555; }
     #scaleValue { font-weight: bold; }
   </style>
 </head>
 <body>
-  <!-- Dynamic headline -->
+  <!-- Dynamic headline & subhead -->
   <h2 id="headline"></h2>
+  <h3 id="subHeadline"></h3>
 
   <div id="controls">
     <label for="partySelect">Select Party:</label>
@@ -36,12 +38,23 @@
     let rawData, chartInstance;
     let globalScale = 1; 
 
-    // per‐party headlines
+    // per-party headlines
     const headlines = {
-      Statewide:    'Statewide turnout decreases across Maryland except Calvert, Allegany, Washington, and Cecil',
-      Democrat:     'Democrat turnout decreases across Maryland except Garrett, Calvert, Allegany, Washington, and Cecil',
-      Republican:   'Republican turnout decreases across Maryland except Calvert, Allegany, Washington, and Cecil',
-      Unaffiliated: 'Unaffiliated turnout decreases across Maryland except Calvert, Allegany, Washington, and Cecil'
+      Statewide:    'Maryland voter turnout decreased across 19 counties from 2020 to 2024.',
+      Republican:   'Maryland Republican voter turnout decreased across 19 counties from 2020 to 2024.',
+      Democrat:     'Maryland Democrat voter turnout decreased across 19 counties from 2020 to 2024.',
+      Unaffiliated: 'Maryland unaffiliated voter turnout decreased across 19 counties from 2020 to 2024.',
+      Green: 'Maryland Green voter turnout decreased across seven counties from 2020 to 2024.'
+      // Other: 'Maryland voter turnout in other parties decreased across 15 counties from 2020 to 2024.'
+    };
+
+    // per-party subheadlines
+    const subheads = {
+      Statewide:    'However, turnout increased in Allegany, Calvert, Cecil, St. Mary’s, and Washington county during that timeframe.',
+      Republican:   'However, ten counties saw an increase in voter turnout. Calvert county saw an increase in turnout by 8% in that timeframe.',
+      Democrat:     'However, Democrat turnout increased in Allegany, Calvert, Cecil, Garrett, and Washington county during that timeframe.',
+      Unaffiliated: 'However, Unaffiliated turnout increased slightly in Allegany, Calvert, Cecil, and Washington county during that timeframe.',
+      Green: 'The political party saw the least number of counties with voter turnout decrease compared to other major parties. Queen Anne’s county saw the largest increase in turnout by 28% in that timeframe.'
     };
 
     // 1) load CSV via PapaParse
@@ -73,15 +86,16 @@
         }));
     }
 
-    // 3) draw/update bubble chart + headline + trendline
+    // 3) draw/update bubble chart + headline + subhead + trendline
     function updateChart(party) {
-      // update headline
-      document.getElementById('headline').textContent = headlines[party] || '';
+      // update headline & subhead
+      document.getElementById('headline').textContent   = headlines[party]   || '';
+      document.getElementById('subHeadline').textContent = subheads[party]    || '';
 
       const arr = prepareData(party);
       chartInstance.counties = arr.map(d => d.county);
 
-      // base factor per‐party (if you keep Greens small, etc.)
+      // base factor per-party (unchanged)
       const baseFactor = (party === 'Green' || party === 'Other') ? 1 : 1;
 
       // build bubble dataset, applying globalScale
@@ -154,7 +168,7 @@
     // 5) wire up slider and init
     async function init() {
       rawData = await loadData();
-      const allowed = ['Statewide', 'Republican', 'Democrat', 'Unaffiliated', 'Green', 'Other'];
+      const allowed = ['Statewide', 'Republican', 'Democrat', 'Unaffiliated', 'Green'];
       const parties = allowed.filter(p => rawData.some(r => r.Party === p));
 
       // slider control
