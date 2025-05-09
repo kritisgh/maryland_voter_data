@@ -7,6 +7,8 @@ import plotly.io as pio                          #  <-- already have plotly.expr
 
     
 app = Flask(__name__)
+app.url_map.strict_slashes = False      # add this once, near the top
+
 PLOTS_DIR = os.path.join(app.root_path, "static", "plots")
 os.makedirs(PLOTS_DIR, exist_ok=True)   
 # Load the dataset.
@@ -157,7 +159,7 @@ def create_graphs(gender_label):
 def index():
     return render_template("index.html", counties=counties)
 
-@app.route("/election_2024")
+@app.route("/election_2024/")
 def election_2024():
     return render_template(
         "election_2024.html",
@@ -167,7 +169,7 @@ def election_2024():
         statewideAverages=statewideAverages,
         countyTotals=countyTotals
     )
-@app.route("/election_2020")
+@app.route("/election_2020/")
 def election_2020():
     return render_template(
         "election_2020.html",
@@ -178,7 +180,7 @@ def election_2020():
         countyTotals=countyTotals2020
     )
 
-@app.route('/gender')
+@app.route('/gender/')
 def gender():
     return render_template(
         'gender.html',

@@ -140,7 +140,7 @@
 
 function updateSummary(place) {
   summaryBox.style.display = 'none';          // hide while loading
-  fetch(`/summary/${encodeURIComponent(place)}`)
+  fetch(`../summary/${encodeURIComponent(place)}`)
     .then(r => r.json())
     .then(d => {
       if (place === 'Statewide') {
@@ -169,7 +169,7 @@ function updateSummary(place) {
         currentCounty = county;
         updateSummary(county);
       }
-      fetch(`/plot_gender?county=${county}&party=${currentParty}`)
+      fetch(`../plot_gender?county=${county}&party=${currentParty}`)
       .then(res => res.json())
       .then(fig => {
         Plotly.react(graphDiv, fig.data, fig.layout);

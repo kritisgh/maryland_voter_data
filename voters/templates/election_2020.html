@@ -8,7 +8,9 @@
     <noscript>
       <link rel="stylesheet" href="/static/style.css">
     </noscript>
-  
+    <link  rel="stylesheet" href="{{ '../' }}static/style.css">
+    <script src="{{ '../' }}static/script.js"></script>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
@@ -398,7 +400,7 @@ title.append("tspan")
       
       // updateChart fetches data for the county and calls drawChart.
       function updateChart(county) {
-        fetch('/data2020/' + encodeURIComponent(county))
+        fetch('../data2020/' + encodeURIComponent(county))
           .then(response => response.json())
           .then(data => drawChart(data, county))
           .catch(err => console.error(err));

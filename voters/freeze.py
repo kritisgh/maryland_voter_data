@@ -2,8 +2,7 @@ from app import app, counties, counties2020           # imports from your existi
 from flask_frozen import Freezer
 
 app.config.update(
-    FREEZER_RELATIVE_URLS = True,   # erase the leading “/”
-    FREEZER_DESTINATION   = 'build' # just to be explicit
+    FREEZER_RELATIVE_URLS = True,   # keep links repo-relative
 )
 
 freezer = Freezer(app)
@@ -22,19 +21,19 @@ def county_data_2020():
         yield 'county_data_2020', {'county': c}
 
 @freezer.register_generator
-def plot_gender():
-    # /plot_gender?county=…&party=…
-    parties = ['ALL', 'DEM', 'REP', 'UNA']
-    for c in ['Statewide', *counties]:
-        for p in parties:
-            yield {'county': c, 'party': p}           # query-string params
+def summary():
+    from app import summary_map            # same dict you already build
+    for county in summary_map.keys():      # 'Statewide' is in there too
+        yield 'summary', {'place': county}
 
 @freezer.register_generator
-def summary():
-    # /summary/<county>   (if you decide to freeze these too)
-    from app import summary_map
-    for c in summary_map.keys():
-        yield 'summary', {'county': c}
+def plot_gender():
+    from app import counties               # list you already build
+    parties = ['ALL', 'DEM', 'REP', 'UNA']
+    for county in ['Statewide', *counties]:
+        for p in parties:
+            yield 'plot_gender', {'county': county, 'party': p}
+
 
 # ------------- run -------------
 if __name__ == '__main__':
