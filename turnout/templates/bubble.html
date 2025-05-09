@@ -11,9 +11,13 @@
     body { font-family: sans-serif; padding: 20px; }
     #controls { margin-bottom: 10px; }
     canvas { max-width: 100%; height: 600px; }
+    #headline { margin-bottom: 1em; }
   </style>
 </head>
 <body>
+  <!-- Dynamic headline -->
+  <h2 id="headline"></h2>
+
   <div id="controls">
     <label for="partySelect">Select Party:</label>
     <select id="partySelect"></select>
@@ -23,6 +27,14 @@
   <script>
     const csvFile = "{{ url_for('static', filename='official_by_party_and_county_complete.csv') }}";
     let rawData, chartInstance;
+
+    // per‐party headlines
+    const headlines = {
+      Statewide:    'Statewide turnout decreases across Maryland except Calvert, Allegany, Washington, and Cecil',
+      Democrat:     'Democrat turnout decreases across Maryland except Garrett, Calvert, Allegany, Washington, and Cecil',
+      Republican:   'Republican turnout decreases across Maryland except Calvert, Allegany, Washington, and Cecil',
+      Unaffiliated: 'Unaffiliated turnout decreases across Maryland except Calvert, Allegany, Washington, and Cecil'
+    };
 
     // 1) load CSV via PapaParse
     async function loadData() {
@@ -54,19 +66,24 @@
         }));
     }
 
-    // 3) draw/update bubble chart
+    // 3) draw/update bubble chart + headline
     function updateChart(party) {
+      // set the headline text
+      document.getElementById('headline').textContent = headlines[party] || '';
+
       const arr = prepareData(party);
-      // store county names for tooltip
       chartInstance.counties = arr.map(d => d.county);
 
-      // x=2020, y=2024, r=|Δ|×5
+      // choose a scale factor per‐party (Green & Other smaller)
+      const scaleFactor = (party === 'Green' || party === 'Other') ? 1.5 : 5;
+
+      // x=2020, y=2024, r=|Δ|×scaleFactor
       const bubbleData = arr.map(d => {
         const diff = d.v2024 - d.v2020;
         return {
           x: d.v2020,
           y: d.v2024,
-          r: Math.abs(diff) * 5
+          r: Math.abs(diff) * scaleFactor
         };
       });
 
@@ -97,7 +114,9 @@
     // 5) initialize
     async function init() {
       rawData = await loadData();
-      const parties = Array.from(new Set(rawData.map(r => r.Party))).sort();
+      const allowed = ['Statewide', 'Republican', 'Democrat', 'Unaffiliated'];
+      const parties = allowed.filter(p => rawData.some(r => r.Party === p));
+
       const defaultParty = populatePartySelect(parties);
 
       const ctx = document.getElementById('dumbbellChart').getContext('2d');
@@ -106,12 +125,8 @@
         data: { datasets: [] },
         options: {
           scales: {
-            x: {
-              title: { display: true, text: '2020 Turnout %' },
-            },
-            y: {
-              title: { display: true, text: '2024 Turnout %' },
-            }
+            x: { title: { display: true, text: '2020 Turnout %' } },
+            y: { title: { display: true, text: '2024 Turnout %' } }
           },
           plugins: {
             tooltip: {
