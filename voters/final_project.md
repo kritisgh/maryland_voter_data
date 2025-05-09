@@ -1,5 +1,3 @@
-In addition, you should create a final_project.md document in your folder and describe what the app is designed to do and provide a summary of the development process (which you can build using your previous updates). You also should have a section devoted to features you didn't get to build but would have liked to and any blockers that prevented you from doing so
-
 # Who Votes In Maryland? 
 "Who Votes In Maryland?" is a news app based on a statewide voter file for the State of Maryland. This voter file provided our group information to the party affiliation, gender, age, and address of every voter in Maryland, giving us a unique opprtunity to look at the demographics of voters in the 2020 and 2024 general elections in Maryland. Our news app showcases differences in voting patterns between counties by party affiliation, using a set of Datawrapper maps to anchor our analysis. We compared these patterns to statewide trends, and also provide a deep dive into how gender and age change voter demographics in a separate page (our deep dive also includes an LLM-assisted description of interesting trends).
 
