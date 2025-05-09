@@ -1,3 +1,8 @@
+# Who Votes In Maryland? A News App by Rushabh Kamdar, Katharine Wilson, Johnny Yan, and Geoffrey Zhang
+
+To access our web app, please run our app.py in the terminal using "python app.py" and ensuring that you are in the "voter" folder. This should run the app like any other Flask web app. Attempts to upload our app to GitHub Pages unfortunately resulted in errors with our JavaScript code.
+
+________________________
 3/26/2025 --
 Things we need aggregated:
 Of people who voted in the 2024 election, in (blank city), (percentage) were registered Democrats, etc.
