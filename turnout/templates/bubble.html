@@ -9,9 +9,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
   <style>
     body { font-family: sans-serif; padding: 20px; }
-    #controls { margin-bottom: 10px; }
+    #controls { margin-bottom: 10px; display: flex; align-items: center; gap: 1em; }
     canvas { max-width: 100%; height: 600px; }
     #headline { margin-bottom: 1em; }
+    #scaleValue { font-weight: bold; }
   </style>
 </head>
 <body>
@@ -21,12 +22,19 @@
   <div id="controls">
     <label for="partySelect">Select Party:</label>
     <select id="partySelect"></select>
+
+    <!-- slider to adjust bubble size -->
+    <label for="scaleSlider">Bubble size scale:</label>
+    <input type="range" id="scaleSlider" min="0.2" max="5" step="0.1" value="1">
+    <span id="scaleValue">1.0×</span>
   </div>
+
   <canvas id="dumbbellChart"></canvas>
 
   <script>
     const csvFile = "{{ url_for('static', filename='official_by_party_and_county_complete.csv') }}";
     let rawData, chartInstance;
+    let globalScale = 1; 
 
     // per‐party headlines
     const headlines = {
@@ -67,26 +75,26 @@
 
     // 3) draw/update bubble chart + headline + trendline
     function updateChart(party) {
-      // set the headline text
+      // update headline
       document.getElementById('headline').textContent = headlines[party] || '';
 
       const arr = prepareData(party);
       chartInstance.counties = arr.map(d => d.county);
 
-      // choose a scale factor per‐party (Green & Other smaller)
-      const scaleFactor = (party === 'Green' || party === 'Other') ? 1.5 : 5;
+      // base factor per‐party (if you keep Greens small, etc.)
+      const baseFactor = (party === 'Green' || party === 'Other') ? 1 : 1;
 
-      // build the bubble data
+      // build bubble dataset, applying globalScale
       const bubbleData = arr.map(d => {
         const diff = d.v2024 - d.v2020;
         return {
           x: d.v2020,
           y: d.v2024,
-          r: Math.abs(diff) * scaleFactor
+          r: Math.abs(diff) * baseFactor * globalScale
         };
       });
 
-      // compute regression line (least-squares)
+      // compute regression line parameters
       const xVals = arr.map(d => d.v2020);
       const yVals = arr.map(d => d.v2024);
       const n = xVals.length;
@@ -95,12 +103,12 @@
       let num = 0, den = 0;
       for (let i = 0; i < n; i++) {
         num += (xVals[i] - xMean) * (yVals[i] - yMean);
-        den += (xVals[i] - xMean) * (xVals[i] - xMean);
+        den += (xVals[i] - xMean) ** 2;
       }
       const slope = den === 0 ? 0 : num / den;
       const intercept = yMean - slope * xMean;
 
-      // define line endpoints just beyond data range
+      // define trendline endpoints
       const xMin = Math.min(...xVals) - 2;
       const xMax = Math.max(...xVals) + 2;
       const lineData = [
@@ -108,7 +116,7 @@
         { x: xMax, y: slope * xMax + intercept }
       ];
 
-      // set both bubble and line datasets
+      // assign datasets: bubbles + trendline
       chartInstance.data.datasets = [
         {
           label: 'Turnout Δ size',
@@ -126,7 +134,7 @@
         }
       ];
 
-      // adjust axes to data range ±2
+      // adjust axes…
       chartInstance.options.scales.x.min = xMin;
       chartInstance.options.scales.x.max = xMax;
       chartInstance.options.scales.y.min = Math.min(...yVals) - 2;
@@ -143,11 +151,20 @@
       return parties[0];
     }
 
-    // 5) initialize
+    // 5) wire up slider and init
     async function init() {
       rawData = await loadData();
-      const allowed = ['Statewide', 'Republican', 'Democrat', 'Unaffiliated'];
+      const allowed = ['Statewide', 'Republican', 'Democrat', 'Unaffiliated', 'Green', 'Other'];
       const parties = allowed.filter(p => rawData.some(r => r.Party === p));
+
+      // slider control
+      const slider = document.getElementById('scaleSlider');
+      const label  = document.getElementById('scaleValue');
+      slider.addEventListener('input', () => {
+        globalScale = parseFloat(slider.value);
+        label.textContent = globalScale.toFixed(1) + '×';
+        updateChart(document.getElementById('partySelect').value);
+      });
 
       const defaultParty = populatePartySelect(parties);
 
