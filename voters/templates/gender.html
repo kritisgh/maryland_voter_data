@@ -80,11 +80,27 @@
 
     <div id="loader" aria-label="Loading graph…"></div>  
     <div id="gender-graph"></div>
-    <h3> What can we learn from this data? We asked a large language model to help us with insights - here's what it found:</h3>
+    <h3 id="insight-heading">
+      What can we learn from <span id="place-name">Statewide</span> data?
+      We asked a large language model to help us with insights – here’s what it found:
+    </h3>    
     <div id="summary-text" style="margin-top:1rem; margin-bottom:1rem;line-height:1.4;"></div>
   </div>
 
   <script>
+    function formatCountyName(name) {
+      if (name === 'Statewide') {
+        return "Maryland's statewide";
+      }
+      if (name === 'Baltimore City' || name === 'Baltimore County') {
+        return `${name}'s`;                           // already complete
+      }
+      return `${name} County's`;                 // default
+    }
+    function updateHeading(place) {
+      document.getElementById('place-name').textContent = formatCountyName(place);
+    }
+
     const buttons = document.querySelectorAll('.segment-control .segment');
     const slider  = document.querySelector('.segment-control .segment-slider');
     const gap     = 4;  // must match the CSS gap
@@ -92,7 +108,7 @@
     const graphDiv   = document.getElementById('gender-graph');
     const summaryBox  = document.getElementById('summary-text');
     let currentCounty = document.getElementById('county-select').value;  
-    // map party codes to slider colors
+    updateHeading(currentCounty);      // NEW
     const partyColors = {
       'ALL': '#555555',    // dark gray
       'DEM': 'steelblue',    // blue
@@ -101,7 +117,7 @@
     };
 
     let currentParty = 'ALL';
-
+    
     // position & color the slider under the given button
     function moveSlider(btn) {
       const rect = btn.getBoundingClientRect();
@@ -167,6 +183,7 @@ function updateSummary(place) {
         // Only pull new narrative when the county actually changes
       if (county !== currentCounty){
         currentCounty = county;
+        updateHeading(county);          
         updateSummary(county);
       }
       fetch(`../plot_gender?county=${county}&party=${currentParty}`)
@@ -182,7 +199,6 @@ function updateSummary(place) {
     // redraw when county changes
     document.getElementById('county-select')
             .addEventListener('change', updateGraph);
-
       updateSummary(currentCounty);
       updateGraph();
   </script>
