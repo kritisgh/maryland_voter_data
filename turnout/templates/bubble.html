@@ -56,7 +56,6 @@
         if (!byCounty[r.County]) byCounty[r.County] = {};
         byCounty[r.County][r.Year] = pct;
       });
-
       return Object.entries(byCounty)
         .filter(([_, years]) => years['2020'] != null && years['2024'] != null)
         .map(([county, years]) => ({
@@ -66,7 +65,7 @@
         }));
     }
 
-    // 3) draw/update bubble chart + headline
+    // 3) draw/update bubble chart + headline + trendline
     function updateChart(party) {
       // set the headline text
       document.getElementById('headline').textContent = headlines[party] || '';
@@ -77,7 +76,7 @@
       // choose a scale factor per‐party (Green & Other smaller)
       const scaleFactor = (party === 'Green' || party === 'Other') ? 1.5 : 5;
 
-      // x=2020, y=2024, r=|Δ|×scaleFactor
+      // build the bubble data
       const bubbleData = arr.map(d => {
         const diff = d.v2024 - d.v2020;
         return {
@@ -87,18 +86,51 @@
         };
       });
 
-      chartInstance.data.datasets = [{
-        label: 'Turnout Δ size',
-        data: bubbleData,
-        backgroundColor: 'steelblue'
-      }];
+      // compute regression line (least-squares)
+      const xVals = arr.map(d => d.v2020);
+      const yVals = arr.map(d => d.v2024);
+      const n = xVals.length;
+      const xMean = xVals.reduce((a, b) => a + b, 0) / n;
+      const yMean = yVals.reduce((a, b) => a + b, 0) / n;
+      let num = 0, den = 0;
+      for (let i = 0; i < n; i++) {
+        num += (xVals[i] - xMean) * (yVals[i] - yMean);
+        den += (xVals[i] - xMean) * (xVals[i] - xMean);
+      }
+      const slope = den === 0 ? 0 : num / den;
+      const intercept = yMean - slope * xMean;
+
+      // define line endpoints just beyond data range
+      const xMin = Math.min(...xVals) - 2;
+      const xMax = Math.max(...xVals) + 2;
+      const lineData = [
+        { x: xMin, y: slope * xMin + intercept },
+        { x: xMax, y: slope * xMax + intercept }
+      ];
+
+      // set both bubble and line datasets
+      chartInstance.data.datasets = [
+        {
+          label: 'Turnout Δ size',
+          data: bubbleData,
+          backgroundColor: 'steelblue'
+        },
+        {
+          label: 'Trendline',
+          type: 'line',
+          data: lineData,
+          borderColor: 'red',
+          borderWidth: 2,
+          fill: false,
+          pointRadius: 0
+        }
+      ];
 
       // adjust axes to data range ±2
-      const allX = arr.map(d => d.v2020), allY = arr.map(d => d.v2024);
-      chartInstance.options.scales.x.min = Math.min(...allX) - 2;
-      chartInstance.options.scales.x.max = Math.max(...allX) + 2;
-      chartInstance.options.scales.y.min = Math.min(...allY) - 2;
-      chartInstance.options.scales.y.max = Math.max(...allY) + 2;
+      chartInstance.options.scales.x.min = xMin;
+      chartInstance.options.scales.x.max = xMax;
+      chartInstance.options.scales.y.min = Math.min(...yVals) - 2;
+      chartInstance.options.scales.y.max = Math.max(...yVals) + 2;
 
       chartInstance.update();
     }
