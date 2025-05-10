@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>{{ county }} - Voter Registration</title>
-    <!-- DataTables CSS (modern) -->
     <link rel="stylesheet" href="//cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css"/>
 </head>
 <body>
@@ -47,6 +46,9 @@
         between 2020 and 2024. 
         Statewide, registration {% if state_change > 0 %}increased by {{ state_change }}%{% elif state_change < 0 %}decreased by {{ state_change | abs }}%{% else %}remained the same{% endif %}.
     </p>
+    {% if image_path %}
+        <img src="{{ url_for('static', filename=image_path) }}" alt="{{ county }} chart" style="max-width:100%; margin: 1em 0;">
+    {% endif %}
     <p>
         Compared to 2020, that's a 
         <strong>{% if change.dem > 0 %}{{ change.dem }}% increase{% elif change.dem < 0 %}{{ change.dem | abs }}% decrease{% else %}no change{% endif %}</strong> in Democrats, 
@@ -76,24 +78,7 @@
     {% endif %}
 
     <h2>All Records</h2>
-    <div style="display: inline-block;">
-        <label for="year-filter">Filter by Year:</label>
-        <select id="year-filter">
-            <option value="">All</option>
-            {% for y in records|map(attribute='year')|unique|sort(reverse=true) %}
-                <option value="{{ y }}">{{ y }}</option>
-            {% endfor %}
-        </select>
-    
-        <label for="month-filter" style="margin-left: 1em;">Filter by Month:</label>
-        <select id="month-filter">
-            <option value="">All</option>
-            {% for m in records|map(attribute='month')|unique|sort %}
-                <option value="{{ m }}">{{ m }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <table id="registration-table">
+    <table id="records-table" class="display">
         <thead>
             <tr>
                 <th>Year</th>
@@ -109,30 +94,50 @@
             <tr>
                 <td>{{ r.year }}</td>
                 <td>{{ r.month }}</td>
-                <td>{{ "{:,}".format(r.dem) }}</td>
-                <td>{{ "{:,}".format(r.rep) }}</td>
-                <td>{{ "{:,}".format(r.unaf) }}</td>
-                <td>{{ "{:,}".format(r.other) }}</td>
+                <td>{{ r.dem }}</td>
+                <td>{{ r.rep }}</td>
+                <td>{{ r.unaf }}</td>
+                <td>{{ r.other }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
     <p><a href="{{ url_for('index') }}">← Back to index</a></p>
-    <!-- jQuery and DataTables JS -->
+
+    <link rel="stylesheet" href="//cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css"/>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="//cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
-
     <script>
-        new DataTable('#registration-table', {
+        new DataTable('#records-table', {
             paging: true,
             pageLength: 10,
             scrollY: 400,
             order: [[0, 'desc']],
-            searching: false, // removes global search box
             language: {
+                search: "Search:",
                 lengthMenu: "Show _MENU_ entries"
-            }});
+            },
+            initComplete: function () {
+                this.api().columns([0, 1]).every(function () {
+                    const column = this;
+                    const select = document.createElement('select');
+                    select.innerHTML = '<option value="">All</option>';
+                    select.style.marginRight = '1em';
+
+                    column.data().unique().sort().each(function (d) {
+                        select.innerHTML += `<option value="${d}">${d}</option>`;
+                    });
+
+                    column.header().appendChild(select);
+
+                    select.addEventListener('change', function () {
+                        const val = this.value;
+                        column.search(val ? `^${val}$` : '', true, false).draw();
+                    });
+                });
+            }
+        });
     </script>
 </body>
 </html>

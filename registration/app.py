@@ -33,6 +33,8 @@ def index():
 def county_detail(slug):
     county = slug
     embed_id = flourish_ids.get(county)
+    image_path = f"images/{county}.png"
+    
 
     year_summary = (
         Registration
@@ -106,6 +108,7 @@ def county_detail(slug):
         "county_detail.html",
         county=county,
         flourish_id=embed_id,
+        image_path=image_path,
         year_summary=year_summary,
         year_2020=year_2020,
         change=change,
