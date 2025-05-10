@@ -1,3 +1,7 @@
+# VOTER TURNOUT DASHBOARD
+**Welcome to the Maryland Voter Turnout Dashboard. To use our application, cd into the turnout folder ("cd turnout") and run “python app.py” in the terminal to start up the app.py file.**
+
+
 Ideas We Have: 
 1) Reporting on the number of inactive voters across counties, and whether the number of inactive voters has increased or decreased over different years. Has anything encouraged/discouraged voter turnout? What is the engagement of eligible voters? 
 - We could have a newsapp that let's users put filters in exploring data on voter counties/turnout. The newsapp could also feature a chloropleth map that darkens counties with higher voter turnout. 

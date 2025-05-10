@@ -27,28 +27,46 @@
         data-inactive='{{ inactiveVotersData | tojson | safe }}'>
     </div>
     <div class="dashboard-container">
-        <h1 style="color: black;">Is Maryland Becoming Less Blue? See How Maryland's 2024 Voter Turnout Shifted Across Party Lines Within Your County</h1>
+        <h1 style="color: black;">Is Maryland Becoming Less Blue? See How Maryland's 2024 Voter Turnout Shifted Across
+            Party Lines Within Your County</h1>
 
-        <!-- Statewide Overview Section -->
+        <p>The 2020 presidential election experienced the <strong>highest national voter participation in over a
+                century</strong>, with 66% of eligible voters
+            casting ballots nationwide. Maryland exceeded this national average with a 75% voter turnout in 2020.
+            However, the 2024 presidential election reveals a shift with Maryland's overall turnout
+            <strong>dropping</strong> to 72% and showing notable
+            differences across party lines and counties. Voter turnout data from the <strong><a
+                    href="https://elections.maryland.gov/press_room/" style="color:black;">Maryland
+                    State Board of Elections (SBE)</a></strong> shows county-level turnout ranging from 61% to 81%.
+            Interestingly, Democratic turnout decreased in 2024 - <strong>but where is that support going?</strong>
+            This dashboard tracks the changes in Maryland's voter turnout between the historic 2020 and 2024
+            presidential elections.
+        </p>
+        <br>
+
+        <!-- Overview based on interesting findings -->
         <div class="statewide-overview" id="statewide-overview">
             <h2>Statewide Voter Turnout Trends: 2020 to 2024</h2>
 
             <div class="overview-content">
                 <div class="overview-text">
-                    <p>This dashboard tracks the changes in Maryland's voter turnout between the 2020 and 2024
-                        presidential elections. In 2020, Maryland saw 72% of registered voters participate in the
-                        general election, with county-level turnout ranging from 61% to 81%. The 2024 election shows
-                        some shifts in voter participation across party lines and counties.</p>
-
                     <div class="highlight-box">
                         <h3>Key Findings</h3>
                         <ul>
-                            <li>Overall statwide voter turnout in 2024 (72.44%) was <strong>lower than the 2020 record</strong> (74.63%)
+                            <li>Overall statwide voter turnout in 2024 (72.44%) was <strong>lower than the 2020
+                                    record</strong> (74.63%)
                                 but both were <strong>higher than the nationwide voter turnout</strong>.</li>
-                            <li>Despite being a blue state, <strong>Democrats lost about 2% of its 2020 voter turnout</strong> during the 20204 Presdential Election while <strong>Republicans saw a marginal increase in turnout.</strong></li>
-                            <li>Rural and Republican-leaning counties (e.g., Allegany) show a <strong>decline in active Democratic registration</strong> and an <strong>increase in active Republican registration.</strong></li>
+                            <li>Despite being a blue state, <strong>Democrats lost about 2% of its 2020 voter
+                                    turnout</strong> during the 2024 Presidential Election while <strong>Republicans saw
+                                    a marginal increase in turnout.</strong></li>
+                            <li>Rural and Republican-leaning counties (e.g., Allegany) show a <strong>decline in active
+                                    Democratic registration</strong> and an <strong>increase in active Republican
+                                    registration.</strong></li>
                             <li>All counties show an <strong>increase in unaffiliated active voters.</strong></li>
-                            <li>Statewide turnout decreased across Maryland <strong>except Cecil, Washington, Allegany and Calvert.</strong> <a href="/bubble" target="_blank">Bubble Chart</a> visualization.</li>
+                            <li><strong>Only 5 of Maryland's 24 counties saw increased turnout</strong>: Calvert
+                                (+5.4%), Allegany (+3.9%), Washington (+3.8%), Cecil (+3.3%), and Saint Mary's (+0.7%) –
+                                <a href="/bubble" class="bubble-link" target="_blank">View Interactive Chart</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -64,7 +82,9 @@
                             VOTER TURNOUT (2024)</div>
 
                         <p style="color: #666; font-size: 0.95em; margin-bottom: 20px;">The statewide voter turnout is
-                            calculated by the <strong><a href="https://elections.maryland.gov/press_room/2024_stats/PG24/Official%20by%20Party%20and%20County.pdf">Maryland State Board of Elections (SBE)</a></strong>.</p>
+                            calculated by the <strong><a
+                                    href="https://elections.maryland.gov/press_room/2024_stats/PG24/Official%20by%20Party%20and%20County.pdf">Maryland
+                                    State Board of Elections (SBE)</a></strong>.</p>
 
                         <div style="margin-top: 15px;">
                             <p style="font-size: 0.9em; color: #666; margin-bottom: 5px; letter-spacing: 0.5px;">
@@ -127,7 +147,7 @@
                     <strong>Party Alliance:</strong> <span id="party-alliance-context">-</span>
                 </p>
                 <p>
-                    <strong>2024 Presedential Election Results:</strong>
+                    <strong>2024 Presidential Election Results:</strong>
                     <span id="dem-percentage">-</span>% Democrat (Harris) vs
                     <span id="rep-percentage">-</span>% Republican (Trump)
                 </p>
@@ -173,8 +193,6 @@
                         <canvas id="official-turnout-chart"></canvas>
                     </div>
                     <div class="chart-footer">
-                        <div class="chart-note">Note: Percentages represent change in turnout rate, not raw voter
-                            numbers.</div>
                         <div class="chart-source">Source: Maryland State Board of Elections</div>
                         <div class="chart-byline">Chart: Philip Merrill College of Journalism at University of Maryland
                         </div>
@@ -500,9 +518,11 @@
         </div>
     </div>
 
-    <div class="dashboard-footer" style="text-align: center; margin-top: 30px; margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #eee; background-color: #f7f9fc; padding: 15px; border-radius: 0 0 8px 8px;">
+    <div class="dashboard-footer"
+        style="text-align: center; margin-top: 30px; margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #eee; background-color: #f7f9fc; padding: 15px; border-radius: 0 0 8px 8px;">
         <p style="font-family: 'Poppins', sans-serif; color: #666; font-size: 0.9em; margin: 0;">
-            Created by <strong>Marco Villalta, Kriti Singh, Natalie Weger, and Reem Saleh</strong> | <em>Philip Merrill College of Journalism, University of Maryland</em>
+            Created by <strong>Marco Villalta, Kriti Singh, Natalie Weger, and Reem Saleh</strong> | <em>Philip Merrill
+                College of Journalism, University of Maryland</em>
         </p>
         <p style="font-family: 'Poppins', sans-serif; color: #888; font-size: 0.8em; margin-top: 5px;">
             Data sourced from Maryland State Board of Elections | Spring 2025
@@ -730,16 +750,15 @@
                     options: cnsOverviewChartOptions
                 });
 
-                // Update the turnout percentage in the statewide overview to correctly show 75.01%
                 const statewideTurnoutDisplay = document.querySelector('.stat-card-lg div:first-child');
                 if (statewideTurnoutDisplay) {
                     statewideTurnoutDisplay.textContent = '72.44%';
                 }
 
                 // Fix the nationwide average percentage marker
-                const nationwideAvgMarker = document.querySelector('.stat-card-lg div div:first-child');
-                if (nationwideAvgMarker) {
-                    nationwideAvgMarker.textContent = '65.3%';
+                const nationwideMarker = document.querySelector('.stat-card-lg div div:first-child');
+                if (nationwideMarker) {
+                    nationwideMarker.textContent = '65.3%';
                 }
 
                 // Update the position of the nationwide average marker
@@ -1621,7 +1640,6 @@
                 ]
             });
             fixTurnoutDisplay();
-            initializeWithAllegany();
 
             function fillNumbersIntoTable(officialTurnoutData) {
                 document.getElementById('official-democrat').innerText = formatChange(officialTurnoutData['Democrat']);

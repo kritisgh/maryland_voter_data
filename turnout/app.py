@@ -195,7 +195,35 @@ def dumbbell_chart():
 
 @app.route("/bubble")
 def bubble_chart():
-    return render_template("bubble.html")
+    # Prepare turnout data for the bubble chart
+    try:
+        # Query the database for official turnout data
+        turnout_query = db.execute_sql("""
+            SELECT County, Party, Year, `Turnout Percentage` 
+            FROM official_by_party_and_county_complete 
+            WHERE Party IN ('Statewide', 'Democrat', 'Republican', 'Unaffiliated', 'Green')
+        """)
+        
+        # Convert query results to a list of dictionaries
+        turnout_data = []
+        for row in turnout_query:
+            turnout_data.append({
+                'County': row[0],
+                'Party': row[1],
+                'Year': row[2],
+                'Turnout Percentage': row[3]
+            })
+        
+        # Get party parameter if provided
+        party = request.args.get('party', default=None)
+        
+        return render_template("bubble.html", 
+                              turnout_data=turnout_data,
+                              selected_party=party)
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        return render_template("bubble.html", turnout_data=[], selected_party=None)
 
 
 @app.route("/eligible-active")
