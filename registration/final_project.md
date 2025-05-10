@@ -15,3 +15,9 @@ Here were somoe of the steps in our process:
 - Writing and editing summaries for the text that would go on each page
 - Editing graphics and refining the final HTML design
 - Cleaning/making small changes (making all the counties standard lowercase instead of all caps) 
+
+Features we would have liked to include: 
+- An interactive quiz that asks users whether they understand voter registration and how they can find out how to do that based on their location
+- Seeing how registration changes based on demographic factors like race, socioeconomic status, gender, and age corresponds to the rate
+- Doing a more detailed analysis of a certain county, like Baltimore, to do a wider analysis of trends over time
+- More interactivity (allowing users to click on a county and be taken to the specific page, etc.) 
