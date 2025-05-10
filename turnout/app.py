@@ -73,7 +73,7 @@ class EligibleActiveDifferences(Model):
 
 @app.route("/")
 def index():
-    template = 'county.html'
+    template = 'index.html'
     
     try: 
         official_query = CountyTurnout.select()
