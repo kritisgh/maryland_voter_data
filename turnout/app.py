@@ -143,7 +143,7 @@ def index():
         ]
         
         counties = sorted(list(set(row.county for row in official_query)))
-        print("Counties list in Flask:", counties)  # ✅ move print here
+        # print("Counties list in Flask:", counties)  # ✅ move print here
         
         return render_template(
             template,
