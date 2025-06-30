@@ -7,6 +7,8 @@ from peewee import *
 app = Flask(__name__)
 
 db = SqliteDatabase('/home/kritisgh/maryland_voter_data/turnout/turnout.db')
+print("Using database file:", db.database)
+
 
 class CountyTurnout(Model):
     county = CharField(column_name='County')
