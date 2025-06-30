@@ -79,7 +79,6 @@ def index():
     template = 'index.html'
     
     try: 
-        print("Counties list in Flask:", counties)  # ✅ move print here
         official_query = CountyTurnout.select()
         active_query = EligibleActiveDifferences.select()
         inactive_query = EligibleInactiveDifferences.select()
@@ -144,6 +143,7 @@ def index():
         ]
         
         counties = sorted(list(set(row.county for row in official_query)))
+        print("Counties list in Flask:", counties)  # ✅ move print here
         
         return render_template(
             template,
