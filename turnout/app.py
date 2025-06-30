@@ -73,6 +73,7 @@ class EligibleActiveDifferences(Model):
 
 @app.route("/")
 def index():
+    print("Counties list in Flask:", counties)
     template = 'index.html'
     
     try: 
