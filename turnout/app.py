@@ -6,7 +6,7 @@ from peewee import *
 
 app = Flask(__name__)
 
-db = SqliteDatabase('turnout.db')
+db = SqliteDatabase('/home/kritisgh/maryland_voter_data/turnout/turnout.db')
 
 class CountyTurnout(Model):
     county = CharField(column_name='County')
@@ -73,10 +73,11 @@ class EligibleActiveDifferences(Model):
 
 @app.route("/")
 def index():
-    print("Counties list in Flask:", counties)
+    
     template = 'index.html'
     
     try: 
+        print("Counties list in Flask:", counties)  # ✅ move print here
         official_query = CountyTurnout.select()
         active_query = EligibleActiveDifferences.select()
         inactive_query = EligibleInactiveDifferences.select()
